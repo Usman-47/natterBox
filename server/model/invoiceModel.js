@@ -24,9 +24,6 @@ const poolSchema = schema({
   splToken: {
     type: String,
   },
-  solanaPoolAddress: {
-    type: String,
-  },
   startTime: {
     type: String,
   },

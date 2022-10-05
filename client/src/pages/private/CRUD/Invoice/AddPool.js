@@ -167,100 +167,24 @@ const AddPool = ({ auth }) => {
         navigate(0);
         return;
       }
-
-      if (isRaid) {
-        const body = {
-          funds: amount,
+      const body = {
+        pool: {
+          amount,
           startTime,
-          isRaid,
-          timeLimit,
+          endTime,
           category,
           rewardFrequency,
           splToken,
-          projectName,
-        };
-        const res = await axios.post(
-          `${process.env.REACT_APP_SERVERURL}/wallet/initializeUserPool`,
-          body,
-          {
-            headers: {
-              Authorization: `BEARER ${token}`,
-            },
-          }
-        );
+        },
+      };
+      const { data } = await UpdateInvoiceApi(id, body, token);
+      dispatch({ type: "loadingStop" });
 
-        if (res.data.tx) {
-          const body = {
-            pool: {
-              amount,
-              startTime,
-              endTime,
-              category,
-              rewardFrequency,
-              solanaPoolAddress: res.data.poolAddress,
-              splToken,
-            },
-          };
-          const { data } = await UpdateInvoiceApi(id, body, token);
-          dispatch({ type: "loadingStop" });
-
-          if (data.type === "success") {
-            toast.success(data.msg);
-            navigate(`/app/invoice/readOne/readAllPool/${id}`);
-          } else {
-            toast.error("Something went wrong");
-          }
-        } else {
-          toast.error("Something went wrong");
-        }
+      if (data.type === "success") {
+        toast.success(data.msg);
+        navigate(`/app/invoice/readOne/readAllPool/${id}`);
       } else {
-        const body = {
-          funds: amount,
-          startTime,
-          isRaid,
-          timeLimit,
-          category,
-          rewardFrequency,
-          splToken,
-          projectName,
-        };
-        const res = await axios
-          .post(
-            `${process.env.REACT_APP_SERVERURL}/wallet/initializeUserPool`,
-            body,
-            {
-              headers: {
-                Authorization: `BEARER ${token}`,
-              },
-            }
-          )
-          .catch((err) => {
-            setApiError(err.response.data.msg);
-          });
-        if (res.data.tx) {
-          const body = {
-            pool: {
-              amount,
-              startTime,
-              endTime,
-              category,
-              rewardFrequency,
-              solanaPoolAddress: res.data.poolAddress,
-              splToken,
-            },
-          };
-          const { data } = await UpdateInvoiceApi(id, body, token);
-          dispatch({ type: "loadingStop" });
-
-          if (data.type === "success") {
-            toast.success(data.msg);
-            navigate(`/app/invoice/readOne/readAllPool/${id}`);
-          } else {
-            toast.error("Something went wrong");
-          }
-        } else {
-          toast.error("Something went wrong");
-        }
+        toast.error("Something went wrong");
       }
     } catch (error) {
       toast.error(apiError);
