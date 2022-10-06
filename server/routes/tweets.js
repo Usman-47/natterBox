@@ -29,11 +29,11 @@ router.get(
 
 router.patch("/likeSpecificTweet/:tweetId", TweetController.likeSpecificTweet);
 
-router.post(
+router.patch(
   "/replyToTweetWithTweetId/:tweetId",
   TweetController.replyToTweetWithTweetId
 );
 
-router.post("/retweetATweet/:tweetId", TweetController.retweetATweet);
+router.patch("/retweetATweet/:tweetId", TweetController.retweetATweet);
 
 module.exports = router;

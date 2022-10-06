@@ -441,19 +441,227 @@ const likeSpecificTweet = async (req, res) => {
 
 const replyToTweetWithTweetId = async (req, res) => {
   try {
-    let { tweetReply, accessToken, accessTokenSecret } = req.body;
-
-    var T = new TwitterApi({
-      appKey: process.env.TWITTER_CONSUMER_KEY,
-      appSecret: process.env.TWITTER_CONSUMER_SECRET,
-      accessToken: accessToken,
-      accessSecret: accessTokenSecret,
+    let { accessToken, accessTokenSecret, twitterId, id, publicKey } =
+      req.userObj;
+    let { projectName, mintAddress, projectCreator, tweetReply } = req.body;
+    var replyStatus = { tweetId: req.params.tweetId, projectName };
+    var splToken = mintAddress;
+    var poolType = "raid";
+    var usersArray = [publicKey];
+    let tweetData = await Invoice.find({
+      $and: [
+        { invoiceCreater: mongoose.Types.ObjectId(projectCreator) },
+        { projectName: projectName },
+        { "pool.splToken": mintAddress },
+        { "pool.tweets.tweetId": req.params.tweetId },
+      ],
     });
+    if (tweetData.length > 0) {
+      var numberOfFollowes = 0;
+      var poolCategory = [];
+      var rewardAmount = 0;
+      const headers = {
+        Authorization: `Bearer ${process.env.BEARER_TOKEN}`,
+      };
 
-    let result = await T.v2.reply(tweetReply, req.params.tweetId);
-    return res.send(result);
+      let response = await axios(
+        `https://api.twitter.com/2/users/${twitterId}/followers`,
+        {
+          headers,
+        }
+      );
+      numberOfFollowes = response.data.meta.result_count;
+      if (numberOfFollowes > 0) {
+        if (tweetData[0].pool.length > 0) {
+          tweetData[0].pool.map((poolData) => {
+            if (poolData.splToken === mintAddress) {
+              poolCategory = poolData.category;
+            }
+          });
+
+          if (numberOfFollowes >= 2 && numberOfFollowes <= 99) {
+            rewardAmount = poolCategory[0];
+          } else if (numberOfFollowes >= 100 && numberOfFollowes <= 299) {
+            rewardAmount = poolCategory[1];
+          } else if (numberOfFollowes >= 300 && numberOfFollowes <= 499) {
+            rewardAmount = poolCategory[2];
+          } else if (numberOfFollowes >= 500 && numberOfFollowes <= 999) {
+            rewardAmount = poolCategory[3];
+          } else if (numberOfFollowes >= 1000 && numberOfFollowes <= 4999) {
+            rewardAmount = poolCategory[4];
+          } else if (numberOfFollowes >= 5000 && numberOfFollowes <= 9999) {
+            rewardAmount = poolCategory[5];
+          } else if (numberOfFollowes >= 10000) {
+            rewardAmount = poolCategory[6];
+          }
+        }
+        let userTweetData = await User.find({
+          $and: [
+            { _id: id },
+            { projectName: projectName },
+            { "raidStatus.replyStatus.tweetId": req.params.tweetId },
+            { "raidStatus.replyStatus.projectName": projectName },
+          ],
+        });
+        if (userTweetData.length === 0) {
+          var T = new TwitterApi({
+            appKey: process.env.TWITTER_CONSUMER_KEY,
+            appSecret: process.env.TWITTER_CONSUMER_SECRET,
+            accessToken: accessToken,
+            accessSecret: accessTokenSecret,
+          });
+
+          let result = await T.v2.reply(tweetReply, req.params.tweetId);
+          if (result.data.text) {
+            userStatusUpdated = await User.findOneAndUpdate(
+              {
+                twitterId: twitterId,
+              },
+
+              {
+                $push: {
+                  "raidStatus.replyStatus": replyStatus,
+                },
+              },
+              {
+                new: true,
+              }
+            );
+            if (userStatusUpdated) {
+              let wallet = await Wallet.findOne({
+                accountHolder: mongoose.Types.ObjectId(projectCreator),
+              });
+              if (wallet) {
+                var arrayString = wallet.privateKey.split(",");
+                for (i = 0; i < arrayString.length; i++) {
+                  arrayString[i] = parseInt(arrayString[i]);
+                }
+                let oldWallet = Keypair.fromSecretKey(
+                  new Uint8Array(arrayString)
+                );
+
+                let clientAddress = oldWallet.publicKey;
+                let tx = new Transaction();
+
+                var usersPublicKey = [];
+                const mintAddress = new PublicKey(splToken);
+                for (i = 0; i < usersArray.length; i++) {
+                  usersPublicKey.push(new PublicKey(usersArray[i]));
+                }
+                const users = usersPublicKey;
+                let clientAta = (
+                  await PublicKey.findProgramAddress(
+                    [
+                      clientAddress.toBuffer(),
+                      TOKEN_PROGRAM_ID.toBuffer(),
+                      mintAddress.toBuffer(), // mint address
+                    ],
+                    ASSOCIATED_TOKEN_PROGRAM_ID
+                  )
+                )[0];
+
+                const [poolAta] =
+                  await anchor.web3.PublicKey.findProgramAddress(
+                    [
+                      anchor.utils.bytes.utf8.encode("poolAta"),
+                      clientAddress.toBuffer(),
+                      mintAddress.toBuffer(),
+                      Buffer.from(projectName),
+                      Buffer.from(poolType),
+                    ],
+                    program.programId
+                  );
+
+                for (i = 0; i < users.length; i++) {
+                  let userAta = (
+                    await PublicKey.findProgramAddress(
+                      [
+                        users[i].toBuffer(),
+                        TOKEN_PROGRAM_ID.toBuffer(),
+                        mintAddress.toBuffer(), // mint address
+                      ],
+                      ASSOCIATED_TOKEN_PROGRAM_ID
+                    )
+                  )[0];
+
+                  tx.feePayer = oldWallet.publicKey;
+
+                  const userAtaCheck =
+                    await solConnection.getTokenAccountsByOwner(users[i], {
+                      mint: mintAddress,
+                    });
+
+                  if (userAtaCheck.value.length === 0) {
+                    console.log(users[i].toString(), "no ata");
+                    tx.add(
+                      Token.createAssociatedTokenAccountInstruction(
+                        ASSOCIATED_TOKEN_PROGRAM_ID,
+                        TOKEN_PROGRAM_ID,
+                        mintAddress,
+                        userAta,
+                        users[i],
+                        oldWallet.publicKey
+                      )
+                    );
+                  }
+
+                  tx.add(
+                    Token.createTransferInstruction(
+                      TOKEN_PROGRAM_ID,
+                      poolAta,
+                      userAta,
+                      oldWallet.publicKey,
+                      [oldWallet],
+                      rewardAmount * 1000_000_000
+                    )
+                  );
+                }
+
+                const txID = await solConnection.sendTransaction(tx, [
+                  oldWallet,
+                ]);
+
+                res.send({
+                  msg: "Reward Transfer Successfully",
+                  tx: txID,
+                  type: "success",
+                });
+                // res.send({ msg: "under development", YourWallet: oldWallet.publicKey.toString(), type: "success" });
+              } else {
+                alert("SomeThing went wrong");
+              }
+            } else {
+              return res.send({
+                msg: "Unable Create Record",
+                type: "Failed",
+              });
+            }
+          } else {
+            return res.send({
+              msg: "Unable To Reply To Tweet",
+              type: "Failed",
+            });
+          }
+        } else {
+          return res.send({
+            msg: "You Have Already Claimed Reward For Reply To This Tweet",
+            type: "Failed",
+          });
+        }
+      } else {
+        return res.send({
+          msg: "You don't have enough follower",
+          type: "Failed",
+        });
+      }
+    } else {
+      return res.send({ msg: "No Tweet Found", type: "Failed" });
+    }
   } catch (error) {
-    console.log(error.message);
+    return res.send({
+      msg: error.message,
+      type: "Failed",
+    });
   }
 };
 

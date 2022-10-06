@@ -615,12 +615,18 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
         toast.error("You have already make reply for this tweet");
         return;
       }
+      if (!reply) {
+        toast.error("No empty reply allowed");
+        return;
+      }
       let body = {
+        projectName,
         tweetReply: reply,
-        accessToken: currentUser?.accessToken,
-        accessTokenSecret: currentUser?.accessTokenSecret,
+        mintAddress: poolData?.splToken,
+        projectCreator: projectDetail?.invoiceCreater?._id,
+        time: moment().unix(),
       };
-      const res = await axios.post(
+      const res = await axios.patch(
         `${process.env.REACT_APP_SERVERURL}/tweet/replyToTweetWithTweetId/${data?.tweetId}`,
         body,
         {
@@ -629,51 +635,11 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
           },
         }
       );
-      if (res?.data?.data) {
-        const body = {
-          replyStatus: {
-            tweetId: data?.tweetId,
-            projectName,
-            time: moment().unix(),
-          },
-          twitterId: currentUser.id,
-        };
-        const response = await axios.patch(
-          `${process.env.REACT_APP_SERVERURL}/api/updateRaidRewardStatus`,
-          body,
-          {
-            headers: {
-              Authorization: `BEARER ${currentUser.token}`,
-            },
-          }
-        );
-        if (response) {
-          const body = {
-            tweetId: data?.tweetId,
-            userId: currentUser?.userId,
-            tweetStatus: "reply",
-            projectName,
-            mintAddress: poolData?.splToken,
-            isRaid: true,
-            // poolAddress,
-            invoiceCreaterPublicKey: projectDetail?.invoiceCreaterPublicKey,
-            userPublicKey: publicKey,
-          };
-
-          const response = await axios.patch(
-            `${process.env.REACT_APP_SERVERURL}/reward/addRewardRecord`,
-            body,
-            {
-              headers: {
-                Authorization: `BEARER ${currentUser.token}`,
-              },
-            }
-          );
-        } else {
-          toast.error("Failed to update reward statuse");
-        }
+      if (res?.data?.tx) {
+        toast.success(res?.data?.msg);
+        setIsTweetLike(true);
       } else {
-        toast.error("Failed to reply");
+        toast.error(res?.data?.msg);
       }
     } catch (error) {
       console.log(error);
@@ -710,7 +676,7 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
         projectCreator: projectDetail?.invoiceCreater?._id,
         time: moment().unix(),
       };
-      const res = await axios.post(
+      const res = await axios.patch(
         `${process.env.REACT_APP_SERVERURL}/tweet/retweetATweet/${data?.tweetId}`,
         body,
         {
