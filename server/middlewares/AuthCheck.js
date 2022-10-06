@@ -27,6 +27,10 @@ const AuthCheck = (req, res, next) => {
       id: payLoad.id,
       name: payLoad.name,
       role: payLoad.role,
+      accessToken: payLoad.accessToken,
+      accessTokenSecret: payLoad.accessTokenSecret,
+      publicKey: payLoad.publicKey,
+      twitterId: payLoad.twitterId,
     };
     next();
   } catch (e) {

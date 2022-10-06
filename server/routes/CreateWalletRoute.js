@@ -1,4 +1,3 @@
-//crud users and change role too
 const router = require("express").Router();
 
 const CreateWalletController = require("../controllers/createWallet/createWalletController");

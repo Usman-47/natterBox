@@ -146,31 +146,6 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
   const handleIsReply = async (data) => {
     setIsTweetReplied(data);
   };
-  // const airDropForRaid = async () => {
-  //   let body = {
-  //     usersArray: [publicKey],
-  //     isRaid: true,
-  //     splToken: poolData?.splToken,
-  //     projectName: projectDetail.projectName,
-  //     client
-  //   };
-
-  //   const response = await axios.post(
-  //     `${process.env.REACT_APP_SERVERURL}/wallet/airdrop`,
-  //     body,
-  //     {
-  //       headers: {
-  //         Authorization: `BEARER ${token}`,
-  //       },
-  //     }
-  //   );
-  //   if (response.data.tx) {
-  //     console.log(response.data.tx);
-  //     toast.success("Transfer Successfully");
-  //   } else {
-  //     toast.error("Something went wrong");
-  //   }
-  // };
 
   // <<<<<<< HEAD
   // ==========for table =========
@@ -601,11 +576,12 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
         return;
       }
       let body = {
-        userId: currentUser?.id,
-        accessToken: currentUser?.accessToken,
-        accessTokenSecret: currentUser?.accessTokenSecret,
+        projectName,
+        mintAddress: poolData?.splToken,
+        projectCreator: projectDetail?.invoiceCreater?._id,
+        time: moment().unix(),
       };
-      const res = await axios.post(
+      const res = await axios.patch(
         `${process.env.REACT_APP_SERVERURL}/tweet/likeSpecificTweet/${data?.tweetId}`,
         body,
         {
@@ -614,54 +590,14 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
           },
         }
       );
-      if (res?.data?.data) {
-        const body = {
-          likeStatus: {
-            tweetId: data?.tweetId,
-            projectName,
-            time: moment().unix(),
-          },
-          twitterId: currentUser.id,
-        };
-        const response = await axios.patch(
-          `${process.env.REACT_APP_SERVERURL}/api/updateRaidRewardStatus`,
-          body,
-          {
-            headers: {
-              Authorization: `BEARER ${currentUser.token}`,
-            },
-          }
-        );
-        if (response) {
-          const body = {
-            tweetId: data?.tweetId,
-            userId: currentUser?.userId,
-            tweetStatus: "like",
-            projectName,
-            mintAddress: poolData?.splToken,
-            isRaid: true,
-            // poolAddress,
-            invoiceCreaterPublicKey: projectDetail?.invoiceCreaterPublicKey,
-            userPublicKey: publicKey,
-          };
-
-          const response = await axios.patch(
-            `${process.env.REACT_APP_SERVERURL}/reward/addRewardRecord`,
-            body,
-            {
-              headers: {
-                Authorization: `BEARER ${currentUser.token}`,
-              },
-            }
-          );
-        } else {
-          toast.error("Failed to update reward statuse");
-        }
-
+      if (res?.data?.tx) {
+        toast.success(res?.data?.msg);
         setIsTweetLike(true);
+      } else {
+        toast.error(res?.data?.msg);
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     }
   };
 
@@ -769,9 +705,10 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
         return;
       }
       let body = {
-        userId: currentUser?.id,
-        accessToken: currentUser?.accessToken,
-        accessTokenSecret: currentUser?.accessTokenSecret,
+        projectName,
+        mintAddress: poolData?.splToken,
+        projectCreator: projectDetail?.invoiceCreater?._id,
+        time: moment().unix(),
       };
       const res = await axios.post(
         `${process.env.REACT_APP_SERVERURL}/tweet/retweetATweet/${data?.tweetId}`,
@@ -782,54 +719,14 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
           },
         }
       );
-      if (res?.data?.data) {
-        const body = {
-          retweetStatus: {
-            tweetId: data?.tweetId,
-            projectName,
-            time: moment().unix(),
-            rewardAmount: rewards,
-          },
-          twitterId: currentUser?.id,
-        };
-        const response = await axios.patch(
-          `${process.env.REACT_APP_SERVERURL}/api/updateRaidRewardStatus`,
-          body,
-          {
-            headers: {
-              Authorization: `BEARER ${currentUser.token}`,
-            },
-          }
-        );
-        if (response) {
-          const body = {
-            tweetId: data?.tweetId,
-            userId: currentUser?.userId,
-            tweetStatus: "retweet",
-            projectName,
-            mintAddress: poolData?.splToken,
-            isRaid: true,
-            // poolAddress,
-            invoiceCreaterPublicKey: projectDetail?.invoiceCreaterPublicKey,
-            userPublicKey: publicKey,
-          };
-
-          const response = await axios.patch(
-            `${process.env.REACT_APP_SERVERURL}/reward/addRewardRecord`,
-            body,
-            {
-              headers: {
-                Authorization: `BEARER ${currentUser.token}`,
-              },
-            }
-          );
-        } else {
-          toast.error("Failed to update rewatd statuse");
-        }
+      if (res?.data?.tx) {
+        toast.success(res?.data?.msg);
         setIsTweetRetweeted(true);
+      } else {
+        toast.error(res?.data?.msg);
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     }
   };
 
@@ -1153,7 +1050,7 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
               </IconButton>
             ) : (
               <IconButton
-                onClick={() => alert("You have already like the tweet")}
+                onClick={() => toast.error("You have already like the tweet")}
                 aria-label="add to favorites"
               >
                 <Icon
@@ -1168,7 +1065,9 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
               </IconButton>
             ) : (
               <IconButton
-                onClick={() => alert("You have already retweet the tweet")}
+                onClick={() =>
+                  toast.error("You have already retweet the tweet")
+                }
                 aria-label="share"
               >
                 <Icon

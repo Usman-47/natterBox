@@ -24,6 +24,7 @@ module.exports = (app) => {
     if (req.user) {
       const tokenPayload = {
         name: req.user.displayName,
+        twitterId: req.user.twitterId,
         email: req.user.isVerified,
         publicKey: req.user.publicKey,
         id: req.user._id,
@@ -48,6 +49,7 @@ module.exports = (app) => {
           isVerified: req.user.isVerified,
           role: req.user.role,
           id: req.user.twitterId,
+          twitterId: req.user.twitterId,
           userName: req.user.userName,
           userId: req.user._id,
           rewardStatus: req.user.rewardStatus,
@@ -61,6 +63,7 @@ module.exports = (app) => {
           token,
           msg: `Welcome ${req.user.displayName}`,
           type: "success",
+          twitterId: req.user.twitterId,
           isVerified: req.user.isVerified,
           role: req.user.role,
           id: req.user.twitterId,
