@@ -637,7 +637,6 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
       );
       if (res?.data?.tx) {
         toast.success(res?.data?.msg);
-        setIsTweetLike(true);
       } else {
         toast.error(res?.data?.msg);
       }
