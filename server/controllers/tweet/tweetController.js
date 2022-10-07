@@ -904,9 +904,6 @@ const mentionClaim = async (req, res) => {
       tweetText,
       tweetCreatedAt: moment().unix(),
     };
-    var splToken = rewardToken;
-    var poolType = "mention";
-    var usersArray = [publicKey];
     let tweetData = await Invoice.find({
       $and: [
         { invoiceCreater: mongoose.Types.ObjectId(projectCreator) },
@@ -989,6 +986,12 @@ const mentionClaim = async (req, res) => {
               headers,
             }
           );
+          if (!response) {
+            return res.send({
+              msg: "No tweet found",
+              type: "Failed",
+            });
+          }
           let userTweetRecord = await response.json();
 
           let liveTweetCreatedAt = moment(
