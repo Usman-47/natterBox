@@ -45,7 +45,8 @@ import moment from "moment";
 //   tax,
 //   dueDate,
 // }
-const AddPool = ({ auth }) => {
+const AddPool = ({ auth, projectId, setPoolID, setpoolSuccessfully }) => {
+  console.log(projectId, "project id b a rahe");
   const initialState = {
     amount: "",
     startTime: "",
@@ -57,11 +58,16 @@ const AddPool = ({ auth }) => {
   };
   const { wallet, connect, sendTransaction, connecting, publicKey } =
     useWallet();
-  const { id } = useParams();
+  let { id } = useParams();
+  if (!id) {
+    id = projectId;
+    // setflag1(false);
+  }
   const [stateValues, setStateValues] = useState(initialState);
   const [projectName, setProjectName] = useState();
   const [isRaid, setIsRaid] = useState(false);
   const [apiError, setApiError] = useState();
+  const [flag1, setflag1] = useState(true);
   const [flag, setFlag] = useState(false);
 
   const solConnection = new web3.Connection(
@@ -98,6 +104,9 @@ const AddPool = ({ auth }) => {
     const res = await axios.get(
       `${process.env.REACT_APP_SERVERURL}/api/public/invoice/${id}`
     );
+    if (res?.data) {
+    }
+
     if (res?.data?.invoiceFound) {
       setProjectName(res?.data?.invoiceFound?.projectName);
       setIsRaid(res?.data?.invoiceFound?.isRaid);
@@ -178,11 +187,23 @@ const AddPool = ({ auth }) => {
         },
       };
       const { data } = await UpdateInvoiceApi(id, body, token);
+      console.log(data, "poolID");
       dispatch({ type: "loadingStop" });
 
       if (data.type === "success") {
+        const res = await axios.get(
+          `${process.env.REACT_APP_SERVERURL}/api/public/invoice/${id}`
+        );
+        // console.log(res?.data?.invoiceFound);
+        if (projectId) {
+          setPoolID(res?.data?.invoiceFound?.pool[0]._id);
+          setpoolSuccessfully(true);
+        }
         toast.success(data.msg);
-        navigate(`/app/invoice/readOne/readAllPool/${id}`);
+        if (!projectId) {
+          console.log(id, "coming id");
+          navigate(`/app/invoice/readOne/readAllPool/${id}`);
+        }
       } else {
         toast.error("Something went wrong");
       }
@@ -435,7 +456,7 @@ const AddPool = ({ auth }) => {
             )}
 
             <button
-              className="btn btn-outline-primary w-100"
+              className="btn btn-dark border-dark text-white w-100"
               type="button"
               onClick={(ev) => SubmitForm(ev)}
             >

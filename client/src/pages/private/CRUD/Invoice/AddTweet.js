@@ -29,17 +29,22 @@ import { ADMIN, MANAGER } from "../../../../helpers/UserRoles";
 import useUserFunc from "../../../../hooks/useUserFunc";
 import { connect } from "react-redux";
 
-const CreateInvoice = () => {
+const CreateInvoice = ({ poolID, settweetSuccessfully }) => {
+  console.log(poolID, "pooluddddd");
   const initialState = {
     tweetUrl: "",
   };
   const { publicKey } = useWallet();
-  const { id } = useParams();
+  // const { id } = useParams();
   const [stateValues, setStateValues] = useState(initialState);
   const [projectName, setProjectName] = useState();
   const [isRaid, setIsRaid] = useState(false);
   const [clientPublicKey, setClientPublicKey] = useState();
   const [splToken, setSplToken] = useState();
+  let { id } = useParams();
+  if (!id) {
+    id = poolID;
+  }
 
   const solConnection = new web3.Connection(
     web3.clusterApiUrl("devnet"),
@@ -66,6 +71,7 @@ const CreateInvoice = () => {
     const res = await axios.get(
       `${process.env.REACT_APP_SERVERURL}/api/public/invoicePool/${id}`
     );
+    console.log(res?.data, "data");
     if (res?.data?.invoiceFound[0]?.pool) {
       setIsRaid(res?.data?.invoiceFound[0]?.isRaid);
       setClientPublicKey(res?.data?.invoiceFound[0]?.invoiceCreaterPublicKey);
@@ -293,9 +299,14 @@ const CreateInvoice = () => {
 
       if (data.type === "success") {
         toast.success(data.msg);
-        navigate(
-          `/app/invoice/readOne/readAllPool/readOnePool/readAllTweet/${id}`
-        );
+        if (poolID) {
+          settweetSuccessfully(true);
+        }
+        if (!poolID) {
+          navigate(
+            `/app/invoice/readOne/readAllPool/readOnePool/readAllTweet/${id}`
+          );
+        }
       } else {
         toast.error(data.msg);
       }
@@ -311,7 +322,7 @@ const CreateInvoice = () => {
       <div className="container my-5 p-3 border border-1 border-info rounded-3">
         <form className="p-md-3 ">
           <div className="mb-3">
-            <label className="form-label">Tweet Url </label>
+            <label className="form-label text-white">Tweet Url </label>
             <input
               type="text"
               id="tweetUrl"
@@ -336,7 +347,7 @@ const CreateInvoice = () => {
             )}
 
             <button
-              className="btn btn-outline-primary w-100"
+              className="btn btn-dark border-dark text-white w-100"
               type="button"
               onClick={(ev) => SubmitForm(ev)}
             >
