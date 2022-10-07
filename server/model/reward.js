@@ -11,9 +11,6 @@ const rewardSchema = schema({
       userId: {
         type: String,
       },
-      tweetStatus: {
-        type: String,
-      },
       isPaid: {
         type: Boolean,
         default: false,
@@ -31,7 +28,7 @@ const rewardSchema = schema({
       isRaid: {
         type: Boolean,
       },
-      invoiceCreaterPublicKey: {
+      invoiceCreator: {
         type: String,
         required: true,
       },

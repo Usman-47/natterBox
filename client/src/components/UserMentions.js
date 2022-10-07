@@ -50,18 +50,6 @@ const UserMentions = ({ currentUser, data }) => {
     "processed"
   );
 
-  let cloneWindow = window;
-  let provider = new anchor.Provider(
-    solConnection,
-    cloneWindow["solana"],
-    anchor.Provider.defaultOptions()
-  );
-  const program = new anchor.Program(
-    IDL,
-    "6GfMewRfdC6ArLcg2oNbwq9mfE87UorRYRvGJApbVGrk",
-    provider
-  );
-
   const checkWalletNfts = async () => {
     const allNFTs = await Metadata?.findDataByOwner(solConnection, publicKey);
     return allNFTs;
@@ -74,26 +62,24 @@ const UserMentions = ({ currentUser, data }) => {
       }
       let tweetId = tweetForReward;
       if (publicKey) {
-        const data = {
-          rewardStatus: {
-            rewardToken,
-            tweetId,
-            projectName,
-            tweetText: tweetTextForTweetCreation,
-            tweetCreatedAt: moment().unix(),
-          },
-          twitterId: currentUser?.id,
+        const body = {
+          rewardToken,
+          tweetId,
+          projectName,
+          projectCreator: data?.invoiceCreater?._id,
+          tweetText: tweetTextForTweetCreation,
         };
 
         const response = await axios.patch(
-          `${process.env.REACT_APP_SERVERURL}/api/addUserRewardToken`,
-          data,
+          `${process.env.REACT_APP_SERVERURL}/tweet/mentionClaim/${tweetId}`,
+          body,
           {
             headers: {
               Authorization: `BEARER ${currentUser.token}`,
             },
           }
         );
+        return;
         if (response) {
           window.location.reload();
         }
@@ -103,147 +89,6 @@ const UserMentions = ({ currentUser, data }) => {
     } catch (e) {
       console.log(e);
       alert("Something went wrong");
-    }
-  };
-
-  const claimReward = async (rewardAmount) => {
-    try {
-      const id = parseInt(Math.random() * 250);
-      const id2 = parseInt(Math.random() * 250);
-
-      const clientAddress = new PublicKey(data?.invoiceCreaterPublicKey);
-
-      const mintAddress = new PublicKey(rewardTokenForClaim);
-      if (publicKey) {
-        const [poolAta] = await anchor.web3.PublicKey.findProgramAddress(
-          [
-            anchor.utils.bytes.utf8.encode("poolAta"),
-            clientAddress.toBuffer(),
-            mintAddress.toBuffer(),
-            Buffer.from(projectName),
-          ],
-          program.programId
-        );
-
-        console.log(poolAta.toString(), "poolAta");
-
-        const [poolAddress] = await anchor.web3.PublicKey.findProgramAddress(
-          [
-            anchor.utils.bytes.utf8.encode("pool"),
-            clientAddress.toBuffer(),
-            mintAddress.toBuffer(),
-            Buffer.from(projectName),
-          ],
-          program.programId
-        );
-
-        console.log(poolAddress.toString(), "poolAddress");
-        const userAtaCheck = await solConnection.getTokenAccountsByOwner(
-          provider.wallet.publicKey,
-          { mint: mintAddress }
-        );
-
-        let userAta = (
-          await PublicKey.findProgramAddress(
-            [
-              provider.wallet.publicKey.toBuffer(),
-              TOKEN_PROGRAM_ID.toBuffer(),
-              mintAddress.toBuffer(), // mint address
-            ],
-            ASSOCIATED_TOKEN_PROGRAM_ID
-          )
-        )[0];
-
-        console.log(userAta.toString(), "associatedTokenAccountPubkey");
-
-        const [globalAuth, globalBump] =
-          await anchor.web3.PublicKey.findProgramAddress(
-            [Buffer.from("global-authority")],
-
-            program.programId
-          );
-        console.log(globalAuth.toString(), "globalAuth");
-        const globalAta = await solConnection.getTokenAccountsByOwner(
-          globalAuth,
-          { mint: mintAddress }
-        );
-
-        globalAta.value.map((item) => {
-          console.log(item.pubkey.toString());
-        });
-
-        if (userAtaCheck.value.length > 0) {
-          const tx = await program.rpc.claimReward(
-            new anchor.BN(47),
-            new anchor.BN(162),
-            globalBump,
-            new anchor.BN(rewardAmount * 1000000000),
-            {
-              accounts: {
-                user: provider.wallet.publicKey,
-
-                globalAuthority: globalAuth,
-
-                pool: poolAddress,
-                poolAta: poolAta,
-                userAta: userAta,
-                poolMint: mintAddress,
-
-                systemProgram: SystemProgram.programId,
-                tokenProgram: TOKEN_PROGRAM_ID,
-              },
-            }
-          );
-          console.log(tx, "tx");
-          return tx;
-        } else {
-          console.log("2nd condition");
-          let instructions = [
-            Token.createAssociatedTokenAccountInstruction(
-              ASSOCIATED_TOKEN_PROGRAM_ID,
-              TOKEN_PROGRAM_ID,
-              mintAddress,
-              userAta,
-              provider.wallet.publicKey,
-              provider.wallet.publicKey
-            ),
-          ];
-          const tx = await program.rpc.claimRewardInit(
-            new anchor.BN(47),
-            new anchor.BN(162),
-            globalBump,
-            projectName,
-            new anchor.BN(rewardAmount * 1000000000),
-            {
-              accounts: {
-                user: provider.wallet.publicKey,
-                // client: clientAddress,
-
-                globalAuthority: globalAuth,
-
-                pool: poolAddress,
-                poolAta: poolAta,
-
-                userAta: userAta,
-
-                poolMint: mintAddress,
-
-                systemProgram: SystemProgram.programId,
-                tokenProgram: TOKEN_PROGRAM_ID,
-                rent: SYSVAR_RENT_PUBKEY,
-              },
-              instructions,
-            }
-          );
-          console.log(tx, "tx");
-          return tx;
-        }
-      } else {
-        alert("connect wallet");
-      }
-    } catch (e) {
-      console.log(e);
-      alert(e.message);
     }
   };
   const checkClientMentionByOthers = async () => {
@@ -602,7 +447,7 @@ const UserMentions = ({ currentUser, data }) => {
           variant="contained"
           onClick={createTweet}
         >
-          Verify
+          Apply Claim
         </Button>
       ) : null}
       {userCreatedTweets.length > 0 ? (

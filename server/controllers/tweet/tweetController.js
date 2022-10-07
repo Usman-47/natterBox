@@ -2,6 +2,7 @@ const fetch = require("node-fetch");
 const axios = require("axios");
 const { TwitterApi } = require("twitter-api-v2");
 const Invoice = require("../../model/invoiceModel");
+const Reward = require("../../model/reward");
 const User = require("../../model/userModel");
 const Wallet = require("../../model/walletModel");
 const mongoose = require("mongoose");
@@ -9,6 +10,7 @@ const { Program, web3 } = require("@project-serum/anchor");
 const anchor = require("@project-serum/anchor");
 const bs58 = require("bs58");
 const nacl = require("tweetnacl");
+const moment = require("moment");
 
 const {
   TOKEN_PROGRAM_ID,
@@ -891,6 +893,304 @@ const retweetATweet = async (req, res) => {
   }
 };
 
+const mentionClaim = async (req, res) => {
+  try {
+    let { twitterId, id, publicKey } = req.userObj;
+    let { projectName, rewardToken, tweetText, projectCreator } = req.body;
+    var rewardStatus = {
+      projectName,
+      rewardToken,
+      tweetId: req.params.tweetId,
+      tweetText,
+      tweetCreatedAt: moment().unix(),
+    };
+    var splToken = rewardToken;
+    var poolType = "mention";
+    var usersArray = [publicKey];
+    let tweetData = await Invoice.find({
+      $and: [
+        { invoiceCreater: mongoose.Types.ObjectId(projectCreator) },
+        { projectName: projectName },
+        { isRaid: false },
+        { "pool.splToken": rewardToken },
+      ],
+    });
+    if (tweetData.length > 0) {
+      var numberOfFollowes = 0;
+      var poolCategory = [];
+      var rewardFrequencyInSecond = 86400;
+      var projectStartTime = 0;
+      var rewardAmount = 0;
+      const headers = {
+        Authorization: `Bearer ${process.env.BEARER_TOKEN}`,
+      };
+
+      let response = await axios(
+        `https://api.twitter.com/2/users/${twitterId}/followers`,
+        {
+          headers,
+        }
+      );
+      numberOfFollowes = response.data.meta.result_count;
+      if (numberOfFollowes > 0) {
+        if (tweetData[0].pool.length > 0) {
+          tweetData[0].pool.map((poolData) => {
+            if (poolData.splToken === rewardToken) {
+              poolCategory = poolData.category;
+              projectStartTime = parseInt(poolData.startTime);
+
+              if (poolData.rewardFrequency === "week") {
+                rewardFrequencyInSecond = 7 * 86400;
+              } else if (poolData.rewardFrequency === "month") {
+                rewardFrequencyInSecond = 30 * 86400;
+              }
+            }
+          });
+
+          if (numberOfFollowes >= 2 && numberOfFollowes <= 99) {
+            rewardAmount = poolCategory[0];
+          } else if (numberOfFollowes >= 100 && numberOfFollowes <= 299) {
+            rewardAmount = poolCategory[1];
+          } else if (numberOfFollowes >= 300 && numberOfFollowes <= 499) {
+            rewardAmount = poolCategory[2];
+          } else if (numberOfFollowes >= 500 && numberOfFollowes <= 999) {
+            rewardAmount = poolCategory[3];
+          } else if (numberOfFollowes >= 1000 && numberOfFollowes <= 4999) {
+            rewardAmount = poolCategory[4];
+          } else if (numberOfFollowes >= 5000 && numberOfFollowes <= 9999) {
+            rewardAmount = poolCategory[5];
+          } else if (numberOfFollowes >= 10000) {
+            rewardAmount = poolCategory[6];
+          }
+        }
+        let userPoolData = await User.findOne({
+          $and: [
+            { _id: id },
+            { projectName: projectName },
+            { "rewardStatus.tweetId": req.params.tweetId },
+            { "rewardStatus.projectName": projectName },
+            { "rewardStatus.rewardToken": rewardToken },
+          ],
+        });
+        if (!userPoolData) {
+          if (projectStartTime + rewardFrequencyInSecond > moment().unix()) {
+            return res.send({
+              msg: "Please Wait, let the project start",
+              type: "Failed",
+            });
+          }
+          const headers = {
+            Authorization: `Bearer ${process.env.BEARER_TOKEN}`,
+          };
+
+          let response = await fetch(
+            `https://api.twitter.com/2/tweets/${req.params.tweetId}?expansions=author_id&user.fields=name&tweet.fields=created_at`,
+            {
+              headers,
+            }
+          );
+          let userTweetRecord = await response.json();
+
+          let liveTweetCreatedAt = moment(
+            userTweetRecord.data.created_at
+          ).unix();
+
+          if (liveTweetCreatedAt + rewardFrequencyInSecond > moment().unix()) {
+            return res.send({
+              msg: "Please Wait, after tweeting a tweet",
+              type: "Failed",
+            });
+          }
+          userStatusUpdated = await User.findOneAndUpdate(
+            {
+              twitterId: twitterId,
+            },
+
+            {
+              $push: {
+                rewardStatus: rewardStatus,
+              },
+            },
+            {
+              new: true,
+            }
+          );
+          if (userStatusUpdated) {
+            var reward = await Reward.findOneAndUpdate(
+              {
+                $and: [
+                  {
+                    users: { $elemMatch: { projectName } },
+                  },
+                  {
+                    users: { $elemMatch: { mintAddress: rewardToken } },
+                  },
+                ],
+              },
+              {
+                $push: {
+                  users: [
+                    {
+                      tweetId: req.params.tweetId,
+                      userId: id,
+                      isPaid: false,
+                      reawrdAmount: rewardAmount,
+                      projectName,
+                      mintAddress: rewardToken,
+                      isRaid: false,
+                      invoiceCreator: projectCreator,
+                      userPublicKey: publicKey,
+                    },
+                  ],
+                },
+              }
+            );
+            if (!reward) {
+              reward = new Reward({
+                users: [
+                  {
+                    tweetId: req.params.tweetId,
+                    userId: id,
+                    isPaid: false,
+                    reawrdAmount: rewardAmount,
+                    projectName,
+                    mintAddress: rewardToken,
+                    isRaid: false,
+                    invoiceCreator: projectCreator,
+                    userPublicKey: publicKey,
+                  },
+                ],
+              });
+              await reward.save();
+            }
+
+            return res.send({
+              data: reward,
+              msg: "applied successfully",
+              type: "Success",
+            });
+          }
+        } else {
+          var latestPaidTime = 0;
+          var currentTweetCreatedAt = 0;
+
+          let userData = await User.findOne({ _id: id });
+          if (userData && userData.rewardStatus) {
+            userData.rewardStatus.map((reward) => {
+              if (
+                reward.projectName === projectName &&
+                reward.rewardToken === rewardToken
+              ) {
+                if (reward.paidTime) {
+                  if (parseInt(reward.paidTime) > latestPaidTime) {
+                    latestPaidTime = parseInt(reward.paidTime);
+                  }
+                }
+                if (reward.tweetId === req.params.tweetId) {
+                  currentTweetCreatedAt = parseInt(reward.tweetCreatedAt);
+                }
+              }
+            });
+            if (projectStartTime + rewardFrequencyInSecond > moment().unix()) {
+              return res.send({
+                msg: "Please Wait, let the project start",
+                type: "Failed",
+              });
+            } else {
+              if (latestPaidTime + rewardFrequencyInSecond > moment().unix()) {
+                return res.send({
+                  msg: "Please Wait after the claim of a tweet",
+                  type: "Failed",
+                });
+              } else {
+                if (
+                  currentTweetCreatedAt + rewardFrequencyInSecond >
+                  moment().unix()
+                ) {
+                  return res.send({
+                    msg: "Please Wait after tweeting a tweet",
+                    type: "Failed",
+                  });
+                } else {
+                  var reward = await Reward.findOneAndUpdate(
+                    {
+                      $and: [
+                        {
+                          users: { $elemMatch: { projectName } },
+                        },
+                        {
+                          users: { $elemMatch: { mintAddress: rewardToken } },
+                        },
+                      ],
+                    },
+                    {
+                      $push: {
+                        users: [
+                          {
+                            tweetId: req.params.tweetId,
+                            userId: id,
+                            isPaid: false,
+                            reawrdAmount: rewardAmount,
+                            projectName,
+                            mintAddress: rewardToken,
+                            isRaid: false,
+                            invoiceCreator: projectCreator,
+                            userPublicKey: publicKey,
+                          },
+                        ],
+                      },
+                    }
+                  );
+                  if (!reward) {
+                    reward = new Reward({
+                      users: [
+                        {
+                          tweetId: req.params.tweetId,
+                          userId: id,
+                          isPaid: false,
+                          reawrdAmount: rewardAmount,
+                          projectName,
+                          mintAddress: rewardToken,
+                          isRaid: false,
+                          invoiceCreator: projectCreator,
+                          userPublicKey: publicKey,
+                        },
+                      ],
+                    });
+                    await reward.save();
+                  }
+                  return res.send({
+                    data: reward,
+                    msg: "Applied Successfully",
+                    type: "Success",
+                  });
+                }
+              }
+            }
+          } else {
+            return res.send({
+              msg: "No Record found",
+              type: "Failed",
+            });
+          }
+        }
+      } else {
+        return res.send({
+          msg: "You don't have enough follower",
+          type: "Failed",
+        });
+      }
+    } else {
+      return res.send({ msg: "No Tweet Found", type: "Failed" });
+    }
+  } catch (error) {
+    return res.send({
+      msg: error.message,
+      type: "Failed",
+    });
+  }
+};
+
 module.exports = {
   getUserIdFromName,
   getUserMentions,
@@ -903,4 +1203,5 @@ module.exports = {
   likeSpecificTweet,
   replyToTweetWithTweetId,
   retweetATweet,
+  mentionClaim,
 };

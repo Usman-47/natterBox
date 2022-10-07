@@ -1,7 +1,5 @@
-const fetch = require("node-fetch");
 const TweetController = require("../controllers/tweet/tweetController");
 const express = require("express");
-const { TwitterApi } = require("twitter-api-v2");
 
 var router = express.Router();
 
@@ -35,5 +33,7 @@ router.patch(
 );
 
 router.patch("/retweetATweet/:tweetId", TweetController.retweetATweet);
+
+router.patch("/mentionClaim/:tweetId", TweetController.mentionClaim);
 
 module.exports = router;
