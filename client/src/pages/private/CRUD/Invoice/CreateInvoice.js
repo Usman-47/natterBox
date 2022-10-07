@@ -43,24 +43,6 @@ import AddPool from "./AddPool";
 import ReadAllInvoices from "./ReadAllInvoices";
 import AddTweet from "./AddTweet";
 
-const steps = [
-  {
-    label: "Step 1",
-  },
-  {
-    label: "Step 2",
-  },
-  {
-    label: "Step 3",
-  },
-  {
-    label: "Step 4",
-  },
-  {
-    label: "Step 5",
-  },
-];
-
 const CreateInvoice = ({ auth }) => {
   const { connect, publicKey } = useWallet();
   const initialState = {
@@ -76,6 +58,27 @@ const CreateInvoice = ({ auth }) => {
   const [isSuccessful, setIsSuccessful] = useState(false);
   const [ProjectID, setProjectID] = useState();
   const [poolID, setPoolID] = useState();
+  const [ProjectName, setProjectName] = useState();
+  const [ispoolSuccessful, setpoolSuccessfully] = useState(false);
+  const [istweetSuccessful, settweetSuccessfully] = useState(false);
+
+  const [steps, setSteps] = useState([
+    {
+      label: "Step 1",
+    },
+    {
+      label: "Step 2",
+    },
+    {
+      label: "Step 3",
+    },
+    {
+      label: "Step 4",
+    },
+    {
+      label: "Step 5",
+    },
+  ]);
 
   const [{ token, loading }] = useStatesFunc();
   const [dispatch] = useDispatchFunc();
@@ -83,6 +86,48 @@ const CreateInvoice = ({ auth }) => {
   const [, , checkUserAccess] = useUserFunc();
 
   const solConnection = new Connection(clusterApiUrl("devnet"));
+  useEffect(() => {
+    if (isRaid) {
+      setSteps([
+        {
+          label: "Step 1",
+        },
+        {
+          label: "Step 2",
+        },
+        {
+          label: "Step 3",
+        },
+        {
+          label: "Step 4",
+        },
+        {
+          label: "Step 5",
+        },
+        {
+          label: "Step 6",
+        },
+      ]);
+    } else {
+      setSteps([
+        {
+          label: "Step 1",
+        },
+        {
+          label: "Step 2",
+        },
+        {
+          label: "Step 3",
+        },
+        {
+          label: "Step 4",
+        },
+        {
+          label: "Step 5",
+        },
+      ]);
+    }
+  }, [isRaid]);
 
   useEffect(() => {
     console.log(publicKey.toString());
@@ -95,7 +140,7 @@ const CreateInvoice = ({ auth }) => {
       </>
     );
   }
-
+  console.log(isRaid, "Raid value");
   if (!checkUserAccess([ADMIN, MANAGER])) {
     toast.warning("You cant access");
     return (
@@ -148,8 +193,9 @@ const CreateInvoice = ({ auth }) => {
         isRaid,
       };
       const { data } = await CreateInvoiceApi(body, token);
-      console.log(data, "pooldataID");
+      console.log(data?.createdInvoice?.projectName, "pooldataID");
       setProjectID(data?.createdInvoice?._id);
+      setProjectName(data?.createdInvoice?.projectName);
       dispatch({ type: "loadingStop" });
 
       if (data.type === "success") {
@@ -304,11 +350,23 @@ const CreateInvoice = ({ auth }) => {
   // export default function VerticalLinearStepper() {
 
   const handleNext = () => {
-    // if (!isSuccessful && activeStep > 0) {
-    if (false) {
+    if (!isSuccessful && activeStep == 1) {
+      // if (false) {
       alert("Submit form first");
       return;
     }
+    if (!ispoolSuccessful && activeStep == 3) {
+      // if (false) {
+      alert("Submit form first");
+      return;
+    }
+    if (!istweetSuccessful && activeStep == 4) {
+      // if (false) {
+      alert("Add Tweet Url");
+      return;
+    }
+
+    // }
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
   };
 
@@ -379,6 +437,11 @@ const CreateInvoice = ({ auth }) => {
     const { signature } = await provider.signAndSendTransaction(tx);
     await solConnection.getSignatureStatus(signature);
   };
+  const handlerPreview = () => {
+    if (ProjectName) {
+      navigate(`/projects/${ProjectName}`);
+    }
+  };
 
   return (
     <Box sx={{ maxWidth: "85%", margin: "auto" }}>
@@ -387,13 +450,13 @@ const CreateInvoice = ({ auth }) => {
           <Step key={step.label}>
             <Typography>
               <StepLabel
-                optional={
-                  index === 4 ? (
-                    <Typography variant="caption" sx={{ color: "white" }}>
-                      Last step
-                    </Typography>
-                  ) : null
-                }
+              // optional={
+              //   index === 5 ? (
+              //     <Typography variant="caption" sx={{ color: "white" }}>
+              //       Last step
+              //     </Typography>
+              //   ) : null
+              // }
               >
                 <Typography variant="caption" sx={{ color: "white" }}>
                   {step.label}
@@ -403,7 +466,18 @@ const CreateInvoice = ({ auth }) => {
 
             <StepContent>
               {index === 0 ? (
-                <div className="container my-5 p-3 border border-1 border-info rounded-3">
+                <div
+                  className="container my-5 p-3 border border-1 border-info rounded-3"
+                  style={
+                    isSuccessful
+                      ? {
+                          maxWidth: "85%",
+                          margin: "auto",
+                          pointerEvents: "none",
+                        }
+                      : { maxWidth: "85%", margin: "auto" }
+                  }
+                >
                   <FormGroup sx={{ width: "85%", margin: "auto" }}>
                     <Typography
                       sx={{
@@ -447,154 +521,245 @@ const CreateInvoice = ({ auth }) => {
                 </div>
               ) : index === 1 ? (
                 <>
-                  <Typography sx={{ width: "85%", margin: "auto" }}>
-                    <form disabled className="p-md-3 text-white">
-                      {/* invoiceLogo */}
-                      <div className="mb-3">
-                        <label className="form-label">Project Name</label>
-                        <input
-                          type="text"
-                          id="tweetUrl"
-                          placeholder="Project Name"
-                          className="form-control"
-                          value={stateValues.tweetUrl}
-                          onChange={(e) =>
-                            setStateValues((prev) => ({
-                              ...prev,
-                              projectName: e.target.value,
-                            }))
+                  <div
+                    className="container my-5 p-3 border border-1 border-info rounded-3"
+                    style={
+                      isSuccessful
+                        ? {
+                            maxWidth: "85%",
+                            margin: "auto",
+                            pointerEvents: "none",
                           }
-                        />
-                      </div>
-
-                      <div className="mb-3">
-                        <label className="form-label">
-                          Project Twitter Username
-                        </label>
-                        <Tooltip
-                          title="Enter Twitter username without '@' sign, and without spaces."
-                          placement="top"
-                        >
+                        : { maxWidth: "85%", margin: "auto" }
+                    }
+                  >
+                    <Typography>
+                      <form disabled className="p-md-3 text-white">
+                        {/* invoiceLogo */}
+                        <div className="mb-3">
+                          <label className="form-label">Project Name</label>
                           <input
                             type="text"
                             id="tweetUrl"
-                            placeholder="Project Twitter Username"
+                            placeholder="Project Name"
                             className="form-control"
-                            value={stateValues.projectTwitterUsername}
+                            value={stateValues.tweetUrl}
                             onChange={(e) =>
                               setStateValues((prev) => ({
                                 ...prev,
-                                projectTwitterUsername: e.target.value,
+                                projectName: e.target.value,
                               }))
                             }
                           />
-                        </Tooltip>
-                      </div>
+                        </div>
 
-                      <div className="mb-3">
-                        <label className="form-label" htmlFor="timeToclaim">
-                          Discord For Project Contact
-                        </label>
-                        <input
-                          type="text"
-                          id="timeToclaim"
-                          placeholder="Discord For Project Contact"
-                          className="form-control"
-                          value={stateValues.discordForProjectContact}
-                          onChange={(e) =>
-                            setStateValues((prev) => ({
-                              ...prev,
-                              discordForProjectContact: e.target.value,
-                            }))
-                          }
-                        />
-                      </div>
+                        <div className="mb-3">
+                          <label className="form-label">
+                            Project Twitter Username
+                          </label>
+                          <Tooltip
+                            title="Enter Twitter username without '@' sign, and without spaces."
+                            placement="top"
+                          >
+                            <input
+                              type="text"
+                              id="tweetUrl"
+                              placeholder="Project Twitter Username"
+                              className="form-control"
+                              value={stateValues.projectTwitterUsername}
+                              onChange={(e) =>
+                                setStateValues((prev) => ({
+                                  ...prev,
+                                  projectTwitterUsername: e.target.value,
+                                }))
+                              }
+                            />
+                          </Tooltip>
+                        </div>
 
-                      <div className="mb-3">
-                        <label className="form-label">
-                          Creator Address For mint
-                        </label>
-                        <input
-                          type="text"
-                          id="tweetUrl"
-                          placeholder="Address"
-                          className="form-control"
-                          value={stateValues.mintCreatorAddress}
-                          onChange={(e) =>
-                            setStateValues((prev) => ({
-                              ...prev,
-                              mintCreatorAddress: e.target.value,
-                            }))
-                          }
-                        />
-                      </div>
+                        <div className="mb-3">
+                          <label className="form-label" htmlFor="timeToclaim">
+                            Discord For Project Contact
+                          </label>
+                          <input
+                            type="text"
+                            id="timeToclaim"
+                            placeholder="Discord For Project Contact"
+                            className="form-control"
+                            value={stateValues.discordForProjectContact}
+                            onChange={(e) =>
+                              setStateValues((prev) => ({
+                                ...prev,
+                                discordForProjectContact: e.target.value,
+                              }))
+                            }
+                          />
+                        </div>
 
-                      <div className="mb-3">
-                        <label className="form-label">
-                          Number of Nfts Required
-                        </label>
-                        <input
-                          type="text"
-                          id="tweetUrl"
-                          placeholder="Require Number Of Nfts"
-                          className="form-control"
-                          value={stateValues.numberOfNft}
-                          onChange={(e) =>
-                            setStateValues((prev) => ({
-                              ...prev,
-                              numberOfNft: e.target.value,
-                            }))
-                          }
-                        />
-                      </div>
+                        <div className="mb-3">
+                          <label className="form-label">
+                            Creator Address For mint
+                          </label>
+                          <input
+                            type="text"
+                            id="tweetUrl"
+                            placeholder="Address"
+                            className="form-control"
+                            value={stateValues.mintCreatorAddress}
+                            onChange={(e) =>
+                              setStateValues((prev) => ({
+                                ...prev,
+                                mintCreatorAddress: e.target.value,
+                              }))
+                            }
+                          />
+                        </div>
 
-                      {/* here btns */}
-                      <div className="mt-5 mb-3 col">
-                        {loading && (
-                          <>
-                            <MiniSpinner />
-                          </>
-                        )}
+                        <div className="mb-3">
+                          <label className="form-label">
+                            Number of Nfts Required
+                          </label>
+                          <input
+                            type="text"
+                            id="tweetUrl"
+                            placeholder="Require Number Of Nfts"
+                            className="form-control"
+                            value={stateValues.numberOfNft}
+                            onChange={(e) =>
+                              setStateValues((prev) => ({
+                                ...prev,
+                                numberOfNft: e.target.value,
+                              }))
+                            }
+                          />
+                        </div>
 
-                        <button
-                          style={{ borderRadius: "19.5591px" }}
-                          className="btn btn-dark border-dark text-white w-100"
-                          type="button"
-                          onClick={(ev) => SubmitForm(ev)}
-                        >
-                          Submit
-                        </button>
-                      </div>
-                    </form>
-                  </Typography>
+                        {/* here btns */}
+                        <div className="mt-5 mb-3 col">
+                          {loading && (
+                            <>
+                              <MiniSpinner />
+                            </>
+                          )}
+
+                          <button
+                            style={{ borderRadius: "19.5591px" }}
+                            className="btn btn-dark border-dark text-white w-100"
+                            type="button"
+                            onClick={(ev) => SubmitForm(ev)}
+                          >
+                            Submit
+                          </button>
+                        </div>
+                      </form>
+                    </Typography>
+                  </div>
                 </>
               ) : // ) : isSuccessful && index === 2 ? (
               index === 2 ? (
                 <>
-                  <Typography sx={{ width: "85%", margin: "auto" }}>
-                    <Button onClick={handleTransferSol}>Transfer Sols</Button>
-                    <Button onClick={handleTransferSpl}>Transfer SPL</Button>
-                  </Typography>
+                  <div
+                    className="container my-5 p-3 border border-1 border-info rounded-3"
+                    style={{ maxWidth: "85%", margin: "auto" }}
+                  >
+                    <Typography
+                      sx={{
+                        width: "85%",
+                        margin: "auto",
+                        display: "flex",
+                      }}
+                    >
+                      <Button
+                        onClick={handleTransferSol}
+                        sx={{ backgroundColor: "primary", marginX: "12px" }}
+                        variant="contained"
+                      >
+                        Transfer Sols
+                      </Button>
+                      <Button variant="contained" onClick={handleTransferSpl}>
+                        Transfer SPL
+                      </Button>
+                    </Typography>
+                  </div>
                 </>
               ) : index === 3 ? (
                 <>
-                  <Typography sx={{ width: "85%", margin: "auto" }}>
+                  <Typography
+                    sx={
+                      ispoolSuccessful
+                        ? {
+                            pointerEvents: "none",
+                            width: "85%",
+                            margin: "auto",
+                          }
+                        : { width: "85%", margin: "auto" }
+                    }
+                  >
                     {/* <ReadAllInvoices /> */}
                     {/* <ReadAllInvoices /> */}
                     {ProjectID && (
-                      <AddPool projectId={ProjectID} setPoolID={setPoolID} />
+                      <AddPool
+                        projectId={ProjectID}
+                        setPoolID={setPoolID}
+                        setpoolSuccessfully={setpoolSuccessfully}
+                      />
                     )}
                   </Typography>
                 </>
               ) : isRaid && index === 4 ? (
-                <>{poolID && <AddTweet poolID={poolID} />}</>
+                <>
+                  <Typography
+                    sx={
+                      istweetSuccessful
+                        ? {
+                            width: "85%",
+                            margin: "auto",
+                            pointerEvents: "none",
+                          }
+                        : { width: "85%", margin: "auto" }
+                    }
+                  >
+                    {poolID && (
+                      <AddTweet
+                        poolID={poolID}
+                        settweetSuccessfully={settweetSuccessfully}
+                      />
+                    )}
+                  </Typography>
+                </>
+              ) : !isRaid && index === 4 ? (
+                <>
+                  <div
+                    className="container my-5 p-3 border border-1 border-info rounded-3"
+                    style={{ maxWidth: "85%", margin: "auto" }}
+                  >
+                    <Button variant="contained" onClick={handlerPreview}>
+                      Preview
+                    </Button>
+                  </div>
+                </>
+              ) : index === 5 ? (
+                <>
+                  <div
+                    className="container my-5 p-3 border border-1 border-info rounded-3"
+                    style={{ maxWidth: "85%", margin: "auto" }}
+                  >
+                    <Button variant="contained" onClick={handlerPreview}>
+                      Preview
+                    </Button>
+                  </div>
+                </>
               ) : null}
 
               <Box sx={{ width: "80%", margin: "auto" }}>
                 <div sx={{}}>
-                  <Button variant="contained" onClick={handleNext}>
-                    {index === steps.length - 1 ? "Finish" : "Continue"}
-                  </Button>
+                  {index === steps.length - 1 ? (
+                    ""
+                  ) : (
+                    <Button variant="contained" onClick={handleNext}>
+                      Continue
+                    </Button>
+                  )}
                   <Button
                     disabled={index === 0}
                     onClick={handleBack}

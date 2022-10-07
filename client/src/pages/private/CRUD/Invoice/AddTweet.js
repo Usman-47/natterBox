@@ -29,7 +29,8 @@ import { ADMIN, MANAGER } from "../../../../helpers/UserRoles";
 import useUserFunc from "../../../../hooks/useUserFunc";
 import { connect } from "react-redux";
 
-const CreateInvoice = ({ poolID }) => {
+const CreateInvoice = ({ poolID, settweetSuccessfully }) => {
+  console.log(poolID, "pooluddddd");
   const initialState = {
     tweetUrl: "",
   };
@@ -70,6 +71,7 @@ const CreateInvoice = ({ poolID }) => {
     const res = await axios.get(
       `${process.env.REACT_APP_SERVERURL}/api/public/invoicePool/${id}`
     );
+    console.log(res?.data, "data");
     if (res?.data?.invoiceFound[0]?.pool) {
       setIsRaid(res?.data?.invoiceFound[0]?.isRaid);
       setClientPublicKey(res?.data?.invoiceFound[0]?.invoiceCreaterPublicKey);
@@ -297,9 +299,14 @@ const CreateInvoice = ({ poolID }) => {
 
       if (data.type === "success") {
         toast.success(data.msg);
-        navigate(
-          `/app/invoice/readOne/readAllPool/readOnePool/readAllTweet/${id}`
-        );
+        if (poolID) {
+          settweetSuccessfully(true);
+        }
+        if (!poolID) {
+          navigate(
+            `/app/invoice/readOne/readAllPool/readOnePool/readAllTweet/${id}`
+          );
+        }
       } else {
         toast.error(data.msg);
       }
@@ -315,7 +322,7 @@ const CreateInvoice = ({ poolID }) => {
       <div className="container my-5 p-3 border border-1 border-info rounded-3">
         <form className="p-md-3 ">
           <div className="mb-3">
-            <label className="form-label">Tweet Url </label>
+            <label className="form-label text-white">Tweet Url </label>
             <input
               type="text"
               id="tweetUrl"
@@ -340,7 +347,7 @@ const CreateInvoice = ({ poolID }) => {
             )}
 
             <button
-              className="btn btn-outline-primary w-100"
+              className="btn btn-dark border-dark text-white w-100"
               type="button"
               onClick={(ev) => SubmitForm(ev)}
             >
