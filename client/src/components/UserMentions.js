@@ -79,13 +79,12 @@ const UserMentions = ({ currentUser, data }) => {
             },
           }
         );
-        return;
-        if (response) {
-          window.location.reload();
+        if (response.data.data) {
+          toast.success(response.data.msg);
+        } else {
+          toast.error(response.data.msg);
         }
       }
-      // console.log(tx, "tx");
-      // return tx;
     } catch (e) {
       console.log(e);
       alert("Something went wrong");
