@@ -286,41 +286,22 @@ const CreateInvoice = ({ poolID }) => {
         return;
       }
       const body = {
-        tweetId,
-        projectName,
-        splToken,
-        isRaid,
+        tweets: {
+          tweetUrl,
+          tweetId,
+          tweetText: res?.data?.data?.text,
+        },
       };
-      const resData = await axios.post(
-        `${process.env.REACT_APP_SERVERURL}/wallet/createTweet`,
-        body,
-        {
-          headers: {
-            Authorization: `BEARER ${token}`,
-          },
-        }
-      );
-      if (resData.data.tx) {
-        const body = {
-          tweets: {
-            tweetUrl,
-            tweetId,
-            tweetText: res?.data?.data?.text,
-          },
-        };
-        const { data } = await AddInvoicePoolTweetApi(id, body, token);
-        dispatch({ type: "loadingStop" });
+      const { data } = await AddInvoicePoolTweetApi(id, body, token);
+      dispatch({ type: "loadingStop" });
 
-        if (data.type === "success") {
-          toast.success(data.msg);
-          navigate(
-            `/app/invoice/readOne/readAllPool/readOnePool/readAllTweet/${id}`
-          );
-        } else {
-          toast.error(data.msg);
-        }
+      if (data.type === "success") {
+        toast.success(data.msg);
+        navigate(
+          `/app/invoice/readOne/readAllPool/readOnePool/readAllTweet/${id}`
+        );
       } else {
-        alert("unable to create tweet");
+        toast.error(data.msg);
       }
     } catch (error) {
       console.log(error);
@@ -328,15 +309,6 @@ const CreateInvoice = ({ poolID }) => {
       dispatch({ type: "loadingStop" });
     }
   };
-
-  // const handleChange = (e, position) => {
-  //   let temp = [...stateValues.category];
-  //   temp[position] = e.target.value;
-  //   setStateValues((prev) => ({
-  //     ...prev,
-  //     category: temp,
-  //   }));
-  // };
 
   return (
     <>

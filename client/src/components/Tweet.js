@@ -146,31 +146,6 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
   const handleIsReply = async (data) => {
     setIsTweetReplied(data);
   };
-  // const airDropForRaid = async () => {
-  //   let body = {
-  //     usersArray: [publicKey],
-  //     isRaid: true,
-  //     splToken: poolData?.splToken,
-  //     projectName: projectDetail.projectName,
-  //     client
-  //   };
-
-  //   const response = await axios.post(
-  //     `${process.env.REACT_APP_SERVERURL}/wallet/airdrop`,
-  //     body,
-  //     {
-  //       headers: {
-  //         Authorization: `BEARER ${token}`,
-  //       },
-  //     }
-  //   );
-  //   if (response.data.tx) {
-  //     console.log(response.data.tx);
-  //     toast.success("Transfer Successfully");
-  //   } else {
-  //     toast.error("Something went wrong");
-  //   }
-  // };
 
   // <<<<<<< HEAD
   // ==========for table =========
@@ -601,11 +576,12 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
         return;
       }
       let body = {
-        userId: currentUser?.id,
-        accessToken: currentUser?.accessToken,
-        accessTokenSecret: currentUser?.accessTokenSecret,
+        projectName,
+        mintAddress: poolData?.splToken,
+        projectCreator: projectDetail?.invoiceCreater?._id,
+        time: moment().unix(),
       };
-      const res = await axios.post(
+      const res = await axios.patch(
         `${process.env.REACT_APP_SERVERURL}/tweet/likeSpecificTweet/${data?.tweetId}`,
         body,
         {
@@ -614,75 +590,14 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
           },
         }
       );
-      if (res?.data?.data) {
-        let body = {
-          userAddress: publicKey,
-          number: 1,
-          isRaid: projectDetail?.isRaid,
-          numberOfFollowes: currentUserFallowers,
-          tweetId: data?.tweetId,
-          projectName,
-          clientId: projectDetail?.invoiceCreater?._id,
-          splToken: poolData.splToken,
-        };
-        const resData = await axios.post(
-          `${process.env.REACT_APP_SERVERURL}/wallet/tweetAction`,
-          body,
-          {
-            headers: {
-              Authorization: `BEARER ${token}`,
-            },
-          }
-        );
-        if (resData) {
-          const body = {
-            likeStatus: {
-              tweetId: data?.tweetId,
-              projectName,
-              time: moment().unix(),
-            },
-            twitterId: currentUser.id,
-          };
-          const response = await axios.patch(
-            `${process.env.REACT_APP_SERVERURL}/api/updateRaidRewardStatus`,
-            body,
-            {
-              headers: {
-                Authorization: `BEARER ${currentUser.token}`,
-              },
-            }
-          );
-          if (response) {
-            const body = {
-              tweetId: data?.tweetId,
-              userId: currentUser?.userId,
-              tweetStatus: "like",
-              projectName,
-              mintAddress: poolData?.splToken,
-              isRaid: true,
-              // poolAddress,
-              invoiceCreaterPublicKey: projectDetail?.invoiceCreaterPublicKey,
-              userPublicKey: publicKey,
-            };
-
-            const response = await axios.patch(
-              `${process.env.REACT_APP_SERVERURL}/reward/addRewardRecord`,
-              body,
-              {
-                headers: {
-                  Authorization: `BEARER ${currentUser.token}`,
-                },
-              }
-            );
-          } else {
-            toast.error("Failed to update reward statuse");
-          }
-
-          setIsTweetLike(true);
-        }
+      if (res?.data?.tx) {
+        toast.success(res?.data?.msg);
+        setIsTweetLike(true);
+      } else {
+        toast.error(res?.data?.msg);
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     }
   };
 
@@ -700,12 +615,18 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
         toast.error("You have already make reply for this tweet");
         return;
       }
+      if (!reply) {
+        toast.error("No empty reply allowed");
+        return;
+      }
       let body = {
+        projectName,
         tweetReply: reply,
-        accessToken: currentUser?.accessToken,
-        accessTokenSecret: currentUser?.accessTokenSecret,
+        mintAddress: poolData?.splToken,
+        projectCreator: projectDetail?.invoiceCreater?._id,
+        time: moment().unix(),
       };
-      const res = await axios.post(
+      const res = await axios.patch(
         `${process.env.REACT_APP_SERVERURL}/tweet/replyToTweetWithTweetId/${data?.tweetId}`,
         body,
         {
@@ -714,72 +635,10 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
           },
         }
       );
-      if (res?.data?.data) {
-        let body = {
-          userAddress: publicKey,
-          number: 3,
-          isRaid: projectDetail?.isRaid,
-          numberOfFollowes: currentUserFallowers,
-          tweetId: data?.tweetId,
-          projectName,
-          clientId: projectDetail?.invoiceCreater._id,
-          splToken: poolData.splToken,
-        };
-        const resData = await axios.post(
-          `${process.env.REACT_APP_SERVERURL}/wallet/tweetAction`,
-          body,
-          {
-            headers: {
-              Authorization: `BEARER ${token}`,
-            },
-          }
-        );
-        if (resData) {
-          const body = {
-            replyStatus: {
-              tweetId: data?.tweetId,
-              projectName,
-              time: moment().unix(),
-            },
-            twitterId: currentUser.id,
-          };
-          const response = await axios.patch(
-            `${process.env.REACT_APP_SERVERURL}/api/updateRaidRewardStatus`,
-            body,
-            {
-              headers: {
-                Authorization: `BEARER ${currentUser.token}`,
-              },
-            }
-          );
-          if (response) {
-            const body = {
-              tweetId: data?.tweetId,
-              userId: currentUser?.userId,
-              tweetStatus: "reply",
-              projectName,
-              mintAddress: poolData?.splToken,
-              isRaid: true,
-              // poolAddress,
-              invoiceCreaterPublicKey: projectDetail?.invoiceCreaterPublicKey,
-              userPublicKey: publicKey,
-            };
-
-            const response = await axios.patch(
-              `${process.env.REACT_APP_SERVERURL}/reward/addRewardRecord`,
-              body,
-              {
-                headers: {
-                  Authorization: `BEARER ${currentUser.token}`,
-                },
-              }
-            );
-          } else {
-            toast.error("Failed to update reward statuse");
-          }
-        }
+      if (res?.data?.tx) {
+        toast.success(res?.data?.msg);
       } else {
-        toast.error("Failed to reply");
+        toast.error(res?.data?.msg);
       }
     } catch (error) {
       console.log(error);
@@ -811,11 +670,12 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
         return;
       }
       let body = {
-        userId: currentUser?.id,
-        accessToken: currentUser?.accessToken,
-        accessTokenSecret: currentUser?.accessTokenSecret,
+        projectName,
+        mintAddress: poolData?.splToken,
+        projectCreator: projectDetail?.invoiceCreater?._id,
+        time: moment().unix(),
       };
-      const res = await axios.post(
+      const res = await axios.patch(
         `${process.env.REACT_APP_SERVERURL}/tweet/retweetATweet/${data?.tweetId}`,
         body,
         {
@@ -824,78 +684,14 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
           },
         }
       );
-      if (res?.data?.data) {
-        let body = {
-          userAddress: publicKey,
-          number: 2,
-          isRaid: projectDetail?.isRaid,
-          numberOfFollowes: 3,
-          // numberOfFollowes: currentUserFallowers,
-          tweetId: data?.tweetId,
-          projectName,
-          clientId: projectDetail?.invoiceCreater._id,
-          splToken: poolData.splToken,
-        };
-        const resData = await axios.post(
-          `${process.env.REACT_APP_SERVERURL}/wallet/tweetAction`,
-          body,
-          {
-            headers: {
-              Authorization: `BEARER ${token}`,
-            },
-          }
-        );
-        if (resData) {
-          const body = {
-            retweetStatus: {
-              tweetId: data?.tweetId,
-              projectName,
-              time: moment().unix(),
-              rewardAmount: rewards,
-            },
-            twitterId: currentUser?.id,
-          };
-          const response = await axios.patch(
-            `${process.env.REACT_APP_SERVERURL}/api/updateRaidRewardStatus`,
-            body,
-            {
-              headers: {
-                Authorization: `BEARER ${currentUser.token}`,
-              },
-            }
-          );
-          if (response) {
-            const body = {
-              tweetId: data?.tweetId,
-              userId: currentUser?.userId,
-              tweetStatus: "retweet",
-              projectName,
-              mintAddress: poolData?.splToken,
-              isRaid: true,
-              // poolAddress,
-              invoiceCreaterPublicKey: projectDetail?.invoiceCreaterPublicKey,
-              userPublicKey: publicKey,
-            };
-
-            const response = await axios.patch(
-              `${process.env.REACT_APP_SERVERURL}/reward/addRewardRecord`,
-              body,
-              {
-                headers: {
-                  Authorization: `BEARER ${currentUser.token}`,
-                },
-              }
-            );
-          } else {
-            toast.error("Failed to update rewatd statuse");
-          }
-          setIsTweetRetweeted(true);
-        } else {
-          toast.error("Failed to retweet a tweet");
-        }
+      if (res?.data?.tx) {
+        toast.success(res?.data?.msg);
+        setIsTweetRetweeted(true);
+      } else {
+        toast.error(res?.data?.msg);
       }
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     }
   };
 
@@ -948,70 +744,84 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
   return (
     <>
       <Grid item xs={12} md={6} lg={4} sx={{ position: "relative" }}>
- 
-         
-          <Card
+        <Card
+          sx={{
+            maxWidth: 345,
+            margin: "0 auto",
+            background: "rgba(0, 0, 0, 0.5)",
+            boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+            borderRadius: "17px",
+          }}
+          className="raids_card"
+        >
+          <Typography
+            component="div"
             sx={{
-              maxWidth: 345,
-              margin:"0 auto" ,
-              background: "rgba(0, 0, 0, 0.5)",
-              boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-              borderRadius: "17px",
+              background: `linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%) ,url("${Images.raidcardImg}")`,
+
+              height: "194px",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+              position: "relative",
             }}
-            className="raids_card"
           >
-            <Typography
-              component="div"
+            <CardHeader
               sx={{
-                background: `linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, #000000 100%) ,url("${Images.raidcardImg}")`,
-
-                height: "194px",
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-                position: "relative",
+                position: "absolute",
+                bottom: "0",
+                left: "0",
+                width: "100%",
+                color: "white",
               }}
-            >
-              <CardHeader
-                sx={{
-                  position: "absolute",
-                  bottom: "0",
-                  left: "0",
-                  width: "100%",
-                  color: "white",
-                }}
-               
-                
-                avatar={
-                  <Avatar
+              avatar={
+                <Avatar
+                  sx={{
+                    bgcolor: red[500],
+                  }}
+                  aria-label="recipe"
+                >
+                  R
+                </Avatar>
+              }
+              action={
+                <IconButton
+                  aria-label="settings"
+                  sx={{
+                    color: "white",
+                  }}
+                >
+                  {/* <MoreVertIcon /> */}
+                  <Typography
+                    className="raids_card"
+                    component="div"
                     sx={{
-                      bgcolor: red[500],
-                    }}
-                    aria-label="recipe"
-                  >
-                    R
-                  </Avatar>
-                }
-                action={
-                  <IconButton
-                    aria-label="settings"
-                    sx={{
-                      color: "white",
+                      width: "67px",
+                      fontSize: "17px",
+                      height: "44px",
+                      background: "#00ACEE",
+                      borderRadius: "50px 0px 0px 50px",
+                      display: "flex",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      marginRight: "-15px",
                     }}
                   >
-                    {/* <MoreVertIcon /> */}
-                    <Typography  className="raids_card" component="div" sx={{width:"67px", fontSize: '17px', height:"44px", background: '#00ACEE', borderRadius: '50px 0px 0px 50px', display:"flex", justifyContent:"center", alignItems:"center", marginRight:"-15px"}}>
-                     + Raid
-                    </Typography>
-                  </IconButton>
-                }
-                title={projectName}
-                subheader={projectDetail?.projectTwitterUsername}
-              />
-            </Typography>
-           
+                    + Raid
+                  </Typography>
+                </IconButton>
+              }
+              title={projectName}
+              subheader={projectDetail?.projectTwitterUsername}
+            />
+          </Typography>
 
-            <CardContent>
-              <Typography variant="body2" color="white"  className="raids_card" sx={{textAlign:"center"}}>
+          <CardContent>
+            <Typography
+              variant="body2"
+              color="white"
+              className="raids_card"
+              sx={{ textAlign: "center" }}
+            >
               <Typography sx={{ display: "", justifyContent: "center" }}>
                 <Typography
                   className="magic_eden"
@@ -1035,216 +845,217 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
               >
                 {data?.tweetText}
               </Typography>
-              </Typography>
-            </CardContent>
+            </Typography>
+          </CardContent>
+          <Typography
+            component="div"
+            sx={{ paddingLeft: "10px", paddingRight: "10px" }}
+          >
+            <CardActions
+              sx={{
+                justifyContent: "space-between",
+                borderBottom: "1px solid gray",
+                padding: "unset !important",
+              }}
+              disableSpacing
+            >
+              <IconButton
+                className="iconBtn"
+                sx={{
+                  fontSize: "13px",
+                  alignItems: "center",
+                  gap: "5px",
+                }}
+                aria-label="add to favorites"
+              >
+                <Icon icon="bi:clock-history" /> Date
+              </IconButton>
+
+              <IconButton
+                className="iconBtn"
+                sx={{ fontSize: "12px", gap: "5px" }}
+                aria-label="share"
+              >
+                <Typography className="active_icon"></Typography>
+
+                {poolData?.startTime ? (
+                  <>
+                    {poolData?.startTime * 1000 > Date.now()
+                      ? " Active will be"
+                      : "Active"}
+                    ( {moment.unix(poolData?.startTime).fromNow()})
+                  </>
+                ) : (
+                  "Not Started yet"
+                )}
+              </IconButton>
+            </CardActions>
+          </Typography>
+
+          <CardActions>
+            <ExpandMore
+              expand={expanded}
+              onClick={handleExpandClick}
+              aria-expanded={expanded}
+              aria-label="show more"
+              sx={{ color: "#47DDFC" }}
+            >
+              <HiChevronDoubleDown />
+            </ExpandMore>
+          </CardActions>
+          <Collapse in={expanded} timeout="auto" unmountOnExit>
             <Typography
-              component="div"
+              variant="body2"
+              color="text.secondary"
               sx={{ paddingLeft: "10px", paddingRight: "10px" }}
             >
               <CardActions
-                  sx={{
-                    justifyContent: "space-between",
-                    borderBottom: "1px solid gray",
-                    padding: "unset !important",
-                  }}
-                  disableSpacing
-                >
-                  <IconButton
-                    className="iconBtn"
-                    sx={{
-                      fontSize: "13px",
-                      alignItems: "center",
-                      gap: "5px",
-                    }}
-                    aria-label="add to favorites"
-                  >
-                    <Icon icon="bi:clock-history" /> Date
-                  </IconButton>
-
-                  <IconButton
-                    className="iconBtn"
-                    sx={{ fontSize: "12px", gap: "5px" }}
-                    aria-label="share"
-                  >
-                    <Typography className="active_icon"></Typography>
-
-                    {poolData?.startTime ? (
-                      <>
-                        {poolData?.startTime * 1000 > Date.now()
-                          ? " Active will be"
-                          : "Active"}
-                        ( {moment.unix(poolData?.startTime).fromNow()})
-                      </>
-                    ) : (
-                      "Not Started yet"
-                    )}
-                  </IconButton>
-                </CardActions>
-            </Typography>
-
-            <CardActions>
-              <ExpandMore
-                expand={expanded}
-                onClick={handleExpandClick}
-                aria-expanded={expanded}
-                aria-label="show more"
-                sx={{ color: "#47DDFC" }}
-              >
-                <HiChevronDoubleDown />
-              </ExpandMore>
-            </CardActions>
-            <Collapse in={expanded} timeout="auto" unmountOnExit>
-              <Typography
-                variant="body2"
-                color="text.secondary"
-                sx={{ paddingLeft: "10px", paddingRight: "10px" }}
-              >
-                <CardActions
-                  sx={{
-                    justifyContent: "space-between",
-                    borderBottom: "1px solid gray",
-                    padding: "unset !important",
-                  }}
-                  disableSpacing
-                >
-                  <IconButton
-                    className="iconBtn"
-                    sx={{
-                      fontSize: "13px",
-                      alignItems: "center",
-                      gap: "5px",
-                    }}
-                    aria-label="add to favorites"
-                  >
-                    <Icon icon="arcticons:rewards" /> Reward
-                  </IconButton>
-
-                  <IconButton
-                    className="iconBtn"
-                    sx={{ fontSize: "12px", gap: "5px" }}
-                    aria-label="share"
-                  >
-                    0.025 (SOL)
-                  </IconButton>
-                </CardActions>
-
-                <CardActions
-                  sx={{
-                    justifyContent: "space-between",
-                    borderBottom: "1px solid gray",
-                    padding: "unset !important",
-                  }}
-                  disableSpacing
-                >
-                  <IconButton
-                    className="iconBtn"
-                    sx={{
-                      fontSize: "13px",
-                      alignItems: "center",
-                      gap: "5px",
-                    }}
-                    aria-label="add to favorites"
-                  >
-                    <Icon icon="bi:clock-history" /> Claimed Rewards
-                  </IconButton>
-
-                  <IconButton
-                    className="iconBtn"
-                    sx={{ fontSize: "12px", gap: "5px" }}
-                    aria-label="share"
-                  >
-                    {tweetsStatus ? tweetsStatus : ""} (SOL)
-                  </IconButton>
-                </CardActions>
-
-                <CardActions
-                  sx={{
-                    justifyContent: "space-between",
-
-                    padding: "unset !important",
-                  }}
-                  disableSpacing
-                >
-                  <IconButton
-                    className="iconBtn"
-                    sx={{
-                      fontSize: "13px",
-                      alignItems: "center",
-                      gap: "5px",
-                    }}
-                    aria-label="add to favorites"
-                  >
-                    <Icon icon="charm:at-sign" /> Total Mentions
-                  </IconButton>
-
-                  <IconButton
-                    className="iconBtn"
-                    sx={{ fontSize: "12px", gap: "5px" }}
-                    aria-label="share"
-                  >
-                    155
-                  </IconButton>
-                </CardActions>
-              </Typography>
-             
-            </Collapse>
-            <CardActions
                 sx={{
                   justifyContent: "space-between",
-                  background: "#636363",
-                  borderBottomLeftRadius: "10px",
-                  borderBottomRightRadius: "10px",
+                  borderBottom: "1px solid gray",
+                  padding: "unset !important",
                 }}
                 disableSpacing
               >
-                {!isTweetLike ? (
-                  <IconButton
-                    onClick={likeSpecificTweet}
-                    aria-label="add to favorites"
-                  >
-                    <Icon color="white" icon="ant-design:heart-filled" />
-                  </IconButton>
-                ) : (
-                  <IconButton
-                    onClick={() => alert("You have already like the tweet")}
-                    aria-label="add to favorites"
-                  >
-                    <Icon
-                      color="rgb(249, 24, 128)"
-                      icon="ant-design:heart-filled"
-                    />
-                  </IconButton>
-                )}
-                {!isTweetRetweeted ? (
-                  <IconButton onClick={retweetATweet} aria-label="share">
-                    <Icon color="white" icon="ant-design:retweet-outlined" />
-                  </IconButton>
-                ) : (
-                  <IconButton
-                    onClick={() => alert("You have already retweet the tweet")}
-                    aria-label="share"
-                  >
-                    <Icon
-                      color="rgb(0, 186, 124)"
-                      icon="ant-design:retweet-outlined"
-                    />
-                  </IconButton>
-                )}
-                <IconButton aria-label="share">
-                  <Icon
-                    color="white"
-                    onClick={() => setOpenModal(true)}
-                    icon="fa-regular:comment-dots"
-                  />
+                <IconButton
+                  className="iconBtn"
+                  sx={{
+                    fontSize: "13px",
+                    alignItems: "center",
+                    gap: "5px",
+                  }}
+                  aria-label="add to favorites"
+                >
+                  <Icon icon="arcticons:rewards" /> Reward
                 </IconButton>
-                <IconButton aria-label="share">
-                  <Icon color="white" icon="ci:share" />
+
+                <IconButton
+                  className="iconBtn"
+                  sx={{ fontSize: "12px", gap: "5px" }}
+                  aria-label="share"
+                >
+                  0.025 (SOL)
                 </IconButton>
               </CardActions>
-          </Card>
 
-{/* ====================================================================================== */}
-         {/* <Card
+              <CardActions
+                sx={{
+                  justifyContent: "space-between",
+                  borderBottom: "1px solid gray",
+                  padding: "unset !important",
+                }}
+                disableSpacing
+              >
+                <IconButton
+                  className="iconBtn"
+                  sx={{
+                    fontSize: "13px",
+                    alignItems: "center",
+                    gap: "5px",
+                  }}
+                  aria-label="add to favorites"
+                >
+                  <Icon icon="bi:clock-history" /> Claimed Rewards
+                </IconButton>
+
+                <IconButton
+                  className="iconBtn"
+                  sx={{ fontSize: "12px", gap: "5px" }}
+                  aria-label="share"
+                >
+                  {tweetsStatus ? tweetsStatus : ""} (SOL)
+                </IconButton>
+              </CardActions>
+
+              <CardActions
+                sx={{
+                  justifyContent: "space-between",
+
+                  padding: "unset !important",
+                }}
+                disableSpacing
+              >
+                <IconButton
+                  className="iconBtn"
+                  sx={{
+                    fontSize: "13px",
+                    alignItems: "center",
+                    gap: "5px",
+                  }}
+                  aria-label="add to favorites"
+                >
+                  <Icon icon="charm:at-sign" /> Total Mentions
+                </IconButton>
+
+                <IconButton
+                  className="iconBtn"
+                  sx={{ fontSize: "12px", gap: "5px" }}
+                  aria-label="share"
+                >
+                  155
+                </IconButton>
+              </CardActions>
+            </Typography>
+          </Collapse>
+          <CardActions
+            sx={{
+              justifyContent: "space-between",
+              background: "#636363",
+              borderBottomLeftRadius: "10px",
+              borderBottomRightRadius: "10px",
+            }}
+            disableSpacing
+          >
+            {!isTweetLike ? (
+              <IconButton
+                onClick={likeSpecificTweet}
+                aria-label="add to favorites"
+              >
+                <Icon color="white" icon="ant-design:heart-filled" />
+              </IconButton>
+            ) : (
+              <IconButton
+                onClick={() => toast.error("You have already like the tweet")}
+                aria-label="add to favorites"
+              >
+                <Icon
+                  color="rgb(249, 24, 128)"
+                  icon="ant-design:heart-filled"
+                />
+              </IconButton>
+            )}
+            {!isTweetRetweeted ? (
+              <IconButton onClick={retweetATweet} aria-label="share">
+                <Icon color="white" icon="ant-design:retweet-outlined" />
+              </IconButton>
+            ) : (
+              <IconButton
+                onClick={() =>
+                  toast.error("You have already retweet the tweet")
+                }
+                aria-label="share"
+              >
+                <Icon
+                  color="rgb(0, 186, 124)"
+                  icon="ant-design:retweet-outlined"
+                />
+              </IconButton>
+            )}
+            <IconButton aria-label="share">
+              <Icon
+                color="white"
+                onClick={() => setOpenModal(true)}
+                icon="fa-regular:comment-dots"
+              />
+            </IconButton>
+            <IconButton aria-label="share">
+              <Icon color="white" icon="ci:share" />
+            </IconButton>
+          </CardActions>
+        </Card>
+
+        {/* ====================================================================================== */}
+        {/* <Card
             sx={{
               width: "100%",
               color: "white",
@@ -1581,7 +1392,6 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
           <img className="mail_logo" src="r.png" alt="" />
         </div> */}
       </Grid>
-     
 
       <ThreadModal
         allReplyOfATweet={allReplyOfATweet}
