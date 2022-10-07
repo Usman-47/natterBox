@@ -29,17 +29,21 @@ import { ADMIN, MANAGER } from "../../../../helpers/UserRoles";
 import useUserFunc from "../../../../hooks/useUserFunc";
 import { connect } from "react-redux";
 
-const CreateInvoice = () => {
+const CreateInvoice = ({ poolID }) => {
   const initialState = {
     tweetUrl: "",
   };
   const { publicKey } = useWallet();
-  const { id } = useParams();
+  // const { id } = useParams();
   const [stateValues, setStateValues] = useState(initialState);
   const [projectName, setProjectName] = useState();
   const [isRaid, setIsRaid] = useState(false);
   const [clientPublicKey, setClientPublicKey] = useState();
   const [splToken, setSplToken] = useState();
+  let { id } = useParams();
+  if (!id) {
+    id = poolID;
+  }
 
   const solConnection = new web3.Connection(
     web3.clusterApiUrl("devnet"),

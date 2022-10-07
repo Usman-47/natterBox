@@ -45,7 +45,7 @@ import moment from "moment";
 //   tax,
 //   dueDate,
 // }
-const AddPool = ({ auth }) => {
+const AddPool = ({ auth, projectId, setPoolID }) => {
   const initialState = {
     amount: "",
     startTime: "",
@@ -57,7 +57,10 @@ const AddPool = ({ auth }) => {
   };
   const { wallet, connect, sendTransaction, connecting, publicKey } =
     useWallet();
-  const { id } = useParams();
+  let { id } = useParams();
+  if (!id) {
+    id = projectId;
+  }
   const [stateValues, setStateValues] = useState(initialState);
   const [projectName, setProjectName] = useState();
   const [isRaid, setIsRaid] = useState(false);
@@ -98,6 +101,10 @@ const AddPool = ({ auth }) => {
     const res = await axios.get(
       `${process.env.REACT_APP_SERVERURL}/api/public/invoice/${id}`
     );
+    // if(res?.data){
+    //   setPoolID(res?.data?.id)
+    // }
+
     if (res?.data?.invoiceFound) {
       setProjectName(res?.data?.invoiceFound?.projectName);
       setIsRaid(res?.data?.invoiceFound?.isRaid);

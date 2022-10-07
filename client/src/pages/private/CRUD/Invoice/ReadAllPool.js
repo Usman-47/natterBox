@@ -38,9 +38,14 @@ const ReadAllInvoices = () => {
   }
   return (
     <>
-      <div className="container add_pool_container p-md-5 my-3 fw-bold " style={{background: '#2C2C2E',
-boxShadow: '11.7355px 11.7355px 29.3386px rgba(0, 0, 0, 0.5)',
-borderRadius: '19.5591px'}}>
+      <div
+        className="container add_pool_container p-md-5 my-3 fw-bold "
+        style={{
+          background: "#2C2C2E",
+          boxShadow: "11.7355px 11.7355px 29.3386px rgba(0, 0, 0, 0.5)",
+          borderRadius: "19.5591px",
+        }}
+      >
         <div className="col">
           <div className="m-3">
             <button
@@ -52,14 +57,18 @@ borderRadius: '19.5591px'}}>
               Add Pool
             </button>
           </div>
-          <div className="p-4" style={{background:"#2C2C2E", boxShadow: '11.7355px 11.7355px 29.3386px rgba(0, 0, 0, 0.5)',}}>
-       
-          <div style={{overflowX:"auto"}}>
-          <table className="table text-white">
+          <div
+            className="p-4"
+            style={{
+              background: "#2C2C2E",
+              boxShadow: "11.7355px 11.7355px 29.3386px rgba(0, 0, 0, 0.5)",
+            }}
+          >
+            <div style={{ overflowX: "auto" }}>
+              <table className="table text-white">
                 <thead>
-                  <tr >
-                    
-                    <th  scope="col">Amount</th>
+                  <tr>
+                    <th scope="col">Amount</th>
                     <th scope="col">Start Time</th>
                     <th scope="col">Tweet Url</th>
                     <th scope="col">Reward Frequency</th>
@@ -68,31 +77,30 @@ borderRadius: '19.5591px'}}>
                   </tr>
                 </thead>
                 <tbody>
-                {state &&
-                state.map((invoiceObj) => (
-                  <tr
-                    key={invoiceObj._id}
-                    className="text-break mouseCursorChanger"
-                    onClick={() =>
-                      navigate(
-                        `/app/invoice/readOne/readAllPool/readOnePool/${invoiceObj._id}`
-                      )
-                    }
-                  >
-                    <td>{invoiceObj.amount}</td>
-                    <td>{invoiceObj.startTime}</td>
-                    <td>{invoiceObj.tweetUrl}</td>
-                    <td>{invoiceObj.rewardFrequency}</td>
-                    <td>{invoiceObj.splToken}</td>
-                    {invoiceObj.category.map((data) => (
-                      <td>{data}</td>
+                  {state &&
+                    state.map((invoiceObj) => (
+                      <tr
+                        key={invoiceObj._id}
+                        className="text-break mouseCursorChanger"
+                        onClick={() =>
+                          navigate(
+                            `/app/invoice/readOne/readAllPool/readOnePool/${invoiceObj._id}`
+                          )
+                        }
+                      >
+                        <td>{invoiceObj.amount}</td>
+                        <td>{invoiceObj.startTime}</td>
+                        <td>{invoiceObj.tweetUrl}</td>
+                        <td>{invoiceObj.rewardFrequency}</td>
+                        <td>{invoiceObj.splToken}</td>
+                        {invoiceObj.category.map((data) => (
+                          <td>{data}</td>
+                        ))}
+                      </tr>
                     ))}
-                  </tr>
-                 
-                  ))}
                 </tbody>
               </table>
-              </div>
+            </div>
           </div>
         </div>
       </div>
