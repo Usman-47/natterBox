@@ -7,7 +7,6 @@ import useStore from "../hooks/useStore";
 
 const UserProvider = ({ children }) => {
   const [state, dispatch] = useStore();
-
   return (
     <dispatchContext.Provider value={dispatch}>
       <stateContext.Provider value={state}>

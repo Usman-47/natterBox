@@ -32,14 +32,24 @@ const Dashboard = (props) => {
   const { publicKey, connected } = useWallet();
 
   const [flag, setFlag] = React.useState(false);
+  const [flagForAuth, setFlagForAuth] = React.useState(false);
   useEffect(() => {
     if (flag) {
-      if (!connected || !props.auth) {
+      if (!connected) {
         dispatch({ type: "signout" });
       }
     }
     setFlag(true);
-  }, [publicKey, props.auth]);
+  }, [publicKey]);
+
+  useEffect(() => {
+    if (flagForAuth) {
+      if (!props.auth) {
+        dispatch({ type: "signout" });
+      }
+    }
+    setFlagForAuth(true);
+  }, [props.auth]);
 
   // ================
   if (!role) {
@@ -52,12 +62,15 @@ const Dashboard = (props) => {
     if (role !== USER) {
       return (
         <>
-          <div style={{
-            background: '#171717',
-/* Black/black-400 */
-          border: '1px solid #333333',
-          boxShadow: 'inset -8px -8px 8px rgba(0, 0, 0, 0.4), inset 8px 8px 14px rgba(58, 58, 58, 0.25)'
-          }}>
+          <div
+            style={{
+              background: "#171717",
+              /* Black/black-400 */
+              border: "1px solid #333333",
+              boxShadow:
+                "inset -8px -8px 8px rgba(0, 0, 0, 0.4), inset 8px 8px 14px rgba(58, 58, 58, 0.25)",
+            }}
+          >
             <div className="row dashboard_main_row">
               {/* this is sidebar */}
 

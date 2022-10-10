@@ -231,134 +231,134 @@ const UserMentions = ({ currentUser, data }) => {
       });
     }
   }, [userSelectTweetForClaim]);
-  const claimRewardWithSolana = async () => {
-    try {
-      if (isRewardPaid) {
-        toast.error("you have applied");
-        return;
-      }
+  // const claimRewardWithSolana = async () => {
+  //   try {
+  //     if (isRewardPaid) {
+  //       toast.error("you have applied");
+  //       return;
+  //     }
 
-      if (claimStartTime + rewardFrequencyToClaimReward > moment().unix()) {
-        toast.error("reward claim time is not reached after start time");
-        return;
-      }
-      if (
-        parseInt(rewardClaimTime) + rewardFrequencyToClaimReward >
-        moment().unix()
-      ) {
-        toast.error(
-          "early claim is not allowed after the claim of another tweet"
-        );
-        return;
-      }
-      if (userCreatedTweetAt + rewardFrequencyToClaimReward > moment().unix()) {
-        toast.error("you tweet must be old enough");
-        return;
-      }
-      var isClaimAble = true;
-      var countNfts = 0;
-      if (data?.mintCreatorAddress) {
-        isClaimAble = false;
-      }
-      let allCreatorOfWallet = await checkWalletNfts();
+  //     if (claimStartTime + rewardFrequencyToClaimReward > moment().unix()) {
+  //       toast.error("reward claim time is not reached after start time");
+  //       return;
+  //     }
+  //     if (
+  //       parseInt(rewardClaimTime) + rewardFrequencyToClaimReward >
+  //       moment().unix()
+  //     ) {
+  //       toast.error(
+  //         "early claim is not allowed after the claim of another tweet"
+  //       );
+  //       return;
+  //     }
+  //     if (userCreatedTweetAt + rewardFrequencyToClaimReward > moment().unix()) {
+  //       toast.error("you tweet must be old enough");
+  //       return;
+  //     }
+  //     var isClaimAble = true;
+  //     var countNfts = 0;
+  //     if (data?.mintCreatorAddress) {
+  //       isClaimAble = false;
+  //     }
+  //     let allCreatorOfWallet = await checkWalletNfts();
 
-      if (allCreatorOfWallet && allCreatorOfWallet.length > 0) {
-        allCreatorOfWallet?.map((metadata) => {
-          metadata?.data?.creators?.map((creator) => {
-            if (data?.mintCreatorAddress === creator?.address) {
-              countNfts++;
-            }
-          });
-        });
-        if (countNfts >= data?.numberOfNft) {
-          isClaimAble = true;
-        }
-      }
-      if (!isClaimAble) {
-        toast.error(
-          `You don't have the enough tokens of ${data?.mintCreatorAddress} candy machine`
-        );
-        return;
-      }
-      if (userSelectTweetForClaim === "") {
-        toast.error("Please select a tweet First");
-        return;
-      }
-      if (rewardTokenForClaim === "") {
-        toast.error("Reward Token Not Found");
-        return;
-      }
-      if (!data && !mentionUserFallowers) {
-        toast.error("No tweet data found");
-        return;
-      }
+  //     if (allCreatorOfWallet && allCreatorOfWallet.length > 0) {
+  //       allCreatorOfWallet?.map((metadata) => {
+  //         metadata?.data?.creators?.map((creator) => {
+  //           if (data?.mintCreatorAddress === creator?.address) {
+  //             countNfts++;
+  //           }
+  //         });
+  //       });
+  //       if (countNfts >= data?.numberOfNft) {
+  //         isClaimAble = true;
+  //       }
+  //     }
+  //     if (!isClaimAble) {
+  //       toast.error(
+  //         `You don't have the enough tokens of ${data?.mintCreatorAddress} candy machine`
+  //       );
+  //       return;
+  //     }
+  //     if (userSelectTweetForClaim === "") {
+  //       toast.error("Please select a tweet First");
+  //       return;
+  //     }
+  //     if (rewardTokenForClaim === "") {
+  //       toast.error("Reward Token Not Found");
+  //       return;
+  //     }
+  //     if (!data && !mentionUserFallowers) {
+  //       toast.error("No tweet data found");
+  //       return;
+  //     }
 
-      var reward = 0;
+  //     var reward = 0;
 
-      if (mentionUserFallowers >= 2 && mentionUserFallowers <= 99) {
-        reward = rewardCategory[0];
-      } else if (mentionUserFallowers >= 100 && mentionUserFallowers <= 299) {
-        reward = rewardCategory[1];
-      } else if (mentionUserFallowers >= 300 && mentionUserFallowers <= 499) {
-        reward = rewardCategory[2];
-      } else if (mentionUserFallowers >= 500 && mentionUserFallowers <= 999) {
-        reward = rewardCategory[3];
-      } else if (mentionUserFallowers >= 1000 && mentionUserFallowers <= 4999) {
-        reward = rewardCategory[4];
-      } else if (mentionUserFallowers >= 5000 && mentionUserFallowers <= 9999) {
-        reward = rewardCategory[5];
-      } else if (mentionUserFallowers >= 10000) {
-        reward = rewardCategory[6];
-      }
+  //     if (mentionUserFallowers >= 2 && mentionUserFallowers <= 99) {
+  //       reward = rewardCategory[0];
+  //     } else if (mentionUserFallowers >= 100 && mentionUserFallowers <= 299) {
+  //       reward = rewardCategory[1];
+  //     } else if (mentionUserFallowers >= 300 && mentionUserFallowers <= 499) {
+  //       reward = rewardCategory[2];
+  //     } else if (mentionUserFallowers >= 500 && mentionUserFallowers <= 999) {
+  //       reward = rewardCategory[3];
+  //     } else if (mentionUserFallowers >= 1000 && mentionUserFallowers <= 4999) {
+  //       reward = rewardCategory[4];
+  //     } else if (mentionUserFallowers >= 5000 && mentionUserFallowers <= 9999) {
+  //       reward = rewardCategory[5];
+  //     } else if (mentionUserFallowers >= 10000) {
+  //       reward = rewardCategory[6];
+  //     }
 
-      // let txResult = await claimReward(reward);
+  //     // let txResult = await claimReward(reward);
 
-      // let result = await solConnection.confirmTransaction(txResult);
+  //     // let result = await solConnection.confirmTransaction(txResult);
 
-      const body = {
-        tweetId: userSelectTweetForClaim,
-        projectName,
-        mintAddress: rewardTokenForClaim,
-        isRaid: false,
-        // poolAddress,
-        invoiceCreaterPublicKey: data.invoiceCreaterPublicKey,
-        userPublicKey: publicKey,
-      };
+  //     const body = {
+  //       tweetId: userSelectTweetForClaim,
+  //       projectName,
+  //       mintAddress: rewardTokenForClaim,
+  //       isRaid: false,
+  //       // poolAddress,
+  //       invoiceCreaterPublicKey: data.invoiceCreaterPublicKey,
+  //       userPublicKey: publicKey,
+  //     };
 
-      const response = await axios.patch(
-        `${process.env.REACT_APP_SERVERURL}/reward/addRewardRecord`,
-        body,
-        {
-          headers: {
-            Authorization: `BEARER ${currentUser.token}`,
-          },
-        }
-      );
+  //     const response = await axios.patch(
+  //       `${process.env.REACT_APP_SERVERURL}/reward/addRewardRecord`,
+  //       body,
+  //       {
+  //         headers: {
+  //           Authorization: `BEARER ${currentUser.token}`,
+  //         },
+  //       }
+  //     );
 
-      if (response) {
-        const data = {
-          tweetId: userSelectTweetForClaim,
-          projectName,
-          time: moment().unix(),
-        };
-        const response = await axios.patch(
-          `${process.env.REACT_APP_SERVERURL}/api/updateRewardStatus`,
-          data,
-          {
-            headers: {
-              Authorization: `BEARER ${currentUser.token}`,
-            },
-          }
-        );
-        if (response) {
-          window.location.reload();
-        }
-      }
-    } catch (e) {
-      console.log(e, "Something went wrong");
-      alert("Something went wrong");
-    }
-  };
+  //     if (response) {
+  //       const data = {
+  //         tweetId: userSelectTweetForClaim,
+  //         projectName,
+  //         time: moment().unix(),
+  //       };
+  //       const response = await axios.patch(
+  //         `${process.env.REACT_APP_SERVERURL}/api/updateRewardStatus`,
+  //         data,
+  //         {
+  //           headers: {
+  //             Authorization: `BEARER ${currentUser.token}`,
+  //           },
+  //         }
+  //       );
+  //       if (response) {
+  //         window.location.reload();
+  //       }
+  //     }
+  //   } catch (e) {
+  //     console.log(e, "Something went wrong");
+  //     alert("Something went wrong");
+  //   }
+  // };
 
   useEffect(() => {
     if (tweetForReward) {
@@ -484,7 +484,7 @@ const UserMentions = ({ currentUser, data }) => {
           ) : null}
         </div>
       ) : null}
-      {userCreatedTweets &&
+      {/* {userCreatedTweets &&
         userCreatedTweets?.map((tweet, i) => {
           // if (tweet.projectName !== rewardPaidProjectName) {
           return (
@@ -499,7 +499,7 @@ const UserMentions = ({ currentUser, data }) => {
             </Button>
           );
           // }
-        })}
+        })} */}
     </>
   );
 };

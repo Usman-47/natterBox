@@ -46,7 +46,6 @@ import moment from "moment";
 //   dueDate,
 // }
 const AddPool = ({ auth, projectId, setPoolID, setpoolSuccessfully }) => {
-  console.log(projectId, "project id b a rahe");
   const initialState = {
     amount: "",
     startTime: "",

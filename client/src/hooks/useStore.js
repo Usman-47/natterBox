@@ -14,7 +14,7 @@ const useStore = () => {
       twitterId = JSON.parse(twitterId);
     }
 
-    return userToken && userRole
+    return userToken && userRole && twitterId
       ? {
           ...initialValues,
           token: userToken || null,

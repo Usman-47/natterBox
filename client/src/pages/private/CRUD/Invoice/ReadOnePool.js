@@ -78,7 +78,6 @@ const ReadOneInvoice = ({ auth }) => {
       provider
     );
   }
-
   useEffect(() => {
     const getinvoiceData = async () => {
       dispatch({ type: "loadingStart" });
@@ -159,70 +158,9 @@ const ReadOneInvoice = ({ auth }) => {
       }
     }
   };
-
-  const airDropForRaid = async () => {
-    const res = await axios.get(
-      `${process.env.REACT_APP_SERVERURL}/reward/${invoiceDataWithSpecificPool[0]?.projectName}/${invoiceDataWithSpecificPool[0]?.pool[0].splToken}/${isRaid}`,
-      {
-        headers: {
-          Authorization: `BEARER ${token}`,
-        },
-      }
-    );
-    if (res?.data?.reward?.length > 0) {
-      var tempArray = [];
-      res?.data?.reward?.map((user) => {
-        tempArray.push({ users: user.userPublicKey, tweetIds: user.tweetId });
-      });
-      let body = {
-        isRaid,
-        usersArray: tempArray,
-        mintAddress: splTokenForFundPool,
-        projectName: invoiceDataWithSpecificPool[0]?.projectName,
-      };
-      const resData = await axios.patch(
-        `${process.env.REACT_APP_SERVERURL}/reward/updateRewardRecord`,
-        body,
-        {
-          headers: {
-            Authorization: `BEARER ${token}`,
-          },
-        }
-      );
-      if (resData.data) {
-        let body = {
-          usersArray: tempArray,
-          isRaid,
-          splToken: splTokenForFundPool,
-          projectName: invoiceDataWithSpecificPool[0]?.projectName,
-        };
-
-        const response = await axios.post(
-          `${process.env.REACT_APP_SERVERURL}/wallet/airdrop`,
-          body,
-          {
-            headers: {
-              Authorization: `BEARER ${token}`,
-            },
-          }
-        );
-        if (response.data.tx) {
-          console.log(response.data.tx);
-          toast.success("Transfer Successfully");
-        } else {
-          toast.error("Something went wrong");
-        }
-      } else {
-        toast.error("Something went wrong");
-      }
-    } else {
-      toast.error("No record found");
-    }
-  };
-
   const airDrop = async () => {
     const res = await axios.get(
-      `${process.env.REACT_APP_SERVERURL}/reward/${invoiceDataWithSpecificPool[0]?.projectName}/${invoiceDataWithSpecificPool[0]?.pool[0].splToken}/${isRaid}`,
+      `${process.env.REACT_APP_SERVERURL}/reward/${invoiceDataWithSpecificPool[0]?.projectName}/${invoiceDataWithSpecificPool[0]?.pool[0].splToken}/${invoiceDataWithSpecificPool[0]?.invoiceCreater}`,
       {
         headers: {
           Authorization: `BEARER ${token}`,
@@ -238,7 +176,7 @@ const ReadOneInvoice = ({ auth }) => {
       let body = {
         isRaid,
         usersArray: tempArray,
-        mintAddress: splTokenForFundPool,
+        rewardToken: splTokenForFundPool,
         projectName: invoiceDataWithSpecificPool[0]?.projectName,
       };
       const resData = await axios.patch(
@@ -250,6 +188,12 @@ const ReadOneInvoice = ({ auth }) => {
           },
         }
       );
+      if (resData.data.tx) {
+        toast.success(resData.data.msg);
+      } else {
+        toast.error(resData.data.msg);
+      }
+      return;
       if (resData.data) {
         let body = {
           usersArray: tempArray,
@@ -560,7 +504,14 @@ const ReadOneInvoice = ({ auth }) => {
 
   return (
     <div>
-      <div className="my-5 container" style={{background: '#2C2C2E', boxShadow: '11.7355px 11.7355px 29.3386px rgba(0, 0, 0, 0.5)', borderRadius: '10px'}}>
+      <div
+        className="my-5 container"
+        style={{
+          background: "#2C2C2E",
+          boxShadow: "11.7355px 11.7355px 29.3386px rgba(0, 0, 0, 0.5)",
+          borderRadius: "10px",
+        }}
+      >
         <div className="">
           <div className="display-4 p-3 m-3 text-center text-white project_info">
             Pool Info
@@ -599,26 +550,7 @@ const ReadOneInvoice = ({ auth }) => {
                 </button>
               </div>
             )}
-            {isRaid ? (
-              <>
-                <div className="col-8 col-md-6 m-3">
-                  <button
-                    className="btn text-white w-100 my-2"
-                    onClick={fundUserPoolForRaid}
-                  >
-                    Fund Pool
-                  </button>
-                </div>
-                <div className="col-8 col-md-6 m-3">
-                  <button
-                    className="btn text-white w-100 my-2"
-                    onClick={airDropForRaid}
-                  >
-                    Air Drop
-                  </button>
-                </div>
-              </>
-            ) : (
+            {isRaid ? null : (
               <>
                 <div className="col-8 col-md-6 m-3">
                   <button
