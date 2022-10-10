@@ -803,7 +803,7 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
-                      marginRight: "-15px",
+                      marginRight: "-16px",
                     }}
                   >
                     + Raid
@@ -820,13 +820,13 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
               variant="body2"
               color="white"
               className="raids_card"
-              sx={{ textAlign: "center" }}
+              sx={{ textAlign: "" }}
             >
-              <Typography sx={{ display: "", justifyContent: "center" }}>
+              <Typography sx={{ display: "", justifyContent: "start" }}>
                 <Typography
                   className="magic_eden"
                   variant="h7"
-                  sx={{ fontSize: "19.4351px", justifyContent: "end" }}
+                  sx={{ fontSize: "19.4351px", justifyContent: "start" }}
                 >
                   {projectName}
                 </Typography>
@@ -841,7 +841,7 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
               </Typography>
               <Typography
                 className="magic_eden_desc"
-                sx={{ fontSize: "13.6045px", padding: "10px" }}
+                sx={{ fontSize: "13.6045px", padding: "10px 10px 10px 0px" }}
               >
                 {data?.tweetText}
               </Typography>
