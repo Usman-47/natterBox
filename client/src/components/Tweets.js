@@ -622,7 +622,7 @@ const Tweets = (props) => {
                   }}
                 >
                   <TopRaiders />
-                  <Typography
+                  {/* <Typography
                     style={{ textAlign: "center", marginTop: "20px" }}
                   >
                     <Button
@@ -636,7 +636,7 @@ const Tweets = (props) => {
                     >
                       View all <Icon icon="bi:chevron-double-down" />
                     </Button>
-                  </Typography>
+                  </Typography> */}
                 </Grid>
               </Grid>
             </>

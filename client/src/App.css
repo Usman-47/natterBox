@@ -22,6 +22,16 @@
   font-family: Poppins;
 }
 
+/* =============== dashboard style =================== */
+
+.transaction_history, .history{
+  font-family: Roclette Pro !important;
+  letter-spacing: 0.04em !important;
+  color: white;
+  font-size: 24px;
+}
+
+
 .signin_twitter_div h2{
   font-family: Roclette Pro !important;
   letter-spacing: 0.04em !important;

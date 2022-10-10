@@ -265,7 +265,8 @@ const MentionProjects = ({ currentUsers, datas, mention }) => {
           </Typography>
           
         </Collapse>
-        <CardActions
+        {!mention ? (
+          <CardActions
             sx={{
               justifyContent: "space-between",
               background: "#636363",
@@ -288,6 +289,9 @@ const MentionProjects = ({ currentUsers, datas, mention }) => {
               <ShareIcon />
             </IconButton>
           </CardActions>
+        ): null
+
+        }
       </Card>
          
         {/* </div> */}
