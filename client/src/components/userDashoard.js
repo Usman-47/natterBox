@@ -139,7 +139,11 @@ const UserDashboard = ({
                                   datas={data}
                                   mention={true}
                                 /> */}
-      <TransactionHistory />
+
+      <Typography component="div" sx={{background: '#2C2C2E', marginTop:"20px", borderRadius:"20px", margin:"10px", padding:"20px 10px 10px 10px"}}>
+          <Typography variant="h5" className="transaction_history" >Transaction History</Typography>
+          <TransactionHistory />
+      </Typography>
     </>
   );
 };

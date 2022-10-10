@@ -23,7 +23,20 @@
 }
 
 /* =============== dashboard style =================== */
+.profile_dashboard_wallet_btns{
+  font-family: Roclette Pro !important;
+  letter-spacing: 0.04em !important;
+}
 
+.btn_sub{
+  color: #00acee !important;
+  font-family: Roclette Pro !important;
+  letter-spacing: 0.04em !important;
+  font-size: 14px;
+}
+.btn_inner_percentage{
+  color: #47DDFC;
+}
 .transaction_history, .history{
   font-family: Roclette Pro !important;
   letter-spacing: 0.04em !important;

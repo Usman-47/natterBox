@@ -48,7 +48,7 @@ const MentionProjects = ({ currentUsers, datas, mention }) => {
 
   return (
     <>
-      <Grid item xs={12} md={6} lg={4} sx={{ position: "relative" }}>
+      <Grid item xs={12} md={6} lg={3} sx={{ position: "relative" }}>
         {/* <div className=""> */}
         <Card
         sx={{ maxWidth: 345, backgroundColor: "black", borderRadius: "17px", margin:"0 auto" }}

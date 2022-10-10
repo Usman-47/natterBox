@@ -19,13 +19,13 @@ const TotalRaids = () => {
               <CardHeader
                 sx={{
                   // position: "absolute",
-                  padding: "10px 10px 0 10px",
+                  padding: "10px 10px 10px 10px",
                   bottom: "0",
                   left: "0",
                   width: "100%",
                   color: "white",
                   background:
-                    "linear-gradient(98.97deg, #2C2C2E 1.64%, rgba(0, 0, 0, 0) 102.85%)",
+                    "linear-gradient(98.97deg, #2C2C2E 1.64%, rgba(0, 0, 0, 0.5) 102.85%)",
                   border: "1px solid #313131",
                   borderRadius: "12px",
                 }}
