@@ -5,6 +5,7 @@ import useStatesFunc from "../hooks/useStatesFunc";
 import { red } from "@mui/material/colors";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { WalletDisconnectButton } from "@solana/wallet-adapter-react-ui";
+import Tooltip from '@mui/material/Tooltip';
 import {
   useWalletModal,
   WalletMultiButton,
@@ -134,6 +135,7 @@ const Tweets = (props) => {
                 selectedComponent === obj.text ? "text-info" : "text-white"
               }`}
             >
+            <Tooltip title= {`${index===0? "dashboard": index===1 ? "Mention to Earn" : index===2 ? "Raid to Earn": index===3? "Sweep to Earn": index===4? "Profile": index===5? "Rewards": index===6? "Accounts": index===7? "Support": index===8? "Setting": "Stats"}`}>
               <ListItemIcon className="dasbboard_icons m-auto">
                 <Icon
                   className="m-auto"
@@ -141,6 +143,7 @@ const Tweets = (props) => {
                   icon={obj.icon}
                 />
               </ListItemIcon>
+              </Tooltip>
               {/* <ListItemText primary={obj.text} /> */}
             </ListItemButton>
           </ListItem>
