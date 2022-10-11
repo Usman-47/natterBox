@@ -254,8 +254,6 @@ const initializeUserPool = async (req, res) => {
         type: "error",
       });
     }
-    // const blockhashResponse = solConnection.getLatestBlockhashAndContext();
-    // const lastValidBlockHeight = blockhashResponse.context.slot + 150;
     let walletObject = await Wallet.findOne({
       accountHolder: mongoose.Types.ObjectId(req.userObj.id),
     });
@@ -384,7 +382,7 @@ const initializeUserPool = async (req, res) => {
       // txNew.recentBlockhash = blockhashResponse.value.blockhash;
 
       // txNew.feePayer = oldWallet.publicKey;
-      if (instructions.length > 0) txNew.add(instructions);
+      // if (instructions.length > 0) txNew.add(instructions);
       const tx = await program.rpc.initializeUserPool(
         poolType,
         projectName,
@@ -427,7 +425,7 @@ const initializeUserPool = async (req, res) => {
       });
     } else {
       res.send({
-        // msg: "pool created",
+        msg: "Wallet Not Found",
         YourWallet: "Wallet Not Found",
         type: "fail",
       });

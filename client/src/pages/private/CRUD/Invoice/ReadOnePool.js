@@ -170,7 +170,11 @@ const ReadOneInvoice = ({ auth }) => {
     if (res?.data?.reward?.length > 0) {
       var tempArray = [];
       res?.data?.reward?.map((user) => {
-        tempArray.push({ users: user.userPublicKey, tweetIds: user.tweetId });
+        tempArray.push({
+          userPublicKey: user.userPublicKey,
+          tweetIds: user.tweetId,
+          userId: user.userId,
+        });
       });
 
       let body = {

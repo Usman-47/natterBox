@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
+const moment = require("moment");
 const Reward = require("../../model/reward");
-const Invoice = require("../../model/invoiceModel");
+const User = require("../../model/userModel");
 const Wallet = require("../../model/walletModel");
 const CheckRoleAccess = require("../../util/CheckRoleAccess");
 const { Program, web3 } = require("@project-serum/anchor");
@@ -216,10 +217,11 @@ const updateRewardRecord = async (req, res) => {
           users: {
             $elemMatch: {
               tweetId: usersArray[i].tweetIds,
-              userPublicKey: usersArray[i].users,
+              userId: usersArray[i].userId,
               projectName,
               mintAddress: rewardToken,
               isRaid,
+              invoiceCreator: req.userObj.id,
               isPaid: false,
             },
           },
@@ -231,6 +233,31 @@ const updateRewardRecord = async (req, res) => {
         },
         {
           new: true,
+        }
+      );
+
+      let updatedUserRecord = await User.updateOne(
+        {
+          $and: [
+            { _id: usersArray[i].userId },
+            {
+              rewardStatus: {
+                $elemMatch: {
+                  tweetId: usersArray[i].tweetIds,
+                  projectName: projectName,
+                  rewardToken: rewardToken,
+                  isRewardpaid: false,
+                },
+              },
+            },
+          ],
+        },
+
+        {
+          $set: {
+            "rewardStatus.$.isRewardpaid": true,
+            "rewardStatus.$.paidTime": moment().unix(),
+          },
         }
       );
     }
@@ -250,7 +277,7 @@ const updateRewardRecord = async (req, res) => {
       var usersPublicKey = [];
       const mintAddress = new PublicKey(rewardToken);
       for (i = 0; i < usersArray.length; i++) {
-        usersPublicKey.push(new PublicKey(usersArray[i].users));
+        usersPublicKey.push(new PublicKey(usersArray[i].userPublicKey));
       }
       const users = usersPublicKey;
 
@@ -308,6 +335,12 @@ const updateRewardRecord = async (req, res) => {
             )
           );
         }
+        console.log(
+          poolAta.toString(),
+          "poolAta",
+          userAta.toString(),
+          "userAta"
+        );
         tx.add(
           Token.createTransferInstruction(
             TOKEN_PROGRAM_ID,
@@ -323,7 +356,7 @@ const updateRewardRecord = async (req, res) => {
       const txID = await solConnection.sendTransaction(tx, [oldWallet]);
 
       res.send({
-        msg: "Successful",
+        msg: "reward successfully transfer",
         tx: txID,
         type: "success",
       });

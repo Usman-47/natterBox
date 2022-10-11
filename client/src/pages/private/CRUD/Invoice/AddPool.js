@@ -175,6 +175,61 @@ const AddPool = ({ auth, projectId, setPoolID, setpoolSuccessfully }) => {
         navigate(0);
         return;
       }
+
+      if (isRaid) {
+        const body = {
+          funds: amount,
+          startTime,
+          isRaid,
+          timeLimit,
+          category,
+          rewardFrequency,
+          splToken,
+          projectName,
+        };
+        const res = await axios.post(
+          `${process.env.REACT_APP_SERVERURL}/wallet/initializeUserPool`,
+          body,
+          {
+            headers: {
+              Authorization: `BEARER ${token}`,
+            },
+          }
+        );
+        if (!res.data.tx) {
+          toast.error("Something went wrong");
+          return;
+        }
+      } else {
+        const body = {
+          funds: amount,
+          startTime,
+          isRaid,
+          timeLimit,
+          category,
+          rewardFrequency,
+          splToken,
+          projectName,
+        };
+        const res = await axios
+          .post(
+            `${process.env.REACT_APP_SERVERURL}/wallet/initializeUserPool`,
+            body,
+            {
+              headers: {
+                Authorization: `BEARER ${token}`,
+              },
+            }
+          )
+          .catch((err) => {
+            setApiError(err.response.data.msg);
+          });
+        if (!res.data.tx) {
+          toast.error("Something went wrong");
+          return;
+        }
+      }
+
       const body = {
         pool: {
           amount,
@@ -186,14 +241,12 @@ const AddPool = ({ auth, projectId, setPoolID, setpoolSuccessfully }) => {
         },
       };
       const { data } = await UpdateInvoiceApi(id, body, token);
-      console.log(data, "poolID");
       dispatch({ type: "loadingStop" });
 
       if (data.type === "success") {
         const res = await axios.get(
           `${process.env.REACT_APP_SERVERURL}/api/public/invoice/${id}`
         );
-        // console.log(res?.data?.invoiceFound);
         if (projectId) {
           setPoolID(res?.data?.invoiceFound?.pool[0]._id);
           setpoolSuccessfully(true);
