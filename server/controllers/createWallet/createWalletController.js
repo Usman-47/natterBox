@@ -406,16 +406,6 @@ const initializeUserPool = async (req, res) => {
           instructions,
         }
       );
-      // txNew.add(tx);
-
-      // const message = txNew.serializeMessage();
-      // const signature = nacl.sign.detached(message, oldWallet.secretKey);
-      // txNew.addSignature(oldWallet.publicKey, Buffer.from(signature));
-      // const rawTransaction = txNew.serialize();
-
-      // let response = await solConnection.sendTransaction(txNew, [oldWallet]);
-      // await solConnection.confirmTransaction(response);
-      // console.log(response, "tx response");
       res.send({
         msg: "pool created",
         YourWallet: oldWallet.publicKey.toString(),
