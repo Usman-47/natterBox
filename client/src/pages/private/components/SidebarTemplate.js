@@ -70,10 +70,10 @@ const SidebarTemplate = ({ currentUser, navArray, setShowSideBar }) => {
           </Typography>
           <nav className="overflow-hidden mt-5">
             <ul className="navbar-nav mb-2 mb-lg-0 py-4">
-              {/* {clientAddress ? (
+              {clientAddress ? (
                 <li style={{ width: "50px" }}>Your Wallet: {clientAddress}</li>
-              ) : null} */}
-              {/* {solBalance ? <li>Balance: {solBalance} sol</li> : null} */}
+              ) : null}
+              {solBalance ? <li>Balance: {solBalance} sol</li> : null}
               {navArray &&
                 navArray.map((navElement, index) => (
                   <li

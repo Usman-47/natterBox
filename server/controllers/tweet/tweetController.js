@@ -1000,7 +1000,7 @@ const mentionClaim = async (req, res) => {
 
           if (liveTweetCreatedAt + rewardFrequencyInSecond > moment().unix()) {
             return res.send({
-              msg: "Please Wait, after tweeting a tweet",
+              msg: "Please Wait... after tweeting a tweet",
               type: "Failed",
             });
           }

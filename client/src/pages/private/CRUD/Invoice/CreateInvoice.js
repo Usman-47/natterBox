@@ -129,10 +129,6 @@ const CreateInvoice = ({ auth }) => {
     }
   }, [isRaid]);
 
-  useEffect(() => {
-    console.log(publicKey.toString());
-  }, [publicKey]);
-
   if (loading) {
     return (
       <>
@@ -140,7 +136,6 @@ const CreateInvoice = ({ auth }) => {
       </>
     );
   }
-  console.log(isRaid, "Raid value");
   if (!checkUserAccess([ADMIN, MANAGER])) {
     toast.warning("You cant access");
     return (
@@ -352,12 +347,12 @@ const CreateInvoice = ({ auth }) => {
   const handleNext = () => {
     if (!isSuccessful && activeStep == 1) {
       // if (false) {
-      alert("Submit form first");
+      toast.error("Submit form first");
       return;
     }
     if (!ispoolSuccessful && activeStep == 3) {
       // if (false) {
-      alert("Submit form first");
+      toast.error("Submit form first");
       return;
     }
     if (!istweetSuccessful && activeStep == 4) {
