@@ -38,7 +38,7 @@ const ChartApp = () => {
      
       {/* <button onClick={fetchData}>fetch date</button> */}
 
-      <div style={{width:1000, margin:"0 auto", marginTop:"50px"}}>
+      <div style={{width:'100%', margin:"0 auto", marginTop:"50px"}}>
       <BarChart chartData={userData} setSelectedYear={setSelectedYear} />
       </div>
     </div>

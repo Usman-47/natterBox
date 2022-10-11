@@ -366,11 +366,18 @@ const Tweets = (props) => {
             >
               <MenuIcon />
             </IconButton>
+            <Typography component="div" sx={{color:"white"}}>
+            <Typography className="header_name" sx={{color:"white"}}>Hello {props.auth?.userName}</Typography>
+            <Typography component="p" sx={{color:"white", fontSize:"12px"}}>You have <span>105 Raids</span> to reach your daily limits</Typography>
+            </Typography>
+            
             <Typography sx={{ marginLeft: "auto" }} component="div">
+              
               <Typography
-                sx={{ display: "flex", justifyContent: "end" }}
+                sx={{ display: "flex", alignItems:"center", gap:"50px" }}
                 component="div"
               >
+              <WalletDisconnectButton className="wallet_disconnect" />
                 <Typography onClick={handleClick}>
                   <Stack direction="row">
                     <Avatar
@@ -520,7 +527,7 @@ const Tweets = (props) => {
           ) : selectedComponent === "Mention to Earn" ? (
             <>
               <Grid container>
-                <Grid item xs={12} sm={8} md={9}>
+                <Grid item xs={12} sm={7} md={8} lg={9}>
                   <Typography>
                     <Grid container sx={{ marginBottom: "20px" }}>
                       <RaidsCountWidget />
@@ -614,11 +621,15 @@ const Tweets = (props) => {
                   </Box>
                 </Grid>
                 <Grid
-                  sm={4}
-                  md={3}
+                  xs={10}
+                  sm={5}
+                  md={4}
+                  lg={3}
+                  marginTop={{xs:"20px"}}
                   style={{
+                    margin:"0 auto",
                     background: "#161616",
-                    borderRadius: "0px 0px 0px 20px",
+                    borderRadius: "20px",
                   }}
                 >
                   <TopRaiders />
@@ -643,7 +654,7 @@ const Tweets = (props) => {
           ) : selectedComponent === "Raid to Earn" ? (
             <>
               <Grid container>
-                <Grid item xs={12} sm={8} md={9}>
+                <Grid item xs={12} sm={7} md={8} lg={9}>
                   <Typography>
                     <Grid container sx={{ marginBottom: "20px" }}>
                       <RaidsCountWidget />
@@ -722,25 +733,28 @@ const Tweets = (props) => {
                                   color: "white",
                                   padding: "0 !important",
                                   marginTop: "30px",
+                                  display: "flex",
                                 }}
                                 value="2"
                               >
-                                <Grid container spacing={2} >
+                               <Grid container  >
                                 
                                   {data?.isRaid &&
                                     data?.pool?.map((pool, i) => (
                                       <>
                                         {pool?.endTime * 1000 < Date.now() ? (
+                                          
                                           <Pool
                                             key={i}
                                             currentUser={props?.auth}
                                             pool={pool}
                                             projectDetail={data}
                                           />
+                                          
                                         ) : null}
                                       </>
                                     ))}
-                                </Grid>
+                                    </Grid>
                               </TabPanel>
                             </div>
                           ) : null}
@@ -750,11 +764,13 @@ const Tweets = (props) => {
                   </Box>
                 </Grid>
                 <Grid
-                  sm={4}
-                  md={3}
+                  xs={10}
+                  sm={5}
+                  md={4}
                   style={{
                     background: "#161616",
-                    borderRadius: "0px 0px 0px 20px",
+                    borderRadius: "20px",
+                    margin:"0 auto"
                   }}
                 >
                   <TopRaiders />
@@ -778,13 +794,15 @@ const Tweets = (props) => {
             </>
           ) : selectedComponent === "Account" ? (
             <Account />
-          ) : selectedComponent === "Rewards" ? (
+          ) 
+          : selectedComponent === "Rewards" ? (
             <Rewards />
-          ) : selectedComponent === "Profile" ? (
+          ) 
+          : selectedComponent === "Profile" ? (
             <>
               {/* <Profledescription currentUser={props?.auth} /> */}
               <Grid container >
-                <Grid item xs={12} sm={8} md={8}>
+                <Grid item xs={12} sm={7} md={7} lg={8}>
                   <Typography>
                     <Grid container sx={{ marginBottom: "20px",}}>
                       <Account />
@@ -814,8 +832,10 @@ const Tweets = (props) => {
                   />
                 </Grid>
                 <Grid
-                  sm={4}
-                  md={4}
+                xs={12}
+                  sm={5}
+                  md={5}
+                  lg={4}
                   style={{
                     background: "#161616",
                     borderRadius: "0px 0px 0px 20px",
@@ -838,6 +858,7 @@ const Tweets = (props) => {
             </>
           ) : selectedComponent === "Setting" ? (
             <Setting />
+            
           ) : selectedComponent === "Stats" ? (
             <Progressbr />
           ) : (

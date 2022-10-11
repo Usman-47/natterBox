@@ -32,7 +32,7 @@ export default function RewardCards() {
       >
         {array.map((item, i) => {
           return (
-            <Grid key={i} item xs={11} md={6} xl={4} padding="5px">
+            <Grid key={i} item xs={11} md={6} xl={4} padding="5px" sx={{margin:"0 auto"}}>
               <Card className="rewards_card" sx={{ width: "100%" }}>
                 <Typography
                   sx={{
