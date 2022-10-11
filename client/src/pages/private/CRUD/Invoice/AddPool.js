@@ -70,7 +70,7 @@ const AddPool = ({ auth, projectId, setPoolID, setpoolSuccessfully }) => {
   const [flag, setFlag] = useState(false);
 
   const solConnection = new web3.Connection(
-    web3.clusterApiUrl("devnet"),
+    web3.clusterApiUrl("mainnet-beta"),
     "processed"
   );
   let cloneWindow = window;

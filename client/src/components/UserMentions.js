@@ -25,7 +25,7 @@ const UserMentions = ({ currentUser, data }) => {
     }
   }, [data]);
   const solConnection = new web3.Connection(
-    web3.clusterApiUrl("devnet"),
+    web3.clusterApiUrl("mainnet-beta"),
     "processed"
   );
 
@@ -152,7 +152,7 @@ const UserMentions = ({ currentUser, data }) => {
               <>
                 <option
                   key={i}
-                  style={{ fontSize: "12px", fontSize:"8px" }}
+                  style={{ fontSize: "12px", fontSize: "8px" }}
                   value={pool.splToken}
                 >
                   {pool.splToken}
@@ -197,7 +197,7 @@ const UserMentions = ({ currentUser, data }) => {
       {mentionUserTweet?.length > 0 ? (
         <Button
           id="headings"
-          style={{ marginBottom: "20px",  }}
+          style={{ marginBottom: "20px" }}
           variant="contained"
           onClick={createTweet}
         >

@@ -42,10 +42,10 @@ const idl = JSON.parse(
   fs.readFileSync(__dirname + "/twitter_program.json", "utf8")
 );
 
-anchor.setProvider(anchor.Provider.local(web3.clusterApiUrl("devnet")));
-// anchor.setProvider(anchor.Provider.local(web3.clusterApiUrl("mainnet-beta")));
-var solConnection = new web3.Connection(web3.clusterApiUrl("devnet"), {
-  // var solConnection = new web3.Connection(web3.clusterApiUrl("mainnet-beta"), {
+// anchor.setProvider(anchor.Provider.local(web3.clusterApiUrl("devnet")));
+anchor.setProvider(anchor.Provider.local(web3.clusterApiUrl("mainnet-beta")));
+// var solConnection = new web3.Connection(web3.clusterApiUrl("devnet"), {
+var solConnection = new web3.Connection(web3.clusterApiUrl("mainnet-beta"), {
   commitment: "confirmed",
   confirmTransactionInitialTimeout: 12000,
 });

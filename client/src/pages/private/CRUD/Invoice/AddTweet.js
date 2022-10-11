@@ -47,7 +47,7 @@ const CreateInvoice = ({ poolID, settweetSuccessfully }) => {
   }
 
   const solConnection = new web3.Connection(
-    web3.clusterApiUrl("devnet"),
+    web3.clusterApiUrl("mainnet-beta"),
     "processed"
   );
   let cloneWindow = window;

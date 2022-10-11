@@ -92,7 +92,7 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
     useWallet();
 
   const solConnection = new web3.Connection(
-    web3.clusterApiUrl("devnet"),
+    web3.clusterApiUrl("mainnet-beta"),
     "processed"
   );
   let cloneWindow = window;
@@ -743,7 +743,7 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
 
   return (
     <>
-      <Grid item xs={12} md={6} lg={4} xl={3} sx={{ position: "relative", }}>
+      <Grid item xs={12} md={6} lg={4} xl={3} sx={{ position: "relative" }}>
         <Card
           sx={{
             maxWidth: 345,
@@ -1391,9 +1391,8 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
         {/* <div className="triangle" style={{ background: "#FFA34E" }}>
           <img className="mail_logo" src="r.png" alt="" />
         </div> */}
-      
-        </Grid>
-      
+      </Grid>
+
       <ThreadModal
         allReplyOfATweet={allReplyOfATweet}
         data={data}
@@ -1402,7 +1401,6 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
         handleReplyData={handleReplyData}
         handleIsReply={handleIsReply}
       />
-    
     </>
   );
 };

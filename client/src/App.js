@@ -72,7 +72,8 @@ import LandingHome from "./components/LandingHome";
 
 function App(props) {
   require("@solana/wallet-adapter-react-ui/styles.css");
-  const network = WalletAdapterNetwork.Devnet;
+  // const network = WalletAdapterNetwork.Devnet;
+  const network = WalletAdapterNetwork.Mainnet;
   const endpoint = useMemo(() => clusterApiUrl(network), [network]);
 
   const wallets = useMemo(

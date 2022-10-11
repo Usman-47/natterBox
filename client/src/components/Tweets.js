@@ -5,7 +5,7 @@ import useStatesFunc from "../hooks/useStatesFunc";
 import { red } from "@mui/material/colors";
 import { useWallet, useConnection } from "@solana/wallet-adapter-react";
 import { WalletDisconnectButton } from "@solana/wallet-adapter-react-ui";
-import Tooltip from '@mui/material/Tooltip';
+import Tooltip from "@mui/material/Tooltip";
 import {
   useWalletModal,
   WalletMultiButton,
@@ -135,34 +135,42 @@ const Tweets = (props) => {
                 selectedComponent === obj.text ? "text-info" : "text-white"
               }`}
             >
-            <Tooltip title= {`${index===0? "dashboard": index===1 ? "Mention to Earn" : index===2 ? "Raid to Earn": index===3? "Sweep to Earn": index===4? "Profile": index===5? "Rewards": index===6? "Accounts": index===7? "Support": index===8? "Setting": "Stats"}`}>
-              <ListItemIcon className="dasbboard_icons m-auto">
-                <Icon
-                  className="m-auto"
-                  color={selectedComponent === obj.text && "#00acee"}
-                  icon={obj.icon}
-                />
-              </ListItemIcon>
+              <Tooltip
+                title={`${
+                  index === 0
+                    ? "dashboard"
+                    : index === 1
+                    ? "Mention to Earn"
+                    : index === 2
+                    ? "Raid to Earn"
+                    : index === 3
+                    ? "Sweep to Earn"
+                    : index === 4
+                    ? "Profile"
+                    : index === 5
+                    ? "Rewards"
+                    : index === 6
+                    ? "Accounts"
+                    : index === 7
+                    ? "Support"
+                    : index === 8
+                    ? "Setting"
+                    : "Stats"
+                }`}
+              >
+                <ListItemIcon className="dasbboard_icons m-auto">
+                  <Icon
+                    className="m-auto"
+                    color={selectedComponent === obj.text && "#00acee"}
+                    icon={obj.icon}
+                  />
+                </ListItemIcon>
               </Tooltip>
               {/* <ListItemText primary={obj.text} /> */}
             </ListItemButton>
           </ListItem>
         ))}
       </List>
-      {/* <Typography
-  
-      >
-        <CardHeader
-          sx={{ color: "white" }}
-          avatar={
-            <Avatar sx={{ backgroundColor: "white" }} aria-label="recipe">
-              <Icon color="rgb(29, 155, 240)" icon="akar-icons:twitter-fill" />
-            </Avatar>
-          }
-          title={props?.auth?.userName}
-          subheader="Membership Status: STANDARD"
-        />
-      </Typography> */}
     </div>
   );
 
@@ -186,7 +194,7 @@ const Tweets = (props) => {
   }, [publicKey]);
 
   const solConnection = new web3.Connection(
-    web3.clusterApiUrl("devnet"),
+    web3.clusterApiUrl("mainnet-beta"),
     "processed"
   );
 
@@ -369,18 +377,28 @@ const Tweets = (props) => {
             >
               <MenuIcon />
             </IconButton>
-            <Typography component="div" sx={{color:"white"}}>
-            <Typography className="header_name" sx={{color:"white"}}>Hello {props.auth?.userName}</Typography>
-            <Typography component="p" sx={{color:"white", fontSize:"12px"}}>You have <span style={{color:"#47DDFC", fontSize:"14px"}}>105 Raids</span> to reach your daily limits</Typography>
-            </Typography>
-            
-            <Typography sx={{ marginLeft: "auto" }} component="div">
-              
+            <Typography component="div" sx={{ color: "white" }}>
+              <Typography className="header_name" sx={{ color: "white" }}>
+                Hello {props.auth?.userName}
+              </Typography>
               <Typography
-                sx={{ display: "flex", alignItems:"center", gap:"50px" }}
+                component="p"
+                sx={{ color: "white", fontSize: "12px" }}
+              >
+                You have{" "}
+                <span style={{ color: "#47DDFC", fontSize: "14px" }}>
+                  105 Raids
+                </span>{" "}
+                to reach your daily limits
+              </Typography>
+            </Typography>
+
+            <Typography sx={{ marginLeft: "auto" }} component="div">
+              <Typography
+                sx={{ display: "flex", alignItems: "center", gap: "50px" }}
                 component="div"
               >
-              <WalletDisconnectButton className="wallet_disconnect" />
+                <WalletDisconnectButton className="wallet_disconnect" />
                 <Typography onClick={handleClick}>
                   <Stack direction="row">
                     <Avatar
@@ -628,9 +646,9 @@ const Tweets = (props) => {
                   sm={5}
                   md={4}
                   lg={3}
-                  marginTop={{xs:"20px"}}
+                  marginTop={{ xs: "20px" }}
                   style={{
-                    margin:"0 auto",
+                    margin: "0 auto",
                     background: "#161616",
                     borderRadius: "20px",
                   }}
@@ -712,9 +730,7 @@ const Tweets = (props) => {
                                 value="1"
                               >
                                 <Grid container>
-
-                                
-                                 {data?.isRaid &&
+                                  {data?.isRaid &&
                                     data?.pool?.map((pool, i) => (
                                       <>
                                         {pool?.endTime * 1000 > Date.now() ? (
@@ -727,7 +743,6 @@ const Tweets = (props) => {
                                         ) : null}
                                       </>
                                     ))}
-                                 
                                 </Grid>
                               </TabPanel>
 
@@ -740,24 +755,21 @@ const Tweets = (props) => {
                                 }}
                                 value="2"
                               >
-                               <Grid container  >
-                                
+                                <Grid container>
                                   {data?.isRaid &&
                                     data?.pool?.map((pool, i) => (
                                       <>
                                         {pool?.endTime * 1000 < Date.now() ? (
-                                          
                                           <Pool
                                             key={i}
                                             currentUser={props?.auth}
                                             pool={pool}
                                             projectDetail={data}
                                           />
-                                          
                                         ) : null}
                                       </>
                                     ))}
-                                    </Grid>
+                                </Grid>
                               </TabPanel>
                             </div>
                           ) : null}
@@ -774,7 +786,7 @@ const Tweets = (props) => {
                   style={{
                     background: "#161616",
                     borderRadius: "20px",
-                    margin:"0 auto"
+                    margin: "0 auto",
                   }}
                 >
                   <TopRaiders />
@@ -796,20 +808,18 @@ const Tweets = (props) => {
                 </Grid>
               </Grid>
             </>
-          ) 
-          : selectedComponent === "Rewards" ? (
+          ) : selectedComponent === "Rewards" ? (
             <>
               <h1 className="text-center text-white">Coming Soon</h1>
               {/* <Rewards /> */}
             </>
-          ) 
-          : selectedComponent === "Profile" ? (
+          ) : selectedComponent === "Profile" ? (
             <>
               {/* <Profledescription currentUser={props?.auth} /> */}
-              <Grid container >
+              <Grid container>
                 <Grid item xs={12} sm={7} md={7} lg={8}>
                   <Typography>
-                    <Grid container sx={{ marginBottom: "20px",}}>
+                    <Grid container sx={{ marginBottom: "20px" }}>
                       <Account />
                     </Grid>
                   </Typography>
@@ -837,7 +847,7 @@ const Tweets = (props) => {
                   />
                 </Grid>
                 <Grid
-                xs={12}
+                  xs={12}
                   sm={5}
                   md={5}
                   lg={4}
@@ -863,7 +873,6 @@ const Tweets = (props) => {
             </>
           ) : selectedComponent === "Setting" ? (
             <Setting />
-            
           ) : selectedComponent === "Stats" ? (
             <Progressbr />
           ) : (

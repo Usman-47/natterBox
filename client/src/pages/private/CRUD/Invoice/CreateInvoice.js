@@ -85,7 +85,7 @@ const CreateInvoice = ({ auth }) => {
   const navigate = useNavigate();
   const [, , checkUserAccess] = useUserFunc();
 
-  const solConnection = new Connection(clusterApiUrl("devnet"));
+  const solConnection = new Connection(clusterApiUrl("mainnet-beta"));
   useEffect(() => {
     if (isRaid) {
       setSteps([
