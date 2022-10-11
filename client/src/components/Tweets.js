@@ -368,7 +368,7 @@ const Tweets = (props) => {
             </IconButton>
             <Typography component="div" sx={{color:"white"}}>
             <Typography className="header_name" sx={{color:"white"}}>Hello {props.auth?.userName}</Typography>
-            <Typography component="p" sx={{color:"white", fontSize:"12px"}}>You have <span>105 Raids</span> to reach your daily limits</Typography>
+            <Typography component="p" sx={{color:"white", fontSize:"12px"}}>You have <span style={{color:"#47DDFC", fontSize:"14px"}}>105 Raids</span> to reach your daily limits</Typography>
             </Typography>
             
             <Typography sx={{ marginLeft: "auto" }} component="div">

@@ -1,5 +1,4 @@
 import React, {useState} from 'react'
-// import faker from 'faker';
 import BarChart from './BarChart';
 import ChartData from './ChartData';
 const ChartApp = () => {
