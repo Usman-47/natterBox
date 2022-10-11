@@ -33,12 +33,14 @@ const TopRaiders = () => {
           <Icon color="white" icon="teenyicons:adjust-horizontal-outline" />
         </Typography>
         {arr.map((item, i) => (
-          <Typography key={i}>
+          <Typography sx={{background: 'linear-gradient(98.97deg, #2C2C2E 1.64%, rgba(0, 0, 0, 0.5) 102.85%)',
+            border: '1px solid #313131',
+            borderRadius: '12px', margin:"0 5px 5px 0"}} key={i}>
             <CardHeader
               className="nft-blaze"
               sx={{
                 // position: "absolute",
-                padding: "10px 10px 0 10px",
+                padding: "10px 10px 10px 10px",
                 bottom: "0",
                 left: "0",
                 width: "100%",
@@ -74,6 +76,7 @@ const TopRaiders = () => {
                       display: "flex",
                       justifyContent: "center",
                       alignItems: "center",
+                      color:"#47DDFC"
                     }}
                   >
                     + 2SOL

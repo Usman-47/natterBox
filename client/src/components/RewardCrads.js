@@ -20,7 +20,7 @@ export default function RewardCards() {
       src: "ethereum.png",
       btnText: "Select Ethereum Wallet",
     },
-    { title: "Twitter", src: "twitter.png", btnText: "Connect Your Tweeter" },
+    { title: "Twitter Account", src: "twitter.png", btnText: "Connect Your Tweeter" },
   ];
 
   return (
@@ -69,22 +69,38 @@ export default function RewardCards() {
                       marginTop="10px"
                       color="white"
                       component="div"
+                      sx={{fontWeight:"600"}}
                     >
                       {item.title}
                     </Typography>
                   </Typography>
 
-                  <Typography sx={{ color: "white" }}>
-                    0.050 sol <br />
+                  {i===0? 
+                    <Typography className="profile_dashboard_wallet_btns" sx={{ color: "white" }}>
+                    0.050  <sub className="btn_sub">SOL</sub> <br />
                     <span
+                    className="btn_inner_percentage"
                       sx={{
                         fontSize: "10.9755px",
-                        color: "#47DDFC !important",
+                        
                       }}
                     >
-                      12.2%
+                      12.2% 
                     </span>
-                  </Typography>
+                  </Typography>: i===1? 
+                  <Typography className="profile_dashboard_wallet_btns" sx={{ color: "white" }}>
+                    0.050 <sub className="btn_sub">ETH</sub>  <br />
+                    <span
+                    className="btn_inner_percentage"
+                      sx={{
+                        fontSize: "10.9755px",
+                        
+                      }}
+                    >
+                      12.2% 
+                    </span>
+                  </Typography>: null
+                  }
                 </Typography>
 
                 <CardContent></CardContent>
@@ -92,15 +108,31 @@ export default function RewardCards() {
                   <Button
                     sx={{
                       background:
-                        "linear-gradient(95.18deg, #55EEFF 25.5%, #A431D0 108%)",
+                       `${i===0?  'linear-gradient(95.18deg, #55EEFF 25.5%, #A431D0 108%)': i===1? 'linear-gradient(93.94deg, rgba(75, 60, 189, 0.22) 9.62%, rgba(82, 68, 195, 0.33) 100%)': 'linear-gradient(180deg, rgba(28, 28, 28, 0.47) 0%, rgba(74, 75, 75, 0.58) 100%)' }`,
                       borderRadius: "38.1004px",
                       color: "white",
-                      fontSize: "10px",
+                      fontSize: "13px",
+                      fontFamily:"Poppins",
+                      gap:"5px"
                     }}
                     size="large"
                   >
-                    <img width={"30px"} height={"30px"} src={item.src} />
-                    {item.btnText}
+                      {i === 0 && (
+                      <img
+                      
+                        width={"25px"}
+                        height={"25px"}
+                        src={item.src}
+                        alt="solana"
+                      />
+                    )}
+                    {i === 1 && (
+                      <img width={"15px"} src={item.src} alt="solana" />
+                    )}
+                    {i === 2 && (
+                      <img width={"33px"} src={item.src} alt="solana" />
+                    )}
+                   <span> {item.btnText}</span>
                   </Button>
                   <Typography color="white" className="edit-icon">
                     <Icon icon="ant-design:edit-outlined" />

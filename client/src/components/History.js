@@ -1,16 +1,39 @@
 import React from "react";
+
+import Card from "@mui/material/Card";
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
+import IconButton from '@mui/material/IconButton';
+import { styled } from '@mui/material/styles';
+
 import { Icon } from "@iconify/react";
+import { useState } from "react";
+
+const ExpandMore = styled((props) => {
+    const { expand, ...other } = props;
+    return <IconButton {...other} />;
+  })(({ theme, expand }) => ({
+    transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
+    marginLeft: 'auto',
+    transition: theme.transitions.create('transform', {
+      duration: theme.transitions.duration.shortest,
+    }),
+  }));
+
+
+
 const History = () => {
+  
   const array = [1, 2, 3, 4, 5, 6, 7, 8];
-  return (
-    <>
-      {array.map((item, i) => {
+const [data, setData]= useState();
+  const Expand = ()=>{
+  setData(
+    array.slice(6, 8).map((item) => {
         return (
           <div
-            key={i}
             style={{
               background:
-                "linear-gradient(98.97deg, #2C2C2E 1.64%, rgba(0, 0, 0, 0) 102.85%)",
+                "linear-gradient(98.97deg, #2C2C2E 1.64%, rgba(0, 0, 0, 0.5) 102.85%)",
               border: "1px solid #313131",
               borderRadius: "12px",
               color: "white",
@@ -23,52 +46,165 @@ const History = () => {
               style={{ fontFamily: "Poppins" }}
               className="d-flex justify-content-between align-items-center"
             >
+            <div style={{fontSize:"12px"}}>21.05.22</div>
               <div className="d-flex align-items-center gap-2">
+             
                 <p
                   style={{
-                    fontSize: "8px",
+                    marginBottom: "0px",
+                    fontSize: "20px",
+                    fontFamily: "Roclette Pro",
+                  }}
+                >
+                  0.25
+                  <sub
+                    style={{
+                      color: "#47DDFC",
+                      fontSize: "12px",
+                      fontFamily: "Roclette Pro",
+                      letterSpacing: "0.04em",
+                    }}
+                  >
+                    SOL
+                  </sub>{" "}
+                </p>
+              </div>
+              <div>
+                  <p
+                  style={{
+                    fontSize: "12px",
+                   
+                    marginBottom: "0px",
+                  }}
+                >
+                  $75.35
+                </p>
+              </div>
+              <div>
+              <p
+                  style={{
+                    fontSize: "12px",
                     color: "#47DDFC",
                     marginBottom: "0px",
                   }}
                 >
                   34% <Icon icon="akar-icons:arrow-up" />
                 </p>
-                <p style={{ marginBottom: "0px" }}>3.15</p>
               </div>
-              <div>12-09-2022</div>
-              <div style={{ color: "#B4FF99" }}>Successful</div>
-              <div className="d-flex gap-2">
-                <div
-                  style={{
-                    background: "rgba(255, 255, 255, 0.03)",
-                    boxShadow: "0px 2.74232px 2.74232px rgba(0, 0, 0, 0.25)",
-                    backdropFilter: "blur(1.37116px)",
-                    borderRadius: "3px",
-                    padding: "0px 12px 0px 12px",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <Icon icon="akar-icons:cloud-download" />
+              <div style={{ color: "#B4FF99" }}><Icon style={{background:'linear-gradient(249.51deg, #00FFA3 -47.16%, #DC1FFF 140.55%)'}} icon="tabler:currency-solana" /></div>
+                <div>
+                <Icon color="white" icon="charm:menu-kebab" />
                 </div>
-                <div
-                  style={{
-                    background: "rgba(255, 255, 255, 0.03)",
-                    boxShadow: "0px 2.74232px 2.74232px rgba(0, 0, 0, 0.25)",
-                    backdropFilter: "blur(1.37116px)",
-                    borderRadius: "3px",
-                    padding: "10px",
-                    display: "flex",
-                    alignItems: "center",
-                  }}
-                >
-                  <Icon icon="ant-design:delete-filled" />
-                </div>
-              </div>
+            
             </div>
           </div>
         );
-      })}
+      })
+  )
+
+  }
+  return (
+    <>
+      <Card
+        sx={{
+          width: "100%",
+          background:
+            "linear-gradient(98.97deg, #2C2C2E 1.64%, rgba(0, 0, 0, 0) 102.85%)",
+          border: "2px solid #313131",
+          borderRadius: "12px",
+          color: "white",
+          padding: "10px",
+          margin: "5px",
+        }}
+      >
+        {
+            array.slice(0, 5).map((item) => {
+          return (
+            <div
+              style={{
+                background:
+                  "linear-gradient(98.97deg, #2C2C2E 1.64%, rgba(0, 0, 0, 0) 102.85%)",
+                border: "1px solid #313131",
+                borderRadius: "12px",
+                color: "white",
+                padding: "10px",
+                margin: "5px",
+                fontFamily: "Poppins",
+              }}
+            >
+              <div
+                style={{ fontFamily: "Poppins" }}
+                className="d-flex justify-content-between align-items-center"
+              >
+              <div style={{fontSize:"12px"}}>21.05.22</div>
+                <div className="d-flex align-items-center gap-2">
+               
+                  <p
+                    style={{
+                      marginBottom: "0px",
+                      fontSize: "20px",
+                      fontFamily: "Roclette Pro",
+                    }}
+                  >
+                    0.25
+                    <sub
+                      style={{
+                        color: "#47DDFC",
+                        fontSize: "12px",
+                        fontFamily: "Roclette Pro",
+                        letterSpacing: "0.04em",
+                      }}
+                    >
+                      SOL
+                    </sub>{" "}
+                  </p>
+                </div>
+                <div>
+                    <p
+                    style={{
+                      fontSize: "12px",
+                     
+                      marginBottom: "0px",
+                    }}
+                  >
+                    $75.35
+                  </p>
+                </div>
+                <div>
+                <p
+                    style={{
+                      fontSize: "12px",
+                      color: "#47DDFC",
+                      marginBottom: "0px",
+                    }}
+                  >
+                    34% <Icon icon="akar-icons:arrow-up" />
+                  </p>
+                </div>
+                <div style={{ color: "#B4FF99" }}><Icon style={{background:'linear-gradient(249.51deg, #00FFA3 -47.16%, #DC1FFF 140.55%)'}} icon="tabler:currency-solana" /></div>
+                <div>
+                <Icon color="white" icon="charm:menu-kebab" />
+                </div>
+              
+              </div>
+            </div>
+          );
+        })
+        }
+        {data}
+{/* 
+        <ExpandMore
+        
+          onClick={Expand}
+       
+          aria-label="show more"
+        >
+         <ExpandMoreIcon />
+        </ExpandMore> */}
+        <div className="text-center">
+        <button style={{background:"transparent", color:"white", border:"none"}} onClick={Expand}><Icon icon="bi:chevron-double-down" /></button>
+        </div>
+      </Card>
     </>
   );
 };

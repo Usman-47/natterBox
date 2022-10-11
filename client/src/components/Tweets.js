@@ -529,7 +529,7 @@ const Tweets = (props) => {
                   <Box
                     className="tabs_container"
                     sx={{
-                      width: "95%",
+                      width: "98%",
                       margin: "0 auto",
                       typography: "body1",
                     }}
@@ -622,7 +622,7 @@ const Tweets = (props) => {
                   }}
                 >
                   <TopRaiders />
-                  <Typography
+                  {/* <Typography
                     style={{ textAlign: "center", marginTop: "20px" }}
                   >
                     <Button
@@ -636,7 +636,7 @@ const Tweets = (props) => {
                     >
                       View all <Icon icon="bi:chevron-double-down" />
                     </Button>
-                  </Typography>
+                  </Typography> */}
                 </Grid>
               </Grid>
             </>
@@ -698,7 +698,9 @@ const Tweets = (props) => {
                                 value="1"
                               >
                                 <Grid container>
-                                  {data?.isRaid &&
+
+                                
+                                 {data?.isRaid &&
                                     data?.pool?.map((pool, i) => (
                                       <>
                                         {pool?.endTime * 1000 > Date.now() ? (
@@ -711,6 +713,7 @@ const Tweets = (props) => {
                                         ) : null}
                                       </>
                                     ))}
+                                 
                                 </Grid>
                               </TabPanel>
 
@@ -722,7 +725,8 @@ const Tweets = (props) => {
                                 }}
                                 value="2"
                               >
-                                <Grid container spacing={2}>
+                                <Grid container spacing={2} >
+                                
                                   {data?.isRaid &&
                                     data?.pool?.map((pool, i) => (
                                       <>
@@ -754,7 +758,7 @@ const Tweets = (props) => {
                   }}
                 >
                   <TopRaiders />
-                  <Typography
+                  {/* <Typography
                     style={{ textAlign: "center", marginTop: "20px" }}
                   >
                     <Button
@@ -768,7 +772,7 @@ const Tweets = (props) => {
                     >
                       View all <Icon icon="bi:chevron-double-down" />
                     </Button>
-                  </Typography>
+                  </Typography> */}
                 </Grid>
               </Grid>
             </>
@@ -779,10 +783,10 @@ const Tweets = (props) => {
           ) : selectedComponent === "Profile" ? (
             <>
               {/* <Profledescription currentUser={props?.auth} /> */}
-              <Grid container>
+              <Grid container >
                 <Grid item xs={12} sm={8} md={8}>
                   <Typography>
-                    <Grid container sx={{ marginBottom: "20px" }}>
+                    <Grid container sx={{ marginBottom: "20px",}}>
                       <Account />
                     </Grid>
                   </Typography>
@@ -791,7 +795,7 @@ const Tweets = (props) => {
                       color: "white",
                       fontSize: "36px",
                       fontWeight: "600",
-                      marginLeft: "25px",
+                      marginLeft: "28px",
                       marginBottom: "10px",
                     }}
                   >

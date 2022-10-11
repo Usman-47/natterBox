@@ -14,64 +14,73 @@ const TotalRaids = () => {
     <>
       {arr.map((item, i) => {
         return (
-          <Grid key={i} item md={6}>
-            <Typography component="div" sx={{ padding: "10px" }}>
-              <CardHeader
-                sx={{
-                  // position: "absolute",
-                  padding: "10px 10px 0 10px",
-                  bottom: "0",
-                  left: "0",
-                  width: "100%",
-                  color: "white",
-                  background:
-                    "linear-gradient(98.97deg, #2C2C2E 1.64%, rgba(0, 0, 0, 0) 102.85%)",
-                  border: "1px solid #313131",
-                  borderRadius: "12px",
+          <Grid key={i} item md={12} lg={6} xl={6}>
+            <Typography
+              component="div"
+              sx={{
+                padding: "10px",
+                background:
+                  "linear-gradient(98.97deg, #2C2C2E 1.64%, rgba(0, 0, 0, 0.5) 102.85%)",
+                border: "1px solid #313131",
+                borderRadius: "12px",
+                display: "flex",
+                alignItems: "center",
+                gap:"15px",
+                
+              }}
+            >
+              <div
+                className=""
+                style={{
+                  width: "45px",
+                  height: "45px",
+                
+                  borderRadius: "10px",
+                  background: "rgba(255, 255, 255, 0.03)",
+                  boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
+                  backdropFilter: "blur(2px)",
+                  display:"flex",
+                  justifyContent:"center",
+                  alignItems:"center"
                 }}
-                avatar={
-                  <Avatar
-                    sx={{
-                      //   bgcolor: red[500],
-                      borderRadius: "10px",
-                      background: "rgba(255, 255, 255, 0.03)",
-                      boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
-                      backdropFilter: "blur(2px)",
-                    }}
-                    aria-label="recipe"
-                  >
-                    <Icon color="#47DDFC" icon="ant-design:retweet-outlined" />
-                  </Avatar>
-                }
-                action={
-                  <IconButton
-                    aria-label="settings"
-                    sx={{
-                      color: "white",
+              >
+                <Icon color="#47DDFC" icon="ant-design:retweet-outlined" />
+              </div>
+              <div style={{width:"200px"}}>
+                <div className="d-flex justify-content-between align-items-center text-white mb-1">
+                 <p className="mb-0" style={{fontSize:"11px"}}>Total Raids</p>
+                  <div
+                    className="raids_card"
+                    component="div"
+                    style={{
+                      
+                      fontSize: "10px",
+                     
+                    
+                      justifyContent: "center",
+                      alignItems: "center",
                     }}
                   >
-                    {/* <MoreVertIcon /> */}
-                    <Typography
-                      className="raids_card"
-                      component="div"
-                      sx={{
-                        width: "67px",
-                        fontSize: "17px",
-                        height: "44px",
-                        // background: "#00ACEE",
-                        // borderRadius: "50px 0px 0px 50px",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                      }}
-                    >
-                      + 2SOL
-                    </Typography>
-                  </IconButton>
-                }
-                title="Total Raids"
-                subheader="Earned SOLs"
-              />
+                   <p className="mb-0">113</p> 
+                    <p className="mb-0" style={{color:"#47DDFC"}}>34% <Icon icon="eva:arrow-upward-fill" /></p>
+                  </div>
+                </div>
+                <div className="d-flex justify-content-between align-items-center text-white">
+                  <div><p className="mb-0"  style={{fontSize:"11px"}}>Total Raids</p></div>
+                  <div
+                    className="raids_card"
+                    component="div"
+                    style={{
+                      fontSize: "10px",
+                      justifyContent: "center",
+                      alignItems: "center",
+                    }}
+                  >
+                    <p className="mb-0">113</p> 
+                    <p className="mb-0" style={{color:"#47DDFC"}}>34% <Icon icon="eva:arrow-upward-fill" /></p>
+                  </div>
+                </div>
+              </div>
             </Typography>
           </Grid>
         );
