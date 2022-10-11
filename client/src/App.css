@@ -23,6 +23,18 @@
 }
 
 /* =============== dashboard style =================== */
+.header_name {
+  font-family: Roclette Pro !important;
+  letter-spacing: 0.04em !important;
+  font-size: 28px !important;
+  font-weight: 600;
+}
+.available_to_claim {
+  font-family: Roclette Pro !important;
+  letter-spacing: 0.04em !important;
+  font-size: 30px;
+  font-weight: 600;
+}
 .profile_dashboard_wallet_btns {
   font-family: Roclette Pro !important;
   letter-spacing: 0.04em !important;
@@ -168,11 +180,12 @@
 
 .form-select {
   /* border: 2px solid gold; */
-  /* background-color: red; */
-  color: #2c2c2e;
+  color: white;
   padding-top: unset !important;
   padding-bottom: unset !important;
   height: 2.4rem !important;
+  background-color: #2c2b2b;
+  border-color: #2c2b2b;
 }
 #privateToggler {
   top: 10;
@@ -184,8 +197,8 @@
 }
 
 #headings {
-  background-color: #00acee !important;
-  border-color: #00acee !important;
+  background: linear-gradient(180deg, #3a3a3a 0%, rgba(58, 58, 58, 0) 100%);
+  border-radius: 8.41921px;
 }
 .dashboard_main_row {
   --bs-gutter-x: 0rem !important;
@@ -708,10 +721,15 @@
   background-color: #00acee !important;
 }
 .wallet_disconnect {
-  background-color: #00acee !important;
+  background: linear-gradient(
+    180deg,
+    rgba(75, 60, 189, 0.22) 0%,
+    rgba(82, 68, 195, 0.33) 100%
+  );
+  border-radius: 40px !important;
   width: 75% !important;
   height: 38px !important;
-  margin-bottom: 25px;
+  /* margin-bottom: 25px; */
 }
 /* ======= userDashboard stytle =============  */
 .dashboard_tabs {
@@ -1598,6 +1616,12 @@
 }
 
 @media screen and (max-width: 890px) {
+  .total_visits {
+    font-size: 18px !important;
+  }
+  /* .provision_month{
+    font-size: 9px !important;
+  } */
   .home-natterbox-div {
     left: 20% !important;
     top: 40% !important;
@@ -1614,5 +1638,26 @@
     transform: translate(-20%, -40%) !important;
     /* background-color: red; */
     width: 300px !important;
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .total_raids_div {
+    width: 100% !important;
+  }
+}
+
+@media screen and (max-width: 1015px) {
+  .provision_month {
+    font-size: 12px !important;
+  }
+}
+
+@media screen and (max-width: 705px) {
+  .total_visits_div {
+    display: block !important;
+  }
+  .provision_months_div {
+    width: 100% !important;
   }
 }

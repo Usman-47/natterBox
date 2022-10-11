@@ -14,7 +14,7 @@ const TotalRaids = () => {
     <>
       {arr.map((item, i) => {
         return (
-          <Grid key={i} item md={12} lg={6} xl={6}>
+          <Grid key={i} item xs={12} md={12} lg={6} xl={6}>
             <Typography
               component="div"
               sx={{
@@ -32,7 +32,7 @@ const TotalRaids = () => {
               <div
                 className=""
                 style={{
-                  width: "45px",
+                  width: "55px",
                   height: "45px",
                 
                   borderRadius: "10px",
@@ -46,7 +46,7 @@ const TotalRaids = () => {
               >
                 <Icon color="#47DDFC" icon="ant-design:retweet-outlined" />
               </div>
-              <div style={{width:"200px"}}>
+              <div className="total_raids_div" style={{width:"100%"}}>
                 <div className="d-flex justify-content-between align-items-center text-white mb-1">
                  <p className="mb-0" style={{fontSize:"11px"}}>Total Raids</p>
                   <div
@@ -55,8 +55,6 @@ const TotalRaids = () => {
                     style={{
                       
                       fontSize: "10px",
-                     
-                    
                       justifyContent: "center",
                       alignItems: "center",
                     }}

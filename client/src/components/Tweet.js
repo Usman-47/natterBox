@@ -743,7 +743,7 @@ const Tweet = ({ currentUser, data, projectDetail, poolData }) => {
 
   return (
     <>
-      <Grid item xs={12} md={6} lg={3} sx={{ position: "relative", }}>
+      <Grid item xs={12} md={6} lg={4} xl={3} sx={{ position: "relative", }}>
         <Card
           sx={{
             maxWidth: 345,
