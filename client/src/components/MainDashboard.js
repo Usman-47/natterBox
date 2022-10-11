@@ -154,7 +154,7 @@ const MainDashboard = () => {
                
 
                 </Typography>
-                <Typography component="div" sx={{position:"absolute", color:"white", top:"32px", right:"10px"}}>
+                <Typography component="div" sx={{position:"absolute", color:"white", top:"50px", right:"10px"}}>
                         
                         <Typography variant='p'> Claim </Typography>
                 </Typography>

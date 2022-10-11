@@ -767,6 +767,7 @@ const Tweets = (props) => {
                   xs={10}
                   sm={5}
                   md={4}
+                  lg={3}
                   style={{
                     background: "#161616",
                     borderRadius: "20px",
@@ -792,11 +793,12 @@ const Tweets = (props) => {
                 </Grid>
               </Grid>
             </>
-          ) : selectedComponent === "Account" ? (
-            <Account />
           ) 
           : selectedComponent === "Rewards" ? (
-            <Rewards />
+            <>
+              <h1 className="text-center text-white">Coming Soon</h1>
+              {/* <Rewards /> */}
+            </>
           ) 
           : selectedComponent === "Profile" ? (
             <>
