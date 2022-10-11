@@ -288,27 +288,46 @@ const CreateInvoice = ({ poolID, settweetSuccessfully }) => {
         return;
       }
       const body = {
-        tweets: {
-          tweetUrl,
-          tweetId,
-          tweetText: res?.data?.data?.text,
-        },
+        tweetId,
+        projectName,
+        splToken,
+        isRaid,
       };
-      const { data } = await AddInvoicePoolTweetApi(id, body, token);
-      dispatch({ type: "loadingStop" });
-
-      if (data.type === "success") {
-        toast.success(data.msg);
-        if (poolID) {
-          settweetSuccessfully(true);
+      const resData = await axios.post(
+        `${process.env.REACT_APP_SERVERURL}/wallet/createTweet`,
+        body,
+        {
+          headers: {
+            Authorization: `BEARER ${token}`,
+          },
         }
-        if (!poolID) {
-          navigate(
-            `/app/invoice/readOne/readAllPool/readOnePool/readAllTweet/${id}`
-          );
+      );
+      if (resData.data.tx) {
+        const body = {
+          tweets: {
+            tweetUrl,
+            tweetId,
+            tweetText: res?.data?.data?.text,
+          },
+        };
+        const { data } = await AddInvoicePoolTweetApi(id, body, token);
+        dispatch({ type: "loadingStop" });
+
+        if (data.type === "success") {
+          toast.success(data.msg);
+          if (poolID) {
+            settweetSuccessfully(true);
+          }
+          if (!poolID) {
+            navigate(
+              `/app/invoice/readOne/readAllPool/readOnePool/readAllTweet/${id}`
+            );
+          }
+        } else {
+          toast.error(data.msg);
         }
       } else {
-        toast.error(data.msg);
+        alert("unable to create tweet");
       }
     } catch (error) {
       console.log(error);

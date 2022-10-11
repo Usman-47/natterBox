@@ -23,54 +23,53 @@
 }
 
 /* =============== dashboard style =================== */
-.profile_dashboard_wallet_btns{
+.profile_dashboard_wallet_btns {
   font-family: Roclette Pro !important;
   letter-spacing: 0.04em !important;
 }
 
-.btn_sub{
+.btn_sub {
   color: #00acee !important;
   font-family: Roclette Pro !important;
   letter-spacing: 0.04em !important;
   font-size: 14px;
 }
-.btn_inner_percentage{
-  color: #47DDFC;
+.btn_inner_percentage {
+  color: #47ddfc;
 }
-.transaction_history, .history{
+.transaction_history,
+.history {
   font-family: Roclette Pro !important;
   letter-spacing: 0.04em !important;
   color: white;
   font-size: 24px;
 }
 
-
-.signin_twitter_div h2{
+.signin_twitter_div h2 {
   font-family: Roclette Pro !important;
   letter-spacing: 0.04em !important;
 }
-.project_form label{
+.project_form label {
   font-family: Poppins !important;
 }
-.project_form input{
+.project_form input {
   font-family: Poppins !important;
 }
-.project_info{
-  font-family: Roclette Pro !important;
-  letter-spacing: 0.04em !important;
-
-}
-.top-raiders{
+.project_info {
   font-family: Roclette Pro !important;
   letter-spacing: 0.04em !important;
 }
+.top-raiders {
+  font-family: Roclette Pro !important;
+  letter-spacing: 0.04em !important;
+}
 
-.edit-icon{
+.edit-icon {
   width: 28.58px;
-height: 28.58px;
-margin-left: 10px !important;
-background: radial-gradient(50% 50% at 50% 50%, #00ACEE 0%, #47DDFC 100%);
-border-radius: 28.5753px;
+  height: 28.58px;
+  margin-left: 10px !important;
+  background: radial-gradient(50% 50% at 50% 50%, #00acee 0%, #47ddfc 100%);
+  border-radius: 28.5753px;
 }
 .signup-background {
   background-color: aquamarine !important;
@@ -79,7 +78,7 @@ border-radius: 28.5753px;
 .navBar-background {
   background-color: #7fffd4 !important;
 }
-.raids_card{
+.raids_card {
   font-family: raleway !important;
 }
 .active_icon2 {
@@ -169,8 +168,8 @@ border-radius: 28.5753px;
 
 .form-select {
   /* border: 2px solid gold; */
-  
-  color: #2C2C2E;
+  /* background-color: red; */
+  color: #2c2c2e;
   padding-top: unset !important;
   padding-bottom: unset !important;
   height: 2.4rem !important;
@@ -353,7 +352,7 @@ border-radius: 28.5753px;
   font-weight: 700 !important;
   padding: 10px 32px !important;
   margin: auto 0;
-  background: #00ACEE !important;
+  background: #00acee !important;
   box-shadow: inset -6px -6px 8px rgba(69, 55, 185, 0.7);
   border-radius: 60px;
   font-family: Poppins !important;
@@ -384,7 +383,7 @@ border-radius: 28.5753px;
   color: #00acee;
 }
 .reward_heading {
-  font-family: 'Roclette Pro' !important;
+  font-family: "Roclette Pro" !important;
   font-style: normal !important;
   font-weight: 600 !important;
   font-size: 90px;
@@ -464,7 +463,6 @@ border-radius: 28.5753px;
 }
 .signin_twitter_div {
   width: 50%;
-
 }
 .btn {
   width: 40%;
@@ -475,7 +473,11 @@ border-radius: 28.5753px;
   border-color: "#00ACEE" !important;
   text-align: center;
   font-family: Poppins !important;
-  background: linear-gradient(180deg, rgba(28, 28, 28, 0.47) 0%, rgba(74, 75, 75, 0.58) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(28, 28, 28, 0.47) 0%,
+    rgba(74, 75, 75, 0.58) 100%
+  );
   border-radius: 40px;
   /* font-size: small !important; */
   /* display: flex;
@@ -692,8 +694,11 @@ border-radius: 28.5753px;
   font-size: 30px;
 }
 .wallet-btn {
- 
-  background: linear-gradient(180deg, rgba(75, 60, 189, 0.22) 0%, rgba(82, 68, 195, 0.33) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(75, 60, 189, 0.22) 0%,
+    rgba(82, 68, 195, 0.33) 100%
+  );
   border-radius: 40px !important;
   text-transform: capitalize !important;
   /* font-size: 12px !important; */
@@ -728,13 +733,17 @@ border-radius: 28.5753px;
   background-size: 100%;
   background-color: unset !important;
 }
-.rewards_card{
+.rewards_card {
   /* box-shadow: 5px 10px 17px rgba(0, 0, 0, 0.25) !important; */
-  background: linear-gradient(98.08deg, rgba(24, 24, 24, 0.04) 6.13%, rgba(49, 49, 49, 0.56) 103.17%) !important;
+  background: linear-gradient(
+    98.08deg,
+    rgba(24, 24, 24, 0.04) 6.13%,
+    rgba(49, 49, 49, 0.56) 103.17%
+  ) !important;
   box-shadow: inset 26px -26px 33px rgba(0, 0, 0, 0.18) !important;
   border-radius: 8px !important;
 
-  text-align: center; 
+  text-align: center;
   padding: 19px 16px 19px 10px;
   /* background-color: #333333 !important; */
   color: white;
@@ -1127,7 +1136,7 @@ border-radius: 28.5753px;
   transform: translateY(-390px);
   /* transform: translateY(2rem); */
   transition: 2s;
-  /* position: relative; */ 
+  /* position: relative; */
 }
 
 .grid-img2 {
@@ -1427,136 +1436,149 @@ border-radius: 28.5753px;
 }
 
 @media (min-width: 975px) and (max-width: 1060px) {
-  .grid-img1, .grid-img2, .grid-img3{
+  .grid-img1,
+  .grid-img2,
+  .grid-img3 {
     width: 350px;
   }
-  
 }
 
 @media (min-width: 915px) and (max-width: 974px) {
-  .grid-img1, .grid-img2, .grid-img3{
+  .grid-img1,
+  .grid-img2,
+  .grid-img3 {
     width: 330px;
   }
-  
 }
 @media (min-width: 890px) and (max-width: 914px) {
-  .grid-img1, .grid-img2, .grid-img3{
+  .grid-img1,
+  .grid-img2,
+  .grid-img3 {
     width: 310px;
   }
-  
 }
 @media (min-width: 861px) and (max-width: 889px) {
-  .grid-img1, .grid-img2, .grid-img3{
+  .grid-img1,
+  .grid-img2,
+  .grid-img3 {
     width: 295px;
   }
-  .twitter_connect1, .twitter_connect2{
+  .twitter_connect1,
+  .twitter_connect2 {
     font-size: 20px !important;
   }
-  
 }
 
 @media (min-width: 825px) and (max-width: 889px) {
-  .grid-img1, .grid-img2, .grid-img3{
+  .grid-img1,
+  .grid-img2,
+  .grid-img3 {
     width: 280px;
     transform: translateY(-320px) !important;
   }
-  .grid-img2{
+  .grid-img2 {
     transform: translateY(-150px) !important;
   }
-  .grid-img3{
+  .grid-img3 {
     transform: translateY(1.5rem) !important;
   }
-  .twitter_connect1, .twitter_connect2{
+  .twitter_connect1,
+  .twitter_connect2 {
     font-size: 20px !important;
   }
-  
-  
 }
 
 @media (min-width: 762px) and (max-width: 824px) {
-  .grid-img1, .grid-img2, .grid-img3{
+  .grid-img1,
+  .grid-img2,
+  .grid-img3 {
     width: 250px;
     transform: translateY(-260px) !important;
   }
-  .grid-img2{
+  .grid-img2 {
     transform: translateY(-120px) !important;
   }
-  .grid-img3{
+  .grid-img3 {
     transform: translateY(1.5rem) !important;
   }
-  .twitter_connect1, .twitter_connect2{
+  .twitter_connect1,
+  .twitter_connect2 {
     font-size: 20px !important;
   }
-  
-  
 }
 
 @media (min-width: 715px) and (max-width: 761px) {
-  .grid-img1, .grid-img2, .grid-img3{
+  .grid-img1,
+  .grid-img2,
+  .grid-img3 {
     width: 220px;
     transform: translateY(-220px) !important;
   }
-  .grid-img2{
+  .grid-img2 {
     transform: translateY(-100px) !important;
   }
-  .grid-img3{
+  .grid-img3 {
     transform: translateY(4rem) !important;
   }
-  .twitter_connect1, .twitter_connect2{
+  .twitter_connect1,
+  .twitter_connect2 {
     font-size: 20px !important;
   }
-  
-  
 }
 
 @media (min-width: 652px) and (max-width: 714px) {
-  .grid-img1, .grid-img2, .grid-img3{
+  .grid-img1,
+  .grid-img2,
+  .grid-img3 {
     width: 190px;
     transform: translateY(-180px) !important;
   }
-  .grid-img2{
+  .grid-img2 {
     transform: translateY(-70px) !important;
   }
-  .grid-img3{
+  .grid-img3 {
     transform: translateY(9rem) !important;
   }
-  .twitter_connect1, .twitter_connect2{
+  .twitter_connect1,
+  .twitter_connect2 {
     font-size: 20px !important;
   }
-  
-  
 }
 @media (min-width: 600px) and (max-width: 651px) {
-  .grid-img1, .grid-img2, .grid-img3{
+  .grid-img1,
+  .grid-img2,
+  .grid-img3 {
     width: 160px;
     transform: translateY(-150px) !important;
   }
-  .grid-img2{
+  .grid-img2 {
     transform: translateY(-40px) !important;
   }
-  .grid-img3{
+  .grid-img3 {
     transform: translateY(10rem) !important;
   }
-  .twitter_connect1, .twitter_connect2{
+  .twitter_connect1,
+  .twitter_connect2 {
     font-size: 20px !important;
   }
-  
-  
 }
 
 @media (min-width: 320px) and (max-width: 599px) {
-  .grid-img1, .grid-img2, .grid-img3{
+  .grid-img1,
+  .grid-img2,
+  .grid-img3 {
     width: 200px;
     margin: 0 auto;
     transform: translateY(-200px) !important;
   }
-  .grid-img2{
+  .grid-img2 {
     transform: translateY(-100px) !important;
   }
-  .grid-img3{
+  .grid-img3 {
     transform: translateY(5rem) !important;
   }
-  .twitter_connect1, .twitter_connect2{
+  .twitter_connect1,
+  .twitter_connect2 {
     font-size: 20px !important;
   }
 
@@ -1564,39 +1586,33 @@ border-radius: 28.5753px;
     height: 250px;
   }
 
-  .right_box{
-    margin-top: -250px !important
+  .right_box {
+    margin-top: -250px !important;
   }
-  
-  
 }
 
 @media (min-width: 600px) and (max-width: 1161px) {
-  .account_name1{
+  .account_name1 {
     margin-top: 100px !important;
   }
-  
 }
 
-
 @media screen and (max-width: 890px) {
-  .home-natterbox-div{
+  .home-natterbox-div {
     left: 20% !important;
     top: 40% !important;
     transform: translate(-20%, -40%) !important;
     /* background-color: red; */
     width: 400px !important;
   }
-  
 }
 
 @media screen and (max-width: 430px) {
-  .home-natterbox-div{
+  .home-natterbox-div {
     left: 20% !important;
     top: 40% !important;
     transform: translate(-20%, -40%) !important;
     /* background-color: red; */
     width: 300px !important;
   }
-  
 }

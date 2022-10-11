@@ -11,7 +11,7 @@ module.exports = (app) => {
     passport.authenticate("twitter"),
     (req, res) => {
       res.redirect("http://localhost:3000/Landing");
-      // res.redirect("https://sols.game");
+      // res.redirect("https://sols.game/Landing");
     }
   );
 
@@ -95,77 +95,6 @@ module.exports = (app) => {
         return res.send(user);
       } else {
         return res.send(existingUser);
-      }
-    } catch (err) {
-      console.log(err, "Error");
-    }
-  });
-  app.patch("/api/addUserRewardToken", async (req, res) => {
-    try {
-      let rewardStatus = req.body.rewardStatus;
-      const existingUser = await User.findOneAndUpdate(
-        {
-          twitterId: req.body.twitterId,
-        },
-        { $push: { rewardStatus } }
-      );
-      if (!existingUser) {
-        res.send("User Not Found");
-      } else {
-        res.send(existingUser.rewardStatus);
-      }
-    } catch (err) {
-      console.log(err, "Error");
-    }
-  });
-
-  app.patch("/api/updateRewardStatus", async (req, res) => {
-    try {
-      const tokenHeader = req.headers.authorization;
-
-      if (!tokenHeader) {
-        return res.status(404).send({
-          msg: "No tokenHeader available, route only for authorised user",
-          type: "error",
-        });
-      }
-      const token = tokenHeader.split(" ")[1];
-      if (!token) {
-        return res
-          .status(404)
-          .send({ msg: "token tampered, please sign in", type: "error" });
-      }
-      const payLoad = verifyToken(token);
-      if (!payLoad || typeof payLoad === "string") {
-        return res
-          .status(401)
-          .send({ msg: "Request denied, please sign in", type: "error" });
-      }
-      let tweetId = req.body.tweetId;
-      let projectName = req.body.projectName;
-      const userStatusUpdated = await User.findOneAndUpdate(
-        // {
-        //   "rewardStatus.tweetId": tweetId,
-        // },
-        {
-          rewardStatus: {
-            $elemMatch: { tweetId: tweetId, projectName: projectName },
-          },
-        },
-        {
-          $set: {
-            "rewardStatus.$.isRewardpaid": true,
-            "rewardStatus.$.paidTime": req.body.time,
-          },
-        },
-        {
-          new: true,
-        }
-      );
-      if (!userStatusUpdated) {
-        res.send("User Not Found");
-      } else {
-        res.send(userStatusUpdated);
       }
     } catch (err) {
       console.log(err, "Error");
