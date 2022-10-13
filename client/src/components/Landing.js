@@ -237,7 +237,7 @@ const Landing = (props) => {
                 fontSize: { xs: "30px", md: "40px", lg: "60px", xl: "90px" },
               }}
             >
-              NATTER
+              CHATTERR
               <Typography
                 component="span"
                 className="reward_subheading"
@@ -666,46 +666,10 @@ const Landing = (props) => {
                     Verification
                   </Typography>
                 </Typography>
-                <Typography
-                  variant="body1"
-                  id="reward_pro_para"
-                  gutterBottom
-                  className="nft_verification_text"
-                  sx={{
-                    fontSize: { xs: "7px", md: "9px", lg: "12px", xl: "17px" },
-                  }}
-                >
-                  You need to hold at least 1 Anubis Punt to gain Access.
-                </Typography>
 
                 <div className="account_profile_img">
                   <img src={`${Images.loadingBuffer}`} />
                 </div>
-
-                <Typography
-                  variant="body1"
-                  id="reward_pro_para"
-                  gutterBottom
-                  className="nft_verification_text"
-                  sx={{
-                    fontSize: { xs: "7px", md: "9px", lg: "12px", xl: "17px" },
-                  }}
-                >
-                  If the loading takes too much time
-                </Typography>
-
-                <Typography
-                  variant="body1"
-                  id="reward_pro_para"
-                  gutterBottom
-                  className="nft_verification_text"
-                  sx={{
-                    color: { color: "red !important" },
-                    fontSize: { xs: "7px", md: "9px", lg: "12px", xl: "17px" },
-                  }}
-                >
-                  This means you do not have NFTs
-                </Typography>
 
                 {/* Dummy Button for testing */}
                 <div
@@ -773,28 +737,17 @@ const Landing = (props) => {
                     Verification
                   </Typography>
                 </Typography>
-                <Typography
-                  variant="body1"
-                  id="reward_pro_para"
-                  gutterBottom
-                  className="nft_verification_text"
-                  sx={{
-                    fontSize: { xs: "7px", md: "9px", lg: "12px", xl: "17px" },
-                  }}
-                >
-                  You need to hold at least 1 Anubis Punt to gain Access.
-                </Typography>
 
-                <div className="account_nfts_div">
+                {/* <div className="account_nfts_div">
                   <div className="account_nfts_imgs">
                     <img src={`${Images.dummyNft1}`} />
                     <img src={`${Images.dummyNft2}`} />
                     <img src={`${Images.dummyNft3}`} />
                     <img src={`${Images.dummyNft4}`} />
                   </div>
-                </div>
+                </div> */}
 
-                <Typography
+                {/* <Typography
                   // variant="p"
                   gutterBottom
                   className="account_name1"
@@ -823,7 +776,7 @@ const Landing = (props) => {
                   >
                     Angels
                   </Typography>
-                </Typography>
+                </Typography> */}
 
                 <div
                   style={{

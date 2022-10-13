@@ -90,40 +90,41 @@ const CreateInvoice = ({ auth }) => {
     if (isRaid) {
       setSteps([
         {
-          label: "Step 1",
+          label: "Select Tweet or Raid ",
         },
         {
-          label: "Step 2",
+          label: "Set Up Project",
         },
         {
-          label: "Step 3",
+          label: "Transfer SOL and SPL token",
         },
         {
-          label: "Step 4",
+          label: "Set up Tweet To Earn Pool",
         },
         {
-          label: "Step 5",
+          label: "Add Tweet URL",
         },
         {
-          label: "Step 6",
+          label: "Preview",
         },
       ]);
     } else {
       setSteps([
         {
-          label: "Step 1",
+          label: "Select Tweet or Raid ",
         },
         {
-          label: "Step 2",
+          label: "Set Up Project",
         },
         {
-          label: "Step 3",
+          label: "Transfer SOL and SPL token",
         },
         {
-          label: "Step 4",
+          label: "Set up Tweet To Earn Pool",
         },
+
         {
-          label: "Step 5",
+          label: "Preview",
         },
       ]);
     }
