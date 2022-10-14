@@ -43,12 +43,19 @@ const idl = JSON.parse(
 );
 
 // anchor.setProvider(anchor.Provider.local(web3.clusterApiUrl("devnet")));
-anchor.setProvider(anchor.Provider.local(web3.clusterApiUrl("mainnet-beta")));
+anchor.setProvider(
+  anchor.Provider.local(
+    "https://lingering-hidden-dew.solana-mainnet.quiknode.pro/03680929d6c8fef9bb62ca0130a2df2d6303f2a0/"
+  )
+);
 // var solConnection = new web3.Connection(web3.clusterApiUrl("devnet"), {
-var solConnection = new web3.Connection(web3.clusterApiUrl("mainnet-beta"), {
-  commitment: "confirmed",
-  confirmTransactionInitialTimeout: 12000,
-});
+var solConnection = new web3.Connection(
+  "https://lingering-hidden-dew.solana-mainnet.quiknode.pro/03680929d6c8fef9bb62ca0130a2df2d6303f2a0/",
+  {
+    commitment: "confirmed",
+    confirmTransactionInitialTimeout: 12000,
+  }
+);
 const program = new anchor.Program(idl, PROGRAM_ID);
 
 const getWallet = async (req, res) => {

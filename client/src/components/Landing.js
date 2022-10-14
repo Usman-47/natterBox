@@ -238,7 +238,7 @@ const Landing = (props) => {
               }}
             >
               CHATTERR
-              <Typography
+              {/* <Typography
                 component="span"
                 className="reward_subheading"
                 sx={{
@@ -246,7 +246,7 @@ const Landing = (props) => {
                 }}
               >
                 BOX
-              </Typography>
+              </Typography> */}
             </Typography>
             {istrue == 1 ? (
               <>
@@ -294,7 +294,7 @@ const Landing = (props) => {
                     },
                   }}
                 >
-                  Link Natterbox with your twitter so we can know <br /> more
+                  Link Chatterr with your twitter so we can know <br /> more
                   about you.
                 </Typography>
               </>
@@ -398,7 +398,7 @@ const Landing = (props) => {
                     fontSize: { xs: "7px", md: "9px", lg: "12px", xl: "17px" },
                   }}
                 >
-                  Link Natterbox with your twitter so we can know <br /> more
+                  Link Chatterr with your twitter so we can know <br /> more
                   about you.
                 </Typography>
 

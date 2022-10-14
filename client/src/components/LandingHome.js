@@ -8,6 +8,7 @@ import RecipeReviewCard from "./RecipeReviewCard";
 import AlignItemsList from "./InteractiveList";
 import InteractiveList from "./InteractiveList";
 import { useNavigate } from "react-router-dom";
+import { Icon } from "@iconify/react";
 const useStyles = makeStyles((theme) => ({
   MenuItem: {
     backgroundImage: `url(${Images.LandingPageimage})`,
@@ -149,8 +150,8 @@ const LandingHome = () => {
             fontSize: { xs: "50px", md: "50px", lg: "60px", xl: "90px" },
           }}
         >
-          CHATTER
-          <Typography
+          CHATTERR
+          {/* <Typography
             component="span"
             className=" reward_subheading"
             sx={{
@@ -158,7 +159,7 @@ const LandingHome = () => {
             }}
           >
             BOX
-          </Typography>
+          </Typography> */}
         </Typography>
         <Typography
           variant="p"
@@ -169,7 +170,8 @@ const LandingHome = () => {
             fontSize: { xs: "14px", md: "15px", lg: "20px", xl: "25px" },
           }}
         >
-          Raid to Earn platform on the SOLANA Blockchain
+          The only platform that rewards your mostly loyal holders for their
+          daily activity
         </Typography>
 
         <div className="landingHome-btns">
@@ -209,6 +211,15 @@ const LandingHome = () => {
               <span style={{ marginRight: "5px" }}></span>REWARD TWEETERS
             </Button>
           </div>
+          <Typography sx={{ margin: "5px", paddingLeft: "15px" }}>
+            <a href="https://discord.gg/tmy4JVxE" target="_blank">
+              {" "}
+              <Icon
+                className="header-icon text-white me-2"
+                icon="radix-icons:discord-logo"
+              />
+            </a>
+          </Typography>
         </div>
       </div>
       <div className="landingHome-img">

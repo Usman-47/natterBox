@@ -68,6 +68,7 @@ import Cardsupport from "./Cardsupport";
 import useDispatchFunc from "../hooks/useDispatchFunc";
 import RaidsCountWidget from "./raidsCountWidget";
 import TopRaiders from "./TopRaiders";
+
 const drawerWidth = 80;
 const Tweets = (props) => {
   const [{ token }] = useStatesFunc();
@@ -194,7 +195,7 @@ const Tweets = (props) => {
   }, [publicKey]);
 
   const solConnection = new web3.Connection(
-    web3.clusterApiUrl("mainnet-beta"),
+    "https://lingering-hidden-dew.solana-mainnet.quiknode.pro/03680929d6c8fef9bb62ca0130a2df2d6303f2a0/",
     "processed"
   );
 
@@ -399,6 +400,15 @@ const Tweets = (props) => {
                 component="div"
               >
                 <WalletDisconnectButton className="wallet_disconnect" />
+                <Typography>
+                  <a href="https://discord.gg/tmy4JVxE" target="_blank">
+                    {" "}
+                    <Icon
+                      className="header-icon text-white me-2"
+                      icon="radix-icons:discord-logo"
+                    />
+                  </a>
+                </Typography>
                 <Typography onClick={handleClick}>
                   <Stack direction="row">
                     <Avatar
@@ -437,6 +447,12 @@ const Tweets = (props) => {
                       title={props.auth?.userName}
                     />
                   </Typography>
+                  <Avatar
+                    sx={{ backgroundColor: "rgb(29, 155, 240)" }}
+                    aria-label="recipe"
+                  >
+                    <Icon icon="akar-icons:twitter-fill" />
+                  </Avatar>
                   <MenuItem>
                     {[
                       <Button

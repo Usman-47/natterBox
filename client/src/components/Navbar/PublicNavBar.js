@@ -13,7 +13,11 @@ const PublicNavBar = ({ setShowSideBar, showSideBar, home }) => {
     <>
       <div
         className="pb-4 ps-2 pe-2"
-        style={{ marginBottom: "40px", marginTop: "20px", background:"#2C2C2E" }}
+        style={{
+          marginBottom: "40px",
+          marginTop: "20px",
+          background: "#2C2C2E",
+        }}
       >
         <Grid
           container
@@ -26,30 +30,42 @@ const PublicNavBar = ({ setShowSideBar, showSideBar, home }) => {
               className="menu_btn"
               onClick={() => setShowSideBar(!showSideBar)}
             >
-              {(!home) ? <Icon style={{ fontSize: "30px" , color:"white"}} icon="dashicons:menu" />: null}
+              {!home ? (
+                <Icon
+                  style={{ fontSize: "30px", color: "white" }}
+                  icon="dashicons:menu"
+                />
+              ) : null}
             </Typography>
-            <Grid container >
+            <Grid container>
               <Grid item xs={1}>
-             <Icon className="wallet-icon text-white" icon="clarity:wallet-line" />
+                {/* <Icon
+                  className="wallet-icon text-white"
+                  icon="clarity:wallet-line"
+                /> */}
               </Grid>
             </Grid>
           </Grid>
           <Grid item className="header_right">
-           <div className="d-flex align-items-center gap-2">
-           {(home) ? 
-           <div className="">
-                <Icon className="header-icon text-white me-2" icon="radix-icons:discord-logo" />
-            
-                <Icon className="header-icon text-white" icon="ant-design:user-outlined" />
+            <div className="d-flex align-items-center gap-2">
+              {home ? (
+                <div className="">
+                  <Icon
+                    className="header-icon text-white me-2"
+                    icon="radix-icons:discord-logo"
+                  />
 
-           </div>: null}
-            
+                  <Icon
+                    className="header-icon text-white"
+                    icon="ant-design:user-outlined"
+                  />
+                </div>
+              ) : null}
+
               <WalletMultiButton className="wallet-btn" />
-           </div>
-            
+            </div>
           </Grid>
         </Grid>
-        
       </div>
     </>
   );

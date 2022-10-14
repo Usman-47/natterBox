@@ -70,7 +70,7 @@ const AddPool = ({ auth, projectId, setPoolID, setpoolSuccessfully }) => {
   const [flag, setFlag] = useState(false);
 
   const solConnection = new web3.Connection(
-    web3.clusterApiUrl("mainnet-beta"),
+    "https://lingering-hidden-dew.solana-mainnet.quiknode.pro/03680929d6c8fef9bb62ca0130a2df2d6303f2a0/",
     "processed"
   );
   let cloneWindow = window;
