@@ -61,6 +61,8 @@ const CreateInvoice = ({ auth }) => {
   const [ProjectName, setProjectName] = useState();
   const [ispoolSuccessful, setpoolSuccessfully] = useState(false);
   const [istweetSuccessful, settweetSuccessfully] = useState(false);
+  const [SolAmount, setSolAmount] = useState();
+  const [SplToken, setSplToken] = useState();
 
   const [steps, setSteps] = useState([
     {
@@ -387,51 +389,61 @@ const CreateInvoice = ({ auth }) => {
   };
 
   const handleTransferSol = async () => {
-    let provider = getProvider();
-    let tx = new Transaction().add(
-      SystemProgram.transfer({
-        fromPubkey: publicKey,
-        toPubkey: new PublicKey("1GtGo1TpFtHjHmDAL5KtwsRL1XDfhQTVvZv9AaRDE4C"),
-        lamports: 1000000,
-      })
-    );
-    tx.recentBlockhash = (await solConnection.getLatestBlockhash()).blockhash;
-    tx.feePayer = publicKey;
-    const { signature } = await provider.signAndSendTransaction(tx);
-    await solConnection.getSignatureStatus(signature);
+    if (SolAmount) {
+      let provider = getProvider();
+      let tx = new Transaction().add(
+        SystemProgram.transfer({
+          fromPubkey: publicKey,
+          toPubkey: new PublicKey(
+            "1GtGo1TpFtHjHmDAL5KtwsRL1XDfhQTVvZv9AaRDE4C"
+          ),
+          lamports: SolAmount * 1000000,
+        })
+      );
+      tx.recentBlockhash = (await solConnection.getLatestBlockhash()).blockhash;
+      tx.feePayer = publicKey;
+      const { signature } = await provider.signAndSendTransaction(tx);
+      await solConnection.getSignatureStatus(signature);
+    } else {
+      toast.error("Add Sols Amount");
+    }
   };
 
   const handleTransferSpl = async () => {
-    let senderAta = await Token.getAssociatedTokenAddress(
-      ASSOCIATED_TOKEN_PROGRAM_ID,
-      TOKEN_PROGRAM_ID,
-      new PublicKey("TomsErt7q2wY3mUzMAJ8mU6pDNbxyTHA5gS44mPSfxm"),
-      publicKey
-    );
-
-    let desAta = await Token.getAssociatedTokenAddress(
-      ASSOCIATED_TOKEN_PROGRAM_ID,
-      TOKEN_PROGRAM_ID,
-      new PublicKey("TomsErt7q2wY3mUzMAJ8mU6pDNbxyTHA5gS44mPSfxm"),
-      new PublicKey("1GtGo1TpFtHjHmDAL5KtwsRL1XDfhQTVvZv9AaRDE4C")
-    );
-    console.log(senderAta.toString(), "sender");
-    console.log(desAta.toString(), "des");
-    let provider = getProvider();
-    let tx = new Transaction().add(
-      Token.createTransferInstruction(
+    if (SplToken) {
+      let senderAta = await Token.getAssociatedTokenAddress(
+        ASSOCIATED_TOKEN_PROGRAM_ID,
         TOKEN_PROGRAM_ID,
-        senderAta,
-        desAta,
-        publicKey,
-        [],
-        1000000
-      )
-    );
-    tx.recentBlockhash = (await solConnection.getLatestBlockhash()).blockhash;
-    tx.feePayer = publicKey;
-    const { signature } = await provider.signAndSendTransaction(tx);
-    await solConnection.getSignatureStatus(signature);
+        new PublicKey("TomsErt7q2wY3mUzMAJ8mU6pDNbxyTHA5gS44mPSfxm"),
+        publicKey
+      );
+
+      let desAta = await Token.getAssociatedTokenAddress(
+        ASSOCIATED_TOKEN_PROGRAM_ID,
+        TOKEN_PROGRAM_ID,
+        new PublicKey("TomsErt7q2wY3mUzMAJ8mU6pDNbxyTHA5gS44mPSfxm"),
+        new PublicKey("1GtGo1TpFtHjHmDAL5KtwsRL1XDfhQTVvZv9AaRDE4C")
+      );
+      console.log(senderAta.toString(), "sender");
+      console.log(desAta.toString(), "des");
+      let provider = getProvider();
+      let tx = new Transaction().add(
+        Token.createTransferInstruction(
+          TOKEN_PROGRAM_ID,
+          senderAta,
+          desAta,
+          publicKey,
+          [],
+          SplToken
+        )
+      );
+      tx.recentBlockhash = (await solConnection.getLatestBlockhash()).blockhash;
+      tx.feePayer = publicKey;
+      const { signature } = await provider.signAndSendTransaction(tx);
+      await solConnection.getSignatureStatus(signature);
+    } else {
+      toast.error("Add Spl Amount");
+    }
   };
   const handlerPreview = () => {
     if (ProjectName) {
@@ -658,23 +670,65 @@ const CreateInvoice = ({ auth }) => {
                     className="container my-5 p-3 border border-1 border-info rounded-3"
                     style={{ maxWidth: "85%", margin: "auto" }}
                   >
-                    <Typography
-                      sx={{
-                        width: "85%",
-                        margin: "auto",
-                        display: "flex",
-                      }}
-                    >
-                      <Button
-                        onClick={handleTransferSol}
-                        sx={{ backgroundColor: "primary", marginX: "12px" }}
-                        variant="contained"
-                      >
-                        Transfer Sols
-                      </Button>
-                      <Button variant="contained" onClick={handleTransferSpl}>
-                        Transfer SPL
-                      </Button>
+                    <Typography>
+                      <form disabled className="p-md-3 text-white">
+                        {/* invoiceLogo */}
+                        <div className="mb-3">
+                          <label className="form-label">Add Sols Amount</label>
+                          <input
+                            type="text"
+                            id="tweetUrl"
+                            // placeholder="Project Name"
+                            className="form-control"
+                            value={SolAmount}
+                            pattern="[0-9]*"
+                            onChange={(e) =>
+                              setSolAmount((v) =>
+                                e.target.validity.valid ? e.target.value : v
+                              )
+                            }
+                            // onChange={(e) => setSolAmount(e.target.value)}
+                          />
+                        </div>
+                        <Button
+                          onClick={handleTransferSol}
+                          sx={{
+                            backgroundColor: "primary",
+                            marginBottom: "20px",
+                          }}
+                          variant="contained"
+                        >
+                          Transfer Sols
+                        </Button>
+
+                        <div className="mb-3">
+                          <label className="form-label">
+                            Add Spl Token Amount
+                          </label>
+                          <Tooltip
+                            // title="Enter Twitter username without '@' sign, and without spaces."
+                            placement="top"
+                          >
+                            <input
+                              type="text"
+                              id="tweetUrl"
+                              // placeholder="Project Twitter Username"
+                              className="form-control"
+                              value={SplToken}
+                              pattern="[0-9]*"
+                              // onChange={(e) => setSplToken(e.target.value)}
+                              onChange={(e) =>
+                                setSplToken((v) =>
+                                  e.target.validity.valid ? e.target.value : v
+                                )
+                              }
+                            />
+                          </Tooltip>
+                        </div>
+                        <Button variant="contained" onClick={handleTransferSpl}>
+                          Transfer SPL
+                        </Button>
+                      </form>
                     </Typography>
                   </div>
                 </>

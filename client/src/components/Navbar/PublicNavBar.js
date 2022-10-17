@@ -1,14 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Grid, Button, Typography } from "@mui/material";
 import { Icon } from "@iconify/react";
+import useStatesFunc from "../../hooks/useStatesFunc";
 import {
   useWalletModal,
   WalletMultiButton,
 } from "@solana/wallet-adapter-react-ui";
 
 import { NavLink } from "react-router-dom";
+import axios from "axios";
 
 const PublicNavBar = ({ setShowSideBar, showSideBar, home }) => {
+  const [{ sidebar, token }] = useStatesFunc();
+  const [clientAddress, setClientAddress] = useState();
+  const [solBalance, setSolBalance] = useState();
+
+  const getWallet = async () => {
+    const resData = await axios.get(
+      `${process.env.REACT_APP_SERVERURL}/wallet/getWallet`,
+
+      {
+        headers: {
+          Authorization: `BEARER ${token}`,
+        },
+      }
+    );
+
+    if (resData?.data?.publicKey) {
+      setClientAddress(resData?.data?.publicKey);
+      setSolBalance((resData?.data?.solBalance / 1000000000).toFixed(2));
+    }
+  };
+  useEffect(() => {
+    getWallet();
+  }, []);
   return (
     <>
       <div
@@ -37,6 +62,21 @@ const PublicNavBar = ({ setShowSideBar, showSideBar, home }) => {
                 />
               ) : null}
             </Typography>
+            <Typography sx={{ color: "white" }}>
+              <Typography className="">
+                {clientAddress ? (
+                  <Typography style={{ fontSize: "10px" }}>
+                    Your Wallet: {clientAddress}
+                  </Typography>
+                ) : null}
+                {solBalance ? (
+                  <Typography sx={{ fontSize: "10px" }}>
+                    Balance: {solBalance} sol
+                  </Typography>
+                ) : null}
+              </Typography>
+            </Typography>
+
             <Grid container>
               <Grid item xs={1}>
                 {/* <Icon

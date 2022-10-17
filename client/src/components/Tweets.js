@@ -119,14 +119,14 @@ const Tweets = (props) => {
           { text: "Dashboard", icon: "ic:twotone-space-dashboard" },
           { text: "Mention to Earn", icon: "bx:at" },
           { text: "Raid to Earn", icon: "la:retweet" },
-          { text: "Sweep to Earn", icon: "la:retweet" },
+          // { text: "Sweep to Earn", icon: "la:retweet" },
           { text: "Profile", icon: "bx:user" },
-          { text: "Rewards", icon: "arcticons:rewards" },
-          { text: "Account", icon: "gridicons:stats" },
-          { text: "Stats", icon: "healthicons:exercise-walk-supported" },
+          // { text: "Rewards", icon: "arcticons:rewards" },
+          // { text: "Account", icon: "gridicons:stats" },
+          // { text: "Stats", icon: "healthicons:exercise-walk-supported" },
 
-          { text: "Setting", icon: "ant-design:setting-filled" },
-          { text: "Support", icon: "ic:twotone-space-dashboard" },
+          // { text: "Setting", icon: "ant-design:setting-filled" },
+          // { text: "Support", icon: "ic:twotone-space-dashboard" },
         ].map((obj, index) => (
           <ListItem key={index} disablePadding>
             <ListItemButton

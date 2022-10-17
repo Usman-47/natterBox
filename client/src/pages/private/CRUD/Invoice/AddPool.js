@@ -273,6 +273,8 @@ const AddPool = ({ auth, projectId, setPoolID, setpoolSuccessfully }) => {
       category: temp,
     }));
   };
+  console.log(moment().format("LL"));
+
   return (
     <>
       <div className="container my-5 p-3 border border-1 border-info rounded-3">
@@ -303,9 +305,13 @@ const AddPool = ({ auth, projectId, setPoolID, setpoolSuccessfully }) => {
               id="timeToclaim"
               placeholder="Start Time"
               className="form-control"
-              value={moment
-                .unix(stateValues.startTime)
-                .format(moment.HTML5_FMT.DATETIME_LOCAL)}
+              value={
+                stateValues.startTime
+                  ? moment
+                      .unix(stateValues.startTime)
+                      .format(moment.HTML5_FMT.DATETIME_LOCAL)
+                  : moment().format(moment.HTML5_FMT.DATETIME_LOCAL)
+              }
               onChange={(event) =>
                 setStateValues((prev) => ({
                   ...prev,
@@ -324,9 +330,13 @@ const AddPool = ({ auth, projectId, setPoolID, setpoolSuccessfully }) => {
               id="timeToclaim"
               placeholder="Start Time"
               className="form-control"
-              value={moment
-                .unix(stateValues.endTime)
-                .format(moment.HTML5_FMT.DATETIME_LOCAL)}
+              value={
+                stateValues.endTime
+                  ? moment
+                      .unix(stateValues.endTime)
+                      .format(moment.HTML5_FMT.DATETIME_LOCAL)
+                  : moment().format(moment.HTML5_FMT.DATETIME_LOCAL)
+              }
               onChange={(event) =>
                 setStateValues((prev) => ({
                   ...prev,

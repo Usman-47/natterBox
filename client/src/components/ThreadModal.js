@@ -83,17 +83,17 @@ export default function ThreadModal({
             }}
           >
             <Typography sx={{ display: "flex", alignItems: "center" }}>
-              <Typography sx={{ color: "white" }}>
+              {/* <Typography sx={{ color: "white" }}>
                 {" "}
                 <ArrowBackIcon />{" "}
-              </Typography>
+              </Typography> */}
               <Typography sx={{ fontSize: "22px", color: "white", px: 2 }}>
                 {" "}
                 Thread{" "}
               </Typography>
             </Typography>
 
-            <Typography
+            {/* <Typography
               size="small"
               sx={{
                 background: "#545454",
@@ -103,7 +103,7 @@ export default function ThreadModal({
               aria-label="add"
             >
               <CloseIcon sx={{ color: "white" }} />
-            </Typography>
+            </Typography> */}
           </Typography>
 
           <Typography
