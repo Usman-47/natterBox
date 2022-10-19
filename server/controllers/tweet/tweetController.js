@@ -227,7 +227,6 @@ const likeSpecificTweet = async (req, res) => {
     let { accessToken, accessTokenSecret, twitterId, id, publicKey } =
       req.userObj;
     let { projectName, mintAddress, projectCreator } = req.body;
-    var likeStatus = { tweetId: req.params.tweetId, projectName };
     var splToken = mintAddress;
     var poolType = "raid";
     var usersArray = [publicKey];
@@ -278,6 +277,13 @@ const likeSpecificTweet = async (req, res) => {
             rewardAmount = poolCategory[6];
           }
         }
+        var likeStatus = {
+          tweetId: req.params.tweetId,
+          projectName,
+          rewardAmount,
+          paidTime: moment().unix(),
+        };
+
         let userTweetData = await User.find({
           $and: [
             { _id: id },
@@ -453,7 +459,6 @@ const replyToTweetWithTweetId = async (req, res) => {
     let { accessToken, accessTokenSecret, twitterId, id, publicKey } =
       req.userObj;
     let { projectName, mintAddress, projectCreator, tweetReply } = req.body;
-    var replyStatus = { tweetId: req.params.tweetId, projectName };
     var splToken = mintAddress;
     var poolType = "raid";
     var usersArray = [publicKey];
@@ -504,6 +509,13 @@ const replyToTweetWithTweetId = async (req, res) => {
             rewardAmount = poolCategory[6];
           }
         }
+        var replyStatus = {
+          tweetId: req.params.tweetId,
+          projectName,
+          rewardAmount,
+          paidTime: moment().unix(),
+        };
+
         let userTweetData = await User.find({
           $and: [
             { _id: id },
@@ -679,7 +691,7 @@ const retweetATweet = async (req, res) => {
     let { accessToken, accessTokenSecret, twitterId, id, publicKey } =
       req.userObj;
     let { projectName, mintAddress, projectCreator } = req.body;
-    var retweetStatus = { tweetId: req.params.tweetId, projectName };
+
     var splToken = mintAddress;
     var poolType = "raid";
     var usersArray = [publicKey];
@@ -730,6 +742,12 @@ const retweetATweet = async (req, res) => {
             rewardAmount = poolCategory[6];
           }
         }
+        var retweetStatus = {
+          tweetId: req.params.tweetId,
+          projectName,
+          rewardAmount,
+          paidTime: moment().unix(),
+        };
         let userTweetData = await User.find({
           $and: [
             { _id: id },
