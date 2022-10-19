@@ -33,7 +33,6 @@ const dbConnectFunc = require("./db/dbIntegration");
 require("./routes/AuthRoute")(app);
 const AuthRoute = require("./routes/AuthRoute");
 const PublicRoute = require("./routes/PublicRoute");
-const PrivateRoute = require("./routes/PrivateRoute");
 const InvoiceCrudRoute = require("./routes/InvoiceCrudRoute");
 const CreateWalletRoute = require("./routes/CreateWalletRoute");
 const UserCrudRoute = require("./routes/UserCrudRoute");
@@ -44,7 +43,6 @@ const AuthCheck = require("./middlewares/AuthCheck");
 
 app.use("/api/public", PublicRoute);
 // app.use("/api/auth", AuthRoute);
-app.use("/api/private", AuthCheck, PrivateRoute);
 app.use("/api/crud/invoice", AuthCheck, InvoiceCrudRoute);
 app.use("/api/crud/user", AuthCheck, UserCrudRoute);
 app.use("/wallet", AuthCheck, CreateWalletRoute);

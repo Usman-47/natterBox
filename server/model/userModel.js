@@ -27,7 +27,6 @@ const userSchema = schema({
   },
   amountToPay: {
     type: String,
-    default: 20000000000,
   },
   role: {
     type: String,
@@ -47,7 +46,7 @@ const userSchema = schema({
       projectName: { type: String },
       tweetCreatedAt: { type: String },
       paidTime: { type: String },
-      rewardAmount:{type:String}
+      rewardAmount: { type: String },
     },
   ],
   raidStatus: {
@@ -56,8 +55,7 @@ const userSchema = schema({
         tweetId: { type: String },
         projectName: { type: String },
         paidTime: { type: String },
-        rewardAmount:{type:String}
-
+        rewardAmount: { type: String },
       },
     ],
     retweetStatus: [
@@ -65,8 +63,7 @@ const userSchema = schema({
         tweetId: { type: String },
         projectName: { type: String },
         paidTime: { type: String },
-        rewardAmount:{type:String}
-        
+        rewardAmount: { type: String },
       },
     ],
     replyStatus: [
@@ -74,8 +71,7 @@ const userSchema = schema({
         tweetId: { type: String },
         projectName: { type: String },
         paidTime: { type: String },
-        rewardAmount:{type:String}
-
+        rewardAmount: { type: String },
       },
     ],
   },
