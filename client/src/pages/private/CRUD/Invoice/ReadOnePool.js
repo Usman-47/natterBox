@@ -53,8 +53,13 @@ const ReadOneInvoice = ({ auth }) => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  // const solConnection = new web3.Connection(
+  //   web3.clusterApiUrl("devnet"),
+  //   "processed"
+  // );
+
   const solConnection = new web3.Connection(
-    web3.clusterApiUrl("devnet"),
+    web3.clusterApiUrl("mainnet-beta"),
     "processed"
   );
   let cloneWindow = window;

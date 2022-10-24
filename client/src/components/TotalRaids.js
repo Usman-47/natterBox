@@ -8,8 +8,8 @@ import Avatar from "@mui/material/Avatar";
 import { red } from "@mui/material/colors";
 import { Grid } from "@mui/material";
 
-const TotalRaids = () => {
-  const arr = [1, 2, 3, 4];
+const TotalRaids = ({ rewardData }) => {
+  const arr = [1];
   return (
     <>
       {arr.map((item, i) => {
@@ -25,8 +25,7 @@ const TotalRaids = () => {
                 borderRadius: "12px",
                 display: "flex",
                 alignItems: "center",
-                gap:"15px",
-                
+                gap: "15px",
               }}
             >
               <div
@@ -34,37 +33,44 @@ const TotalRaids = () => {
                 style={{
                   width: "55px",
                   height: "45px",
-                
+
                   borderRadius: "10px",
                   background: "rgba(255, 255, 255, 0.03)",
                   boxShadow: "0px 4px 4px rgba(0, 0, 0, 0.25)",
                   backdropFilter: "blur(2px)",
-                  display:"flex",
-                  justifyContent:"center",
-                  alignItems:"center"
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
                 }}
               >
                 <Icon color="#47DDFC" icon="ant-design:retweet-outlined" />
               </div>
-              <div className="total_raids_div" style={{width:"100%"}}>
+              <div className="total_raids_div" style={{ width: "100%" }}>
                 <div className="d-flex justify-content-between align-items-center text-white mb-1">
-                 <p className="mb-0" style={{fontSize:"11px"}}>Total Raids</p>
+                  <p className="mb-0" style={{ fontSize: "11px" }}>
+                    Total Raids
+                  </p>
                   <div
                     className="raids_card"
                     component="div"
                     style={{
-                      
                       fontSize: "10px",
                       justifyContent: "center",
                       alignItems: "center",
                     }}
                   >
-                   <p className="mb-0">113</p> 
-                    <p className="mb-0" style={{color:"#47DDFC"}}>34% <Icon icon="eva:arrow-upward-fill" /></p>
+                    <p className="mb-0">{rewardData?.raidCount}</p>
+                    <p className="mb-0" style={{ color: "#47DDFC" }}>
+                      34% <Icon icon="eva:arrow-upward-fill" />
+                    </p>
                   </div>
                 </div>
                 <div className="d-flex justify-content-between align-items-center text-white">
-                  <div><p className="mb-0"  style={{fontSize:"11px"}}>Total Raids</p></div>
+                  <div>
+                    <p className="mb-0" style={{ fontSize: "11px" }}>
+                      Total Mention
+                    </p>
+                  </div>
                   <div
                     className="raids_card"
                     component="div"
@@ -74,8 +80,10 @@ const TotalRaids = () => {
                       alignItems: "center",
                     }}
                   >
-                    <p className="mb-0">113</p> 
-                    <p className="mb-0" style={{color:"#47DDFC"}}>34% <Icon icon="eva:arrow-upward-fill" /></p>
+                    <p className="mb-0">{rewardData?.mentionCount}</p>
+                    <p className="mb-0" style={{ color: "#47DDFC" }}>
+                      34% <Icon icon="eva:arrow-upward-fill" />
+                    </p>
                   </div>
                 </div>
               </div>

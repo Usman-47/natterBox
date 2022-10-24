@@ -1,15 +1,15 @@
 import React from "react";
-
+import moment from "moment";
 import Card from "@mui/material/Card";
 
 import { Icon } from "@iconify/react";
 import { useState } from "react";
 
-const RaidsHistory = () => {
+const RaidsHistory = ({ rewardData }) => {
   const array = [1, 2, 3, 4, 5, 6, 7, 8];
   const [state, setState] = useState(false);
   const [data, setData] = useState(
-    array.slice(0, 5).map((item) => {
+    rewardData?.raidRewardData?.slice(0, 5).map((item) => {
       return (
         <div
           style={{
@@ -27,9 +27,10 @@ const RaidsHistory = () => {
             style={{ fontFamily: "Poppins" }}
             className="d-flex justify-content-between align-items-center"
           >
-          <div style={{fontSize:"12px"}}>21.05.22</div>
+            <div style={{ fontSize: "12px" }}>
+              {moment.unix(item?.paidTime).format("Do MMM YYYY, h:mm:ss A")}
+            </div>
             <div className="d-flex align-items-center gap-2">
-           
               <p
                 style={{
                   marginBottom: "0px",
@@ -37,7 +38,7 @@ const RaidsHistory = () => {
                   fontFamily: "Roclette Pro",
                 }}
               >
-                0.25
+                {item?.rewardAmount}
                 <sub
                   style={{
                     color: "#47DDFC",
@@ -51,10 +52,10 @@ const RaidsHistory = () => {
               </p>
             </div>
             <div>
-                <p
+              <p
                 style={{
                   fontSize: "12px",
-                 
+
                   marginBottom: "0px",
                 }}
               >
@@ -62,7 +63,7 @@ const RaidsHistory = () => {
               </p>
             </div>
             <div>
-            <p
+              <p
                 style={{
                   fontSize: "12px",
                   color: "#47DDFC",
@@ -72,11 +73,18 @@ const RaidsHistory = () => {
                 34% <Icon icon="akar-icons:arrow-up" />
               </p>
             </div>
-            <div style={{ color: "#B4FF99" }}><Icon style={{background:'linear-gradient(249.51deg, #00FFA3 -47.16%, #DC1FFF 140.55%)'}} icon="tabler:currency-solana" /></div>
-                <div>
-                <Icon color="white" icon="charm:menu-kebab" />
-                </div>
-          
+            <div style={{ color: "#B4FF99" }}>
+              <Icon
+                style={{
+                  background:
+                    "linear-gradient(249.51deg, #00FFA3 -47.16%, #DC1FFF 140.55%)",
+                }}
+                icon="tabler:currency-solana"
+              />
+            </div>
+            <div>
+              <Icon color="white" icon="charm:menu-kebab" />
+            </div>
           </div>
         </div>
       );
@@ -84,12 +92,11 @@ const RaidsHistory = () => {
   );
 
   const Expand = () => {
-    console.log(state, "state");
     if (state === false) {
       setState(true);
 
       setData(
-        array.map((item) => {
+        rewardData?.raidRewardData?.map((item) => {
           return (
             <div
               style={{
@@ -107,9 +114,10 @@ const RaidsHistory = () => {
                 style={{ fontFamily: "Poppins" }}
                 className="d-flex justify-content-between align-items-center"
               >
-              <div style={{fontSize:"12px"}}>21.05.22</div>
+                <div style={{ fontSize: "12px" }}>
+                  {moment.unix(item?.paidTime).format("Do MMM YYYY, h:mm:ss A")}
+                </div>
                 <div className="d-flex align-items-center gap-2">
-               
                   <p
                     style={{
                       marginBottom: "0px",
@@ -117,7 +125,7 @@ const RaidsHistory = () => {
                       fontFamily: "Roclette Pro",
                     }}
                   >
-                    0.25
+                    {item?.rewardAmount}
                     <sub
                       style={{
                         color: "#47DDFC",
@@ -131,10 +139,10 @@ const RaidsHistory = () => {
                   </p>
                 </div>
                 <div>
-                    <p
+                  <p
                     style={{
                       fontSize: "12px",
-                     
+
                       marginBottom: "0px",
                     }}
                   >
@@ -142,7 +150,7 @@ const RaidsHistory = () => {
                   </p>
                 </div>
                 <div>
-                <p
+                  <p
                     style={{
                       fontSize: "12px",
                       color: "#47DDFC",
@@ -152,12 +160,18 @@ const RaidsHistory = () => {
                     34% <Icon icon="akar-icons:arrow-up" />
                   </p>
                 </div>
-                <div style={{ color: "#B4FF99" }}><Icon style={{background:'linear-gradient(249.51deg, #00FFA3 -47.16%, #DC1FFF 140.55%)'}} icon="tabler:currency-solana" /></div>
-                <div>
-                <Icon color="white" icon="charm:menu-kebab" />
+                <div style={{ color: "#B4FF99" }}>
+                  <Icon
+                    style={{
+                      background:
+                        "linear-gradient(249.51deg, #00FFA3 -47.16%, #DC1FFF 140.55%)",
+                    }}
+                    icon="tabler:currency-solana"
+                  />
                 </div>
-                
-              
+                <div>
+                  <Icon color="white" icon="charm:menu-kebab" />
+                </div>
               </div>
             </div>
           );
@@ -183,9 +197,8 @@ const RaidsHistory = () => {
                 style={{ fontFamily: "Poppins" }}
                 className="d-flex justify-content-between align-items-center"
               >
-              <div style={{fontSize:"12px"}}>21.05.22</div>
+                <div style={{ fontSize: "12px" }}>21.05.22</div>
                 <div className="d-flex align-items-center gap-2">
-               
                   <p
                     style={{
                       marginBottom: "0px",
@@ -207,10 +220,10 @@ const RaidsHistory = () => {
                   </p>
                 </div>
                 <div>
-                    <p
+                  <p
                     style={{
                       fontSize: "12px",
-                     
+
                       marginBottom: "0px",
                     }}
                   >
@@ -218,7 +231,7 @@ const RaidsHistory = () => {
                   </p>
                 </div>
                 <div>
-                <p
+                  <p
                     style={{
                       fontSize: "12px",
                       color: "#47DDFC",
@@ -228,17 +241,24 @@ const RaidsHistory = () => {
                     34% <Icon icon="akar-icons:arrow-up" />
                   </p>
                 </div>
-                <div style={{ color: "#B4FF99" }}><Icon style={{background:'linear-gradient(249.51deg, #00FFA3 -47.16%, #DC1FFF 140.55%)'}} icon="tabler:currency-solana" /></div>
-                <div>
-                <Icon color="white" icon="charm:menu-kebab" />
+                <div style={{ color: "#B4FF99" }}>
+                  <Icon
+                    style={{
+                      background:
+                        "linear-gradient(249.51deg, #00FFA3 -47.16%, #DC1FFF 140.55%)",
+                    }}
+                    icon="tabler:currency-solana"
+                  />
                 </div>
-              
+                <div>
+                  <Icon color="white" icon="charm:menu-kebab" />
+                </div>
               </div>
             </div>
           );
         })
       );
-      setState(false)
+      setState(false);
     }
   };
 
@@ -259,7 +279,16 @@ const RaidsHistory = () => {
         {data}
 
         <div className="text-center">
-        <button style={{background:"transparent", color:"white", border:"none"}} onClick={Expand}><Icon icon="bi:chevron-double-down" /></button>
+          <button
+            style={{
+              background: "transparent",
+              color: "white",
+              border: "none",
+            }}
+            onClick={Expand}
+          >
+            <Icon icon="bi:chevron-double-down" />
+          </button>
         </div>
       </Card>
     </>

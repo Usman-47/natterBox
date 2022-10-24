@@ -1,34 +1,31 @@
 import React from "react";
-
+import moment from "moment";
 import Card from "@mui/material/Card";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import IconButton from '@mui/material/IconButton';
-import { styled } from '@mui/material/styles';
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import MoreVertIcon from "@mui/icons-material/MoreVert";
+import IconButton from "@mui/material/IconButton";
+import { styled } from "@mui/material/styles";
 
 import { Icon } from "@iconify/react";
 import { useState } from "react";
 
 const ExpandMore = styled((props) => {
-    const { expand, ...other } = props;
-    return <IconButton {...other} />;
-  })(({ theme, expand }) => ({
-    transform: !expand ? 'rotate(0deg)' : 'rotate(180deg)',
-    marginLeft: 'auto',
-    transition: theme.transitions.create('transform', {
-      duration: theme.transitions.duration.shortest,
-    }),
-  }));
+  const { expand, ...other } = props;
+  return <IconButton {...other} />;
+})(({ theme, expand }) => ({
+  transform: !expand ? "rotate(0deg)" : "rotate(180deg)",
+  marginLeft: "auto",
+  transition: theme.transitions.create("transform", {
+    duration: theme.transitions.duration.shortest,
+  }),
+}));
 
-
-
-const History = () => {
-  
+const History = ({ rewardData }) => {
   const array = [1, 2, 3, 4, 5, 6, 7, 8];
-const [data, setData]= useState();
-  const Expand = ()=>{
-  setData(
-    array.slice(6, 8).map((item) => {
+  const [data, setData] = useState();
+  const Expand = () => {
+    setData(
+      rewardData?.mentionRewardData?.slice(6, 8).map((item) => {
         return (
           <div
             style={{
@@ -46,9 +43,8 @@ const [data, setData]= useState();
               style={{ fontFamily: "Poppins" }}
               className="d-flex justify-content-between align-items-center"
             >
-            <div style={{fontSize:"12px"}}>21.05.22</div>
+              <div style={{ fontSize: "12px" }}>21.05.22</div>
               <div className="d-flex align-items-center gap-2">
-             
                 <p
                   style={{
                     marginBottom: "0px",
@@ -70,10 +66,10 @@ const [data, setData]= useState();
                 </p>
               </div>
               <div>
-                  <p
+                <p
                   style={{
                     fontSize: "12px",
-                   
+
                     marginBottom: "0px",
                   }}
                 >
@@ -81,7 +77,7 @@ const [data, setData]= useState();
                 </p>
               </div>
               <div>
-              <p
+                <p
                   style={{
                     fontSize: "12px",
                     color: "#47DDFC",
@@ -91,18 +87,24 @@ const [data, setData]= useState();
                   34% <Icon icon="akar-icons:arrow-up" />
                 </p>
               </div>
-              <div style={{ color: "#B4FF99" }}><Icon style={{background:'linear-gradient(249.51deg, #00FFA3 -47.16%, #DC1FFF 140.55%)'}} icon="tabler:currency-solana" /></div>
-                <div>
+              <div style={{ color: "#B4FF99" }}>
+                <Icon
+                  style={{
+                    background:
+                      "linear-gradient(249.51deg, #00FFA3 -47.16%, #DC1FFF 140.55%)",
+                  }}
+                  icon="tabler:currency-solana"
+                />
+              </div>
+              <div>
                 <Icon color="white" icon="charm:menu-kebab" />
-                </div>
-            
+              </div>
             </div>
           </div>
         );
       })
-  )
-
-  }
+    );
+  };
   return (
     <>
       <Card
@@ -117,8 +119,7 @@ const [data, setData]= useState();
           margin: "5px",
         }}
       >
-        {
-            array.slice(0, 5).map((item) => {
+        {rewardData?.mentionRewardData?.slice(0, 5).map((item) => {
           return (
             <div
               style={{
@@ -136,9 +137,10 @@ const [data, setData]= useState();
                 style={{ fontFamily: "Poppins" }}
                 className="d-flex justify-content-between align-items-center"
               >
-              <div style={{fontSize:"12px"}}>21.05.22</div>
+                <div style={{ fontSize: "12px" }}>
+                  {moment.unix(item?.paidTime).format("Do MMM YYYY, h:mm:ss A")}
+                </div>
                 <div className="d-flex align-items-center gap-2">
-               
                   <p
                     style={{
                       marginBottom: "0px",
@@ -160,10 +162,10 @@ const [data, setData]= useState();
                   </p>
                 </div>
                 <div>
-                    <p
+                  <p
                     style={{
                       fontSize: "12px",
-                     
+
                       marginBottom: "0px",
                     }}
                   >
@@ -171,7 +173,7 @@ const [data, setData]= useState();
                   </p>
                 </div>
                 <div>
-                <p
+                  <p
                     style={{
                       fontSize: "12px",
                       color: "#47DDFC",
@@ -181,18 +183,24 @@ const [data, setData]= useState();
                     34% <Icon icon="akar-icons:arrow-up" />
                   </p>
                 </div>
-                <div style={{ color: "#B4FF99" }}><Icon style={{background:'linear-gradient(249.51deg, #00FFA3 -47.16%, #DC1FFF 140.55%)'}} icon="tabler:currency-solana" /></div>
-                <div>
-                <Icon color="white" icon="charm:menu-kebab" />
+                <div style={{ color: "#B4FF99" }}>
+                  <Icon
+                    style={{
+                      background:
+                        "linear-gradient(249.51deg, #00FFA3 -47.16%, #DC1FFF 140.55%)",
+                    }}
+                    icon="tabler:currency-solana"
+                  />
                 </div>
-              
+                <div>
+                  <Icon color="white" icon="charm:menu-kebab" />
+                </div>
               </div>
             </div>
           );
-        })
-        }
+        })}
         {data}
-{/* 
+        {/* 
         <ExpandMore
         
           onClick={Expand}
@@ -202,7 +210,16 @@ const [data, setData]= useState();
          <ExpandMoreIcon />
         </ExpandMore> */}
         <div className="text-center">
-        <button style={{background:"transparent", color:"white", border:"none"}} onClick={Expand}><Icon icon="bi:chevron-double-down" /></button>
+          <button
+            style={{
+              background: "transparent",
+              color: "white",
+              border: "none",
+            }}
+            onClick={Expand}
+          >
+            <Icon icon="bi:chevron-double-down" />
+          </button>
         </div>
       </Card>
     </>

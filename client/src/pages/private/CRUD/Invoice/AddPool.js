@@ -273,7 +273,6 @@ const AddPool = ({ auth, projectId, setPoolID, setpoolSuccessfully }) => {
       category: temp,
     }));
   };
-  console.log(moment().format("LL"));
 
   return (
     <>

@@ -1,10 +1,10 @@
 import React from "react";
+import moment from "moment";
 import { Icon } from "@iconify/react";
-const TransactionHistory = () => {
-  const array = [1, 2, 3, 4, 5, 6, 7, 8];
+const TransactionHistory = ({ rewardData }) => {
   return (
     <>
-      {array.map((item) => {
+      {rewardData?.rewardData?.map((item) => {
         return (
           <div
             style={{
@@ -32,9 +32,29 @@ const TransactionHistory = () => {
                 >
                   34% <Icon icon="akar-icons:arrow-up" />
                 </p>
-                <p style={{ marginBottom: "0px", fontSize:"20px", fontFamily:"Roclette Pro" }}>3.15<sub style={{color:"#47DDFC", fontSize:"12px", fontFamily:"Roclette Pro", letterSpacing: '0.04em'}}>SOL</sub> </p>
+                <p
+                  style={{
+                    marginBottom: "0px",
+                    fontSize: "20px",
+                    fontFamily: "Roclette Pro",
+                  }}
+                >
+                  {item?.rewardAmount}
+                  <sub
+                    style={{
+                      color: "#47DDFC",
+                      fontSize: "12px",
+                      fontFamily: "Roclette Pro",
+                      letterSpacing: "0.04em",
+                    }}
+                  >
+                    SOL
+                  </sub>{" "}
+                </p>
               </div>
-              <div>12-09-2022</div>
+              <div>
+                {moment.unix(item?.paidTime).format("Do MMM YYYY, h:mm:ss A")}
+              </div>
               <div style={{ color: "#B4FF99" }}>Successful</div>
               {/* <div className='d-flex gap-2'>
                         <div style={{background: 'rgba(255, 255, 255, 0.03)',
