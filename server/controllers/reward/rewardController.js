@@ -32,28 +32,74 @@ const idl = JSON.parse(
   fs.readFileSync(__dirname + "/twitter_program.json", "utf8")
 );
 
-anchor.setProvider(anchor.Provider.local(web3.clusterApiUrl("devnet")));
+// anchor.setProvider(anchor.Provider.local(web3.clusterApiUrl("devnet")));
 
-// anchor.setProvider(
-//   anchor.Provider.local(
-//     "https://lingering-hidden-dew.solana-mainnet.quiknode.pro/03680929d6c8fef9bb62ca0130a2df2d6303f2a0/"
-//   )
-// );
+anchor.setProvider(
+  anchor.Provider.local(
+    "https://lingering-hidden-dew.solana-mainnet.quiknode.pro/03680929d6c8fef9bb62ca0130a2df2d6303f2a0/"
+  )
+);
 
-var solConnection = new web3.Connection(web3.clusterApiUrl("devnet"), {
-  commitment: "confirmed",
-  confirmTransactionInitialTimeout: 12000,
-});
+// var solConnection = new web3.Connection(web3.clusterApiUrl("devnet"), {
+//   commitment: "confirmed",
+//   confirmTransactionInitialTimeout: 12000,
+// });
 
-// var solConnection = new web3.Connection(
-//   "https://lingering-hidden-dew.solana-mainnet.quiknode.pro/03680929d6c8fef9bb62ca0130a2df2d6303f2a0/",
-//   {
-//     commitment: "confirmed",
-//     confirmTransactionInitialTimeout: 12000,
-//   }
-// );
+var solConnection = new web3.Connection(
+  "https://lingering-hidden-dew.solana-mainnet.quiknode.pro/03680929d6c8fef9bb62ca0130a2df2d6303f2a0/",
+  {
+    commitment: "confirmed",
+    confirmTransactionInitialTimeout: 12000,
+  }
+);
 
 const program = new anchor.Program(idl, PROGRAM_ID);
+
+const getUserRewardDetail = async (req, res) => {
+  try {
+    const { id } = req.userObj;
+
+    var userRewardDetails = await User.findOne({ _id: id });
+    if (userRewardDetails) {
+      var tempArray = [];
+      var rewardCount = 0;
+      var tempArrayForMention = [];
+      var rewardCountForMention = 0;
+      if (userRewardDetails.raidStatus.likeStatus.length > 0) {
+        userRewardDetails.raidStatus.likeStatus.map((data) => {
+          tempArray.push(data);
+          rewardCount = rewardCount + 1;
+        });
+      }
+      if (userRewardDetails.raidStatus.retweetStatus.length > 0) {
+        userRewardDetails.raidStatus.retweetStatus.map((data) => {
+          tempArray.push(data);
+          rewardCount = rewardCount + 1;
+        });
+      }
+      if (userRewardDetails.raidStatus.replyStatus.length > 0) {
+        userRewardDetails.raidStatus.replyStatus.map((data) => {
+          tempArray.push(data);
+          rewardCount = rewardCount + 1;
+        });
+      }
+      if (userRewardDetails.rewardStatus.length > 0) {
+        userRewardDetails.rewardStatus.map((data) => {
+          tempArrayForMention.push(data);
+          rewardCountForMention = rewardCountForMention + 1;
+        });
+      }
+      return res.send({
+        raidCount: rewardCount,
+        raidRewardData: tempArray,
+        mentionCount: rewardCountForMention,
+        mentionRewardData: tempArrayForMention,
+      });
+    }
+  } catch (error) {
+    console.log(error.message);
+  }
+};
 
 const getRecords = async (req, res) => {
   try {
@@ -386,4 +432,5 @@ module.exports = {
   getRecords,
   addRewardRecord,
   updateRewardRecord,
+  getUserRewardDetail,
 };
