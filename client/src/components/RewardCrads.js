@@ -20,7 +20,11 @@ export default function RewardCards() {
       src: "ethereum.png",
       btnText: "Select Ethereum Wallet",
     },
-    { title: "Twitter Account", src: "twitter.png", btnText: "Connect Your Tweeter" },
+    {
+      title: "Twitter Account",
+      src: "twitter.png",
+      btnText: "Connect Your Twitter",
+    },
   ];
 
   return (
@@ -32,7 +36,15 @@ export default function RewardCards() {
       >
         {array.map((item, i) => {
           return (
-            <Grid key={i} item xs={11} md={6} xl={4} padding="5px" sx={{margin:"0 auto"}}>
+            <Grid
+              key={i}
+              item
+              xs={11}
+              md={6}
+              xl={4}
+              padding="5px"
+              sx={{ margin: "0 auto" }}
+            >
               <Card className="rewards_card" sx={{ width: "100%" }}>
                 <Typography
                   sx={{
@@ -69,57 +81,66 @@ export default function RewardCards() {
                       marginTop="10px"
                       color="white"
                       component="div"
-                      sx={{fontWeight:"600"}}
+                      sx={{ fontWeight: "600" }}
                     >
                       {item.title}
                     </Typography>
                   </Typography>
 
-                  {i===0? 
-                    <Typography className="profile_dashboard_wallet_btns" sx={{ color: "white" }}>
-                    0.050  <sub className="btn_sub">SOL</sub> <br />
-                    <span
-                    className="btn_inner_percentage"
-                      sx={{
-                        fontSize: "10.9755px",
-                        
-                      }}
+                  {i === 0 ? (
+                    <Typography
+                      className="profile_dashboard_wallet_btns"
+                      sx={{ color: "white" }}
                     >
-                      12.2% 
-                    </span>
-                  </Typography>: i===1? 
-                  <Typography className="profile_dashboard_wallet_btns" sx={{ color: "white" }}>
-                    0.050 <sub className="btn_sub">ETH</sub>  <br />
-                    <span
-                    className="btn_inner_percentage"
-                      sx={{
-                        fontSize: "10.9755px",
-                        
-                      }}
+                      0.050 <sub className="btn_sub">SOL</sub> <br />
+                      <span
+                        className="btn_inner_percentage"
+                        sx={{
+                          fontSize: "10.9755px",
+                        }}
+                      >
+                        12.2%
+                      </span>
+                    </Typography>
+                  ) : i === 1 ? (
+                    <Typography
+                      className="profile_dashboard_wallet_btns"
+                      sx={{ color: "white" }}
                     >
-                      12.2% 
-                    </span>
-                  </Typography>: null
-                  }
+                      0.050 <sub className="btn_sub">ETH</sub> <br />
+                      <span
+                        className="btn_inner_percentage"
+                        sx={{
+                          fontSize: "10.9755px",
+                        }}
+                      >
+                        12.2%
+                      </span>
+                    </Typography>
+                  ) : null}
                 </Typography>
 
                 <CardContent></CardContent>
                 <CardActions sx={{ justifyContent: "center" }}>
                   <Button
                     sx={{
-                      background:
-                       `${i===0?  'linear-gradient(95.18deg, #55EEFF 25.5%, #A431D0 108%)': i===1? 'linear-gradient(93.94deg, rgba(75, 60, 189, 0.22) 9.62%, rgba(82, 68, 195, 0.33) 100%)': 'linear-gradient(180deg, rgba(28, 28, 28, 0.47) 0%, rgba(74, 75, 75, 0.58) 100%)' }`,
+                      background: `${
+                        i === 0
+                          ? "linear-gradient(95.18deg, #55EEFF 25.5%, #A431D0 108%)"
+                          : i === 1
+                          ? "linear-gradient(93.94deg, rgba(75, 60, 189, 0.22) 9.62%, rgba(82, 68, 195, 0.33) 100%)"
+                          : "linear-gradient(180deg, rgba(28, 28, 28, 0.47) 0%, rgba(74, 75, 75, 0.58) 100%)"
+                      }`,
                       borderRadius: "38.1004px",
                       color: "white",
                       fontSize: "13px",
-                      fontFamily:"Poppins",
-                      gap:"5px"
+                      fontFamily: "Poppins",
+                      gap: "5px",
                     }}
                     size="large"
                   >
-                      {i === 0 && (
+                    {i === 0 && (
                       <img
-                      
                         width={"25px"}
                         height={"25px"}
                         src={item.src}
@@ -132,7 +153,7 @@ export default function RewardCards() {
                     {i === 2 && (
                       <img width={"33px"} src={item.src} alt="solana" />
                     )}
-                   <span> {item.btnText}</span>
+                    <span> {item.btnText}</span>
                   </Button>
                   <Typography color="white" className="edit-icon">
                     <Icon icon="ant-design:edit-outlined" />
