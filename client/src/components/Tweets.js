@@ -447,12 +447,12 @@ const Tweets = (props) => {
                       title={props.auth?.userName}
                     />
                   </Typography>
-                  <Avatar
+                  {/* <Avatar
                     sx={{ backgroundColor: "rgb(29, 155, 240)" }}
                     aria-label="recipe"
                   >
                     <Icon icon="akar-icons:twitter-fill" />
-                  </Avatar>
+                  </Avatar> */}
                   <MenuItem>
                     {[
                       <Button

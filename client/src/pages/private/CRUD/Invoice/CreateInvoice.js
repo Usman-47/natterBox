@@ -51,6 +51,7 @@ const CreateInvoice = ({ auth }) => {
     discordForProjectContact: "",
     mintCreatorAddress: "",
     numberOfNft: "",
+    imageUrl: "",
   };
   const [activeStep, setActiveStep] = React.useState(0);
   const [stateValues, setStateValues] = useState(initialState);
@@ -169,6 +170,7 @@ const CreateInvoice = ({ auth }) => {
         projectTwitterUsername,
         mintCreatorAddress,
         numberOfNft,
+        imageUrl,
       } = stateValues;
 
       if (
@@ -189,6 +191,7 @@ const CreateInvoice = ({ auth }) => {
         mintCreatorAddress,
         numberOfNft,
         isRaid,
+        imageUrl,
       };
       const { data } = await CreateInvoiceApi(body, token);
       console.log(data?.createdInvoice?.projectName, "pooldataID");
@@ -209,143 +212,6 @@ const CreateInvoice = ({ auth }) => {
       dispatch({ type: "loadingStop" });
     }
   };
-  // return (
-  //   <>
-  //     <div
-  //       className="container my-5 p-3"
-  //       style={{ background: "#2C2C2E", borderRadius: '19.5591px' }}
-  //     >
-  //       <FormGroup>
-  //         <FormControlLabel
-  //           className="text-white"
-  //           control={
-  //             <Switch
-  //               checked={isRaid}
-  //               onChange={(e) => {
-  //                 setIsRaid(e.target.checked);
-  //               }}
-  //             />
-  //           }
-  //           label="Raid"
-  //         />
-  //       </FormGroup>
-  //       <form className="p-md-3 text-white">
-  //         {/* invoiceLogo */}
-  //         <div className="mb-3">
-  //           <label className="form-label">Project Name</label>
-  //           <input
-  //             type="text"
-  //             id="tweetUrl"
-  //             placeholder="Project Name"
-  //             className="form-control"
-  //             value={stateValues.tweetUrl}
-  //             onChange={(e) =>
-  //               setStateValues((prev) => ({
-  //                 ...prev,
-  //                 projectName: e.target.value,
-  //               }))
-  //             }
-  //           />
-  //         </div>
-
-  //         <div className="mb-3">
-  //           <label className="form-label">Project Twitter Username</label>
-  //           <Tooltip
-  //             title="Enter Twitter username without '@' sign, and without spaces."
-  //             placement="top"
-  //           >
-  //             <input
-  //               type="text"
-  //               id="tweetUrl"
-  //               placeholder="Project Twitter Username"
-  //               className="form-control"
-  //               value={stateValues.projectTwitterUsername}
-  //               onChange={(e) =>
-  //                 setStateValues((prev) => ({
-  //                   ...prev,
-  //                   projectTwitterUsername: e.target.value,
-  //                 }))
-  //               }
-  //             />
-  //           </Tooltip>
-  //         </div>
-
-  //         <div className="mb-3">
-  //           <label className="form-label" htmlFor="timeToclaim">
-  //             Discord For Project Contact
-  //           </label>
-  //           <input
-  //             type="text"
-  //             id="timeToclaim"
-  //             placeholder="Discord For Project Contact"
-  //             className="form-control"
-  //             value={stateValues.discordForProjectContact}
-  //             onChange={(e) =>
-  //               setStateValues((prev) => ({
-  //                 ...prev,
-  //                 discordForProjectContact: e.target.value,
-  //               }))
-  //             }
-  //           />
-  //         </div>
-
-  //         <div className="mb-3">
-  //           <label className="form-label">Creator Address For mint</label>
-  //           <input
-  //             type="text"
-  //             id="tweetUrl"
-  //             placeholder="Address"
-  //             className="form-control"
-  //             value={stateValues.mintCreatorAddress}
-  //             onChange={(e) =>
-  //               setStateValues((prev) => ({
-  //                 ...prev,
-  //                 mintCreatorAddress: e.target.value,
-  //               }))
-  //             }
-  //           />
-  //         </div>
-
-  //         <div className="mb-3">
-  //           <label className="form-label">Number of Nfts Required</label>
-  //           <input
-  //             type="text"
-  //             id="tweetUrl"
-  //             placeholder="Require Number Of Nfts"
-  //             className="form-control"
-  //             value={stateValues.numberOfNft}
-  //             onChange={(e) =>
-  //               setStateValues((prev) => ({
-  //                 ...prev,
-  //                 numberOfNft: e.target.value,
-  //               }))
-  //             }
-  //           />
-  //         </div>
-
-  //         {/* here btns */}
-  //         <div className="mt-5 mb-3 col">
-  //           {loading && (
-  //             <>
-  //               <MiniSpinner />
-  //             </>
-  //           )}
-
-  //           <button
-  //           style={{borderRadius: '19.5591px'}}
-  //             className="btn btn-dark border-dark text-white w-100"
-  //             type="button"
-  //             onClick={(ev) => SubmitForm(ev)}
-  //           >
-  //             Submit
-  //           </button>
-  //         </div>
-  //       </form>
-  //     </div>
-  //   </>
-  // );
-
-  // export default function VerticalLinearStepper() {
 
   const handleNext = () => {
     if (!isSuccessful && activeStep == 1) {
@@ -637,6 +503,23 @@ const CreateInvoice = ({ auth }) => {
                               setStateValues((prev) => ({
                                 ...prev,
                                 numberOfNft: e.target.value,
+                              }))
+                            }
+                          />
+                        </div>
+
+                        <div className="mb-3">
+                          <label className="form-label">Image Url</label>
+                          <input
+                            type="text"
+                            id="image"
+                            placeholder="image url"
+                            className="form-control"
+                            value={stateValues.imageUrl}
+                            onChange={(e) =>
+                              setStateValues((prev) => ({
+                                ...prev,
+                                imageUrl: e.target.value,
                               }))
                             }
                           />
