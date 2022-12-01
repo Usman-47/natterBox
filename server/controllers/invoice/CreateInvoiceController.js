@@ -11,6 +11,7 @@ const CreateInvoiceController = async (req, res) => {
     mintCreatorAddress,
     numberOfNft,
     isRaid,
+    imageUrl,
   } = req.body;
   try {
     const isEligible = CheckRoleAccess(["admin", "manager"], role);
@@ -30,6 +31,7 @@ const CreateInvoiceController = async (req, res) => {
       mintCreatorAddress: mintCreatorAddress,
       numberOfNft: numberOfNft,
       isRaid: isRaid,
+      imageUrl: imageUrl,
     });
     if (!createdInvoice) {
       return res
